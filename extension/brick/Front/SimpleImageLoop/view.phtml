@@ -1,0 +1,72 @@
+<?
+$siteInfo = Zend_Registry::get('siteInfo');
+if($siteInfo['type'] == 'multiple' && $siteInfo['subdomain']['id'] == 0) {
+	echo "";
+} else {
+?>
+<div class='brick-simple-image-loop<?=$this->cssSuffix?>'>
+	<div class='wrapper'>
+		<ul>
+		<?foreach($this->rowset as $row) { ?>
+			<li>
+				<img src='<?=$row->image?>' />
+				<br />
+				<div class='name'><?=$row->name?></div>
+				<div class='description'><?=$row->description?></div>
+			</li>
+		<?} ?>
+		</ul>
+	</div>
+</div>
+
+<script type='text/javascript'>
+$.fn.infiniteCarousel = function () {
+	function repeat(str, num) {
+		return new Array( num + 1 ).join( str );
+	}
+	return this.each(function () {
+		var $wrapper = $('> div', this).css('overflow', 'hidden'),
+		$slider = $wrapper.find('> ul'),
+		$items = $slider.find('> li'),
+		$single = $items.filter(':first'),
+		singleWidth = $single.outerWidth(),
+		visible = Math.ceil($wrapper.innerWidth() / singleWidth), // note: doesn't include padding or border
+		currentPage = 1,
+		pages = Math.ceil($items.length / visible),
+		itemCount = $items.length,
+		currentItem = 1;
+		$items.filter(':first').before($items.clone().addClass('cloned'));
+		$items.filter(':last').after($items.clone().addClass('cloned'));
+		$wrapper.scrollLeft(0);
+
+		$wrapper.mouseover(function() {                   
+			$(this).stop();
+        }).mouseout(function() {
+        	gotoAction();
+        });
+
+		
+		var gotoAction = function gotoAuto() {
+			left = singleWidth * itemCount;
+			$wrapper.animate({scrollLeft : '+=' + left}, 15000, 'linear', function () {
+				$wrapper.scrollLeft($wrapper.scrollLeft() - left);
+				gotoAction();
+			});
+			
+			return false;
+		};
+		$(this).bind('gotoAuto', function (event) {
+			gotoAction();
+		});
+	});
+};
+
+$(document).ready(function () {
+	var brickSIL = $('.brick-simple-image-loop<?=$this->cssSuffix?>');
+	brickSIL.infiniteCarousel();
+	brickSIL.trigger('gotoAuto');
+});
+</script>
+<?
+}
+?>

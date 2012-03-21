@@ -1,0 +1,18 @@
+<?//=$this->form?>
+<form action='' method='post'>
+<?php //echo $this->linkHead->render()?>
+<ul style='padding: 0 15px;'>
+<?php
+foreach($this->resourceRowset as $row) {
+	$controllerName = $row->controllerName;
+	echo "<li>";
+	$checkedString = "";
+	if(in_array($controllerName, $this->resSelectedIdArr)) {
+		$checkedString = "checked='checked'";
+	}
+	echo "<input type='checkbox' name='res[".$controllerName."]' id='cb-".$controllerName."' value='1' ".$checkedString."><label for='cb-".$controllerName."'>".$row->label."</label>\n";
+	echo "</li>"."\n";
+}
+?>
+</ul>
+</form>

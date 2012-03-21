@@ -1,0 +1,25 @@
+<?=$this->form?>
+<div class='clear'></div>
+
+<script type='text/javascript'>
+var logoSelector = $(".logo-selector");
+var toContent = $('#to-content');
+var lightBox = $().LightBox();
+
+logoSelector.css({'background-color':'#ddeeff'});
+logoSelector.click(function() {
+	lightBox.show();
+	$.ajax({
+		url: "/admin/file/get-file-selector/format/html/group/logo",
+		success: function(HTML) {
+			lightBox.setContent(HTML);
+			container = lightBox.getContent();
+			container.find('.file').click(function() {
+				var path = $(this).attr('path');
+				logoSelector.val(path);
+				lightBox.hide();
+			});
+		}
+	});
+});
+</script>

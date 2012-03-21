@@ -1,0 +1,24 @@
+<?=$this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?=$this->partial('layout-partial/head.phtml', $this) ?>
+</head>
+
+<body>
+<div class='container'>
+    <div>
+<?Class_Mod::render('top')?>
+    </div>
+    
+    <div style='pading: 0 10px;'>
+<?Class_Mod::render('center')?>
+
+<?=$this->layout()->content ?>
+    </div>
+
+<?=$this->partial('layout-partial/footer.phtml', $this) ?>
+
+</div>
+</body>
+</html>

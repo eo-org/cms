@@ -1,0 +1,132 @@
+<?=$this->partial('user/partial-userMenu.phtml',array('actionName'=>$this->request->getActionName())) ?>
+<div class='title-item'>
+   <div class='title'>订单管理</div>
+   <br style="clear:both;" />    
+</div>
+<div style='height:5px;'></div>
+<!-- div style='height:25px; border:1px solid red;'>
+    <div style='margin:3px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  onclick="orderChange('newOrders',this);">最新订单</div>
+    <div style='margin:3px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  onclick="orderChange('completeOrders',this);">历史订单</div>
+    <div style='margin:3px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  onclick="orderChange('cancelledOrders',this);">已取消订单</div>
+</div-->
+<div style='height:30px;'><? $s = $this->status ;?>
+    <a id='<?if( $s == "processing" ) echo "order-selected"; else echo ""; ?>' style='margin:3px 3px 5px 0px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  href="/user/order-list/status/processing" >最新订单</a>
+    <a id='<?if( $s == "complete" ) echo "order-selected"; else echo ""; ?>' style='margin:3px 3px 5px 0px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  href="/user/order-list/status/complete" >历史订单</a>
+    <a id='<?if( $s == "cancelled" ) echo "order-selected"; else echo ""; ?>' style='margin:3px 3px 5px 0px;padding:3px;float:left;border:1px solid #ccc;cursor:pointer;'  href="/user/order-list/status/cancelled" >已取消订单</a>
+</div>
+<?
+  $paymentMethod = array(
+      '1'=>'货到付款',
+      '2'=>'在线付款-支付宝'
+  );
+  $orderStatus = array(
+      'new'=>'新订单',
+      'processed'=>'处理中',
+      'sent'=>'已发送',
+      'received'=>'已收到',
+      'cancelled'=>'已取消',
+      'complete'=>'已完成'
+  );
+  if(    count($this->processingOrders) == 0 
+      && count($this->orderDetail)==0 
+      && count($this->orderItems)==0
+      && count($this->completeOrders) == 0 
+      && count($this->cancelledOrders) == 0 
+      ) {
+    if( $s == "processing" ) $status = "新";
+    if($s == "complete")  $status = "历史";
+    if($s == "cancelled")  $status = "已取消";
+    echo "<table class='order-list'>
+                <tr>
+                    <th class='no'>订单编号</th>           
+                    <th class='person'>收货人</th>
+                    <th class='pay'>支付方式</th>
+                    <th class='money'>订单金额(元)</th>               
+                    <th class='time'>下单时间</th>         
+                    <th class='status'>订单状态</th>
+                    <th class='do'>操作</th>    
+                </tr>
+                <tr>
+                    <td colspan='7'>您暂无".$status."订单</td>
+                </tr>
+          </table>";
+  } else if  ( count($this->processingOrders)>0 
+      || count($this->completeOrders)>0 
+      || count($this->cancelledOrders)>0  
+  )  {
+?>
+	<? if(count($this->processingOrders)>0) {?>
+    <table class='order-list' id="newOrders">
+        <tr>
+            <th class='no'>订单编号</th>           
+            <th class='person'>收货人</th>
+            <th class='pay'>支付方式</th>
+            <th class='money'>订单金额(元)</th>               
+            <th class='time'>下单时间</th>         
+            <th class='status'>订单状态</th>
+            <th class='do'>操作</th>    
+        </tr>
+            <?=$this->partialLoop('user/partial-order.phtml', $this->processingOrders); ?>
+    </table>
+    <? } ?>
+	<? if(count($this->completeOrders)>0) {?>
+    <table class='order-list' id="completeOrders">
+        <tr>
+            <th class='no'>订单编号</th>           
+            <th class='person'>收货人</th>
+            <th class='pay'>支付方式</th>
+            <th class='money'>订单金额(元)</th>               
+            <th class='time'>下单时间</th>         
+            <th class='status'>订单状态</th>
+            <th class='do'>操作</th>    
+        </tr>
+            <?=$this->partialLoop('user/partial-order.phtml', $this->completeOrders); ?>
+    </table>    	    
+	<? } ?>
+
+	<? if(count($this->cancelledOrders)>0) { ?>
+    <table class='order-list' id="cancelledOrders">
+        <tr>
+            <th class='no'>订单编号</th>           
+            <th class='person'>收货人</th>
+            <th class='pay'>支付方式</th>
+            <th class='money'>订单金额(元)</th>               
+            <th class='time'>下单时间</th>         
+            <th class='status'>订单状态</th>
+            <th class='do'>操作</th>    
+        </tr>  
+            <?=$this->partialLoop('user/partial-order.phtml', $this->cancelledOrders); ?> 
+    </table>     	 
+ 	<? } ?>
+ 
+<? } else if ( count($this->orderDetail)>0 ) {  ?>
+    <div class='order-list-detail'>
+        <div class='title'>订单详情 </div>
+        <div>订单编号：<?=$this->orderDetail['order_id']?> </div>
+        <div>收货人：<?=$this->orderDetail['consignee']?>  </div>
+        <div>支付方式： <?=$paymentMethod[$this->orderDetail['paymentMethod']]?>  </div>
+        <div>下单时间：<?=date('Y-m-d', strtotime($this->orderDetail['order_created']) ) ?> </div>
+        <div>订单状态：<?=$orderStatus[$this->orderDetail['status']]?>  </div>
+        <div>订单金额：<?=$this->orderDetail['total']?> 元 </div>
+        <?if(!$this->orderDetail['paid']) { ?>
+        <div>
+            您的订单还没有付款，请点击<a href='/order/info/id/64/sort/2/d/1/m/384'>支付宝在线支付</a>.
+        </div>
+        <?} ?>
+        <br style="clear:both;" />  
+    </div>
+    
+    <?  if ( count($this->orderItems)>0 ) {  ?>
+        <div class='order-list-item-title'>订单商品：</div>
+        <table class='order-list-item'>
+            <tr>
+                <th class='no'>编号</th>
+                <th class='name'>名称</th>
+                <th class='num'>数量</th>   
+                <th class='price'>单价</th> 
+                <th class='total'>总价</th>  
+            </tr>       
+                <?=$this->partialLoop('user/partial-order-item.phtml', $this->orderItems); ?>
+        </table>
+    <?php } 
+} ?>

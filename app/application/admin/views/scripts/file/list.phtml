@@ -1,0 +1,106 @@
+<div class='file-control'>
+	<div id='sub-container-invoker'>
+		<a href='/admin/file/get-file-selector/'>未分类文件夹</a>
+		<hr />
+		<?php echo $this->linkHead->render() ?>
+		
+		<hr />
+		<div id='file-archive'>归档</div>
+	</div>
+	
+	<div id='sub-container'>
+		
+	</div>
+	<div class='clear'></div>
+</div>
+
+<script type='text/javascript'>
+var dragSrcEl = null;
+
+var subContainer = $('#sub-container');
+var links = $('#sub-container-invoker a');
+links.each(function(i, link) {
+	$(link).click(function(e) {
+		e.preventDefault();
+		var L = $(this);
+		
+		links.each(function(i, l) {
+			$(l).removeClass('selected');
+		});
+		L.addClass('selected');
+		
+		var url = L.attr('href');
+		$.ajax({
+			type: "GET",
+			url: '/admin/file/get-file-selector/groupId/' + L.attr('aid'),
+			success: function(html) {
+				subContainer.empty();
+				subContainer.append(html);
+				subContainer.attr('groupId', L.attr('aid'));
+				$('#sub-container .file').bind('dragstart', function(e) {
+					dragSrcEl = this;
+					$(this).css('opacity', 0.2);
+					e.dataTransfer.setData('text', $(this).attr('name'));
+				}).bind('dragend', function(e) {
+					$(this).css('opacity', 1);
+				});
+			}
+		});
+		return false;
+	});
+});
+
+links.droppable(
+	'text',
+	//drag enter
+	function() {
+		$(this).css('border', '1px dotted #777');
+	},
+	//drag leave
+	function() {
+		$(this).css({'border': '1px solid #ddd'});
+	},
+	//drop
+	function(e) {
+		$.ajax({
+			type: "GET",
+			url: '/admin/file/move-file-json/filename/' + e.dataTransfer.getData('text') + '/groupId/' + $(this).attr('aid'),
+			success: function(json) {
+				if(json.result != 'success') {
+					alert(json.msg);
+				} else {
+					$(dragSrcEl).remove();
+					dragSrcEl = null;
+				}
+			}
+		});
+	}
+);
+
+$('#file-archive').droppable(
+	'text',
+	//drag enter
+	function() {
+		$(this).css('background', '#F0F0F0');
+	},
+	//drag leave
+	function() {
+		$(this).css('background', '#F8F8F8');
+	},
+	//drop
+	function(e) {
+		$.ajax({
+			type: "GET",
+			url: '/admin/file/archive-json/filename/' + e.dataTransfer.getData('text') + '/',
+			success: function(json) {
+				if(json.result != 'success') {
+					alert(json.msg);
+				} else {
+					$(dragSrcEl).remove();
+					dragSrcEl = null;
+				}
+			}
+		});
+	}
+);
+</script>

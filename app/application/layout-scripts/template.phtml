@@ -1,0 +1,78 @@
+<?
+$csa = Class_Session_Admin::getInstance();
+$cbc = Class_Brick_Controller::getInstance();
+$HTML_ARR = $cbc->renderAll();
+//execute all the bircks before output the layout, in case change title or linkes are required
+
+$layoutFront = Class_Layout_Front::getInstance();
+$layoutRow = $layoutFront->getLayoutRow();
+?>
+
+<?=$this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?=$this->partial('head.phtml', $this) ?>
+
+<body>
+<?php
+if($csa->isLogin()) {
+	echo $this->partial('admin-toolbar.phtml', array('csa' => $csa, 'layoutRow' => '$layoutRow'));
+}
+?>
+
+<?php if($layoutFront->isDisplayHead() == 1) {?>
+<div id='body_head'>
+	<div class='sprite body_head' sprite-name="body_head" stage-id="0">
+		<?php echo array_key_exists('body_head', $HTML_ARR) ? $HTML_ARR['body_head'] : "" ?>
+	</div>
+</div>
+<?php }?>
+<div class='body_main_frame' layoutId='<?php echo $layoutRow->id?>'>
+
+<?//=$HTML?>
+
+<?php
+	$table = new Zend_Db_Table('layout_stage');
+	$rowset = $table->fetchAll($table->select()->where('layoutId = ?', $layoutRow->id)
+		->order('sort'));
+	foreach($rowset as $row) {
+?>
+<div<?php echo $row->uniquId == null ? " " : " id='".$row->uniquId."'"?> class='stage' type='<?php echo $row->type?>' stage-id='<?php echo $row->id?>' sort='<?php echo $row->sort?>'>
+<?php
+$typeArr = explode('-', $row->type);
+foreach($typeArr as $key => $spriteType) {
+	$spriteName = $row->id.'-'.$key;
+?>
+	<div<?php echo $row->uniquId == null ? " " : " id='".$row->uniquId."-$key'"?> stage-id='<?php echo $row->id?>' sprite-name='<?php echo $spriteName?>' class='sprite grid-<?php echo $spriteType?>'>
+	<?php if(array_key_exists($spriteName, $HTML_ARR)) { ?>
+	<?php echo $HTML_ARR[$spriteName]?>
+	<?php } ?>
+	</div>
+<?php	
+}
+?>
+	<div class='clear'></div>
+</div>
+<?php
+	}
+?>
+</div>
+<div id='body_tail'>
+	<div class='sprite body_tail' sprite-name="body_tail" stage-id="0">
+		<?php echo array_key_exists('body_tail', $HTML_ARR) ? $HTML_ARR['body_tail'] : "" ?>
+	</div>
+</div>
+<?php if($csa->isLogin()) { // disable front controll, it is a disaster?>
+<div class="blackbox"></div>
+<div class="whitebox">
+	<div class='closer'></div>
+	<div class='content'></div>
+</div>
+<div class="finderbox">
+	<div class='closer'>CLOSE</div>
+	<div class='content'></div>
+</div>
+<div class="ajaxbox">Loading......</div>
+<div class="mini-brick-mask"></div>
+<?php } ?>
+</body>
+</html>

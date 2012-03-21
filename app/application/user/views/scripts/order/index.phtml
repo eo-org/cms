@@ -1,0 +1,18 @@
+<div>
+	<ul class='order-list'></ul>
+</div>
+
+<script type='text/javascript'>
+	var orderListContainer = $('.order-list');
+	$.ajax({
+		url: '/user/order/get-order-list-json/',
+		dataType: 'json',
+		success: function(obj) {
+			var orderList = obj.data;
+			$(orderList).each(function(i, orderLine) {
+				var el = $("<li><a href='/user/order/detail/order-id/" + orderLine.id +  "'>" + orderLine.fullAddress + "</a></li>");
+				orderListContainer.append(el);
+			});
+		}
+	});
+</script>

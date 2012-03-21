@@ -1,0 +1,60 @@
+<?
+$imgCount = count($this->rowset);
+?>
+
+<div class='brick-image-slider<?$this->cssSuffix?>'>
+	<div class='slider-container' style='width: <?=$this->width?>px; height: <?=$this->height?>px; position: relative; overflow: hidden;'>
+		<div class='slider-images' style='position: relative; <?=$this->slidingType == 'horizontal' ? 'width: '.$imgCount*$this->width.'px;': 'width: '.$this->width.'px;'?>'>
+		<?foreach($this->rowset as $ad) {?>
+			<a href='<?=$ad->url?>' target='_blanck' style='display: block; float: left;'>
+				<img src='<?=$ad->image?>' style='width: <?=$this->width?>px; height: <?=$this->height?>px;'/>
+			</a>
+		<?} ?>
+		</div>
+	</div>
+	<div class='slider-handles'>
+		<?foreach($this->rowset as $key => $image) { ?>
+		<div class='handler'><?=$key+1?></div>
+		<?} ?>
+	</div>
+</div>
+
+<script type='text/javascript'>
+	var container = $('.brick-image-slider<?$this->cssSuffix?> .slider-container');
+	var imagesDiv = $('.brick-image-slider<?$this->cssSuffix?> .slider-images');
+	var handlers = $('.brick-image-slider<?$this->cssSuffix?> .slider-handles .handler');
+	
+	var currentHandlerId = 0;
+	var maxHandlerId = handlers.length;
+	
+	handlers.each(function(i, handle) {
+		$(handle).click(function() {
+			currentHandlerId = i;
+			<?if($this->slidingType == 'vertical') {?>
+			imagesDiv.stop().animate({marginTop: -<?=$this->height?>*currentHandlerId + 'px'}, 1000);
+			<?} else {?>
+			imagesDiv.stop().animate({marginLeft: -<?=$this->width?>*currentHandlerId + 'px'}, 1000);
+			<?} ?>
+			return false;
+		});
+	});
+	
+	var slideNext = function() {
+		currentHandlerId++;
+		if(currentHandlerId >= maxHandlerId) {
+			currentHandlerId = 0;
+		}
+		<?if($this->slidingType == 'vertical') {?>
+		imagesDiv.stop().animate({marginTop: -<?=$this->height?>*currentHandlerId + 'px'}, 1000);
+		<?} else {?>
+		imagesDiv.stop().animate({marginLeft: -<?=$this->width?>*currentHandlerId + 'px'}, 1000);
+		<?} ?>
+	}
+	
+	var autoSlide = setInterval(slideNext, <?=$this->interval?>);
+	container.mouseover(function() {
+		clearInterval(autoSlide)
+	}).mouseout(function() {
+		autoSlide = setInterval(slideNext, <?=$this->interval?>);
+	});
+</script>

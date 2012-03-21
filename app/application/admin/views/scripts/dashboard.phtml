@@ -1,0 +1,23 @@
+<?=$this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?=$this->partial('head.phtml', $this) ?>
+</head>
+
+<body><div class='body_main_frame'>
+<div class='layout_top'>
+    <?Class_Brick_Controller::render('top')?>
+</div>
+
+<div class='layout_menu-top'>
+    <?Class_Brick_Controller::render('menu-top')?>
+</div>
+
+<div class='layout_center'>
+    <?Class_Brick_Controller::render('center')?>
+    <?=$this->layout()->content ?>
+</div>
+
+<?=$this->partial('footer.phtml', $this) ?>
+</div></body>
+</html>

@@ -1,0 +1,33 @@
+<div class='file-selector'>
+<?foreach($this->rowset as $row) { ?>
+	<div class='file' path='<?=$row->path.'/'.$row->name?>' name='<?=$row->name?>' group='<?=$row->group?>'>
+		<div class='frame'>
+<?
+	switch($row->type) {
+		case 'image':
+			echo "<img src='http://".$row->storage.'/file/'.$row->path.'/_thumb/'.$row->name."' />";
+			break;
+		case 'javascript':
+		case 'style':
+			echo "<img src='".Class_HTML::server('lib')."/image/file.png' />";
+			break;
+		case 'file':
+			echo "<img src='".Class_HTML::server('lib')."/image/file.png' />";
+			break;
+	}
+?>
+		</div>
+		<div class='info'>
+			<?=Class_HTML::substr($row->name, 0, 16)?><br />
+			<?=intval(($row->size)/1024)?>KB
+		</div>
+	</div>
+<?} ?>
+</div>
+<div class='clear'></div>
+<div>
+	<a href='#' onclick="window.open(
+	'/admin/file/index/bricks/disabled/group/<?=$this->group?>',
+	'_blank',
+	'height=550, width=650, toolbar=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no');lightBox.hide();">上传新文件</a>
+</div>

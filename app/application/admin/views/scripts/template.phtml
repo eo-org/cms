@@ -1,0 +1,114 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$csa = Class_Session_Admin::getInstance();
+$controllerName = $request->getControllerName();
+?>
+
+<?=$this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?=$this->partial('head.phtml', $this) ?>
+</head>
+
+<body><div class='body_main_frame'>
+<?php
+if($request->getParam('bricks') != 'disabled') {
+	if($csa->isLogin()) {
+		$bc = Class_Brick_Controller::getInstance();
+		$solidBrick = $bc->createSolidBrick('Admin_Menu', $request);
+		
+		echo $solidBrick->render();
+	}
+}
+?>
+
+	<div class='whitebox' context='backend'><div class='content'>
+		<?php
+		if($csa->isLogin()) {
+		?>
+		<div class='desc'>
+			<div class='head'>
+				<?php echo $this->head?>
+			</div>
+			<?php if(!empty($this->portalArr)) {?>
+			<div class='portals'>
+				<?php
+				foreach($this->portalArr as $p) {
+					if($p['controllerName'] == $controllerName) {
+				?>
+				
+					<a class='selected' href='<?php echo $p['href']?>'><?php echo $p['label']?></a>
+				<?php
+					} else {
+				?>
+					<a href='<?php echo $p['href']?>'><?php echo $p['label']?></a>
+				<?php	
+					}
+				}
+				?>
+			</div>
+			<?php }?>
+		</div>
+		
+		<div class='breadcrumb'>
+			<?php
+			$bc = Class_Brick_Controller::getInstance();
+			$solidBrick = $bc->createSolidBrick('Admin_Breadcrumb', $request);
+			
+			echo $solidBrick->render();
+			?>
+		</div>
+		<div class='control'>
+			<?php
+			$bc = Class_Brick_Controller::getInstance();
+			$solidBrick = $bc->createSolidBrick('Admin_ActionMenu', $request);
+			$solidBrick->setMenu($this->actionMenu);
+			echo $solidBrick->render();
+			?>
+		</div>
+		<div class='flash-message'>
+		<?php 
+			$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
+			$messages = $messenger->getMessages();
+			if(count($messages) > 0) {
+		?>
+			<div class='brick-admin-flash-message'>
+		<?php	
+				foreach($messages as $m) {
+					echo "<div>".$m."</div>";
+				}
+		?>
+			</div>
+		<?php 
+			}
+		}
+		?>
+		</div>
+		
+		<div class='under-desc'>
+			<?=$this->layout()->content ?>
+		</div>
+	</div></div>
+</div>
+
+<div class='footer'>
+	<hr />
+	<div class='power'>
+		powered by <a href='http://www.enorange.com'>Enorange Ltd</a>
+	</div>
+	<div class='link'>
+	<?php if(!$csa->isLogin()) {?>
+		<a href='/admin/'>管理员登陆</a> |
+		<a href='/admin/index/designer-login'>设计师登陆</a>
+	<?php } ?>
+	</div>
+</div>
+
+<div class="finderbox">
+	<div class='closer'>CLOSE</div>
+	<div class='content'></div>
+</div>
+
+<script data-main="<?=App_Server::libUrl()?>/admin/script/app/main" src="<?=App_Server::libUrl()?>/admin/script/app/require-jquery.js"></script>
+</body>
+</html>

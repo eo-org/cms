@@ -1,0 +1,34 @@
+<!--  div id='ajax-loader' class='ajax-response'>
+	<img src='/images/ajax-loader.gif' />
+	<div class='text'></div>
+</div>
+<div id='footer' class='footer'>
+  copyright
+</div>
+<div class="clear">&nbsp;</div>
+<div id='scroll-menu'>
+	
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#scroll-menu').hide();
+
+		var postion =$('.brick-control').position();
+		var panelTop = postion.top + $('.brick-control').height();
+		var html = "<div class='control-panel'>"+
+					$('.control-panel').html()+
+				"</div>";
+		$('#scroll-menu').html(html);
+		
+		$(window).scroll(function(){
+			var scrollHeight = $(document).scrollTop();
+			if(scrollHeight >= panelTop){
+				$('#scroll-menu').show();
+			}else{
+				$('#scroll-menu').hide();
+			}
+		});
+		
+	});
+</script-->
+  

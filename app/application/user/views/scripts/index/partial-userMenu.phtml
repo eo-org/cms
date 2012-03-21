@@ -1,0 +1,26 @@
+<!--  div class='user-center'>
+    <div class='shopping' style='width:387px;float:right;border-bottom:1px solid #adadad;padding-left:380px;height:32px;margin-top:-8px;'>
+        <img src='/images/shopping-1.jpg' style='display:block;float:left;margin-left:16px;' />
+        <div class='enter' style='width:229px;float:left;padding:10px 0px 0px 5px;' >
+            您的购物车中有[<span><?=Class_Cart::getProductCount()?></span>]件商品 合计[<span>￥<?=Class_Cart::getTotalPrice()  ?></span>]元
+        </div>
+        <a href='/cart/' style='margin:5px 0px 5px 5px;'><img src='/images/showshopping-1.jpg' /></a>
+        <a href='/order/' style='margin:5px 0px 5px 5px;'><img src='/images/clearing-1.jpg' /></a>
+   </div>
+</div-->
+<div class='user-logo'></div>
+<div class='user-left'>
+<ul class='userMenu'>
+  <?    $a = $this->actionName;
+        $userMenu = array(array('name'=>'index','href'=>'/user/index'),array('name'=>'order-list','href'=>'/user/order-list'),array('name'=>'personal-info','href'=>'/user/personal-info'),
+        array('name'=>'address-list','href'=>'/user/address-list'),array('name'=>'favorite','href'=>'/user/favorite'),array('name'=>'message','href'=>'/user/message'),array('name'=>'password','href'=>'/user/password'),array('name'=>'sleeptest','href'=>'/user/sleeptest'));
+        for ($i=0;$i < count($userMenu); $i++){
+            ?>
+            <li><a style='background: url(/images/user_01.jpg) <?if($a == $userMenu[$i]['name']) echo '-188px'; else echo '0px' ;?> <? echo "-".($i*30)."px" ; ?> no-repeat;'  href='<?=$userMenu[$i]['href'] ?>'></a></li>
+            <? 
+        }
+  ?>
+
+</ul>
+</div>
+<div class='user-main'>

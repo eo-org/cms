@@ -1,0 +1,124 @@
+<fieldset id="fieldset-main" class="main-form"><legend>基本信息</legend>
+<dl>
+<dt id="fileSelected-label"><label for="fileSelected" class="optional">上传新文件</label></dt>
+<dd>
+<input type="hidden" name="MAX_FILE_SIZE" value="33554432" id="MAX_FILE_SIZE">
+<input type="file" name="fileSelected[]" id="fileSelected" multiple="true"></dd>
+</dl>
+
+<dl><dd>
+	<ul class='file-lines'>
+	</ul>
+	<div id='start'>START</div>
+</dd></dl>
+</fieldset>
+
+
+<div class='folders'>
+
+</div>
+
+
+<?if($this->bricks != 'disabled') {?>
+<fieldset id="fieldset-required" class="required-form"><legend>当前文件信息</legend>
+	<div class='group-name'>System File</div>
+	<ul class='file-group' id='group-0'>
+	</ul>
+</fieldset>
+<?} ?>
+
+<div class='clear'></div>
+
+<script type='text/javascript'>
+<?if($this->bricks != 'disabled') {?>
+$.ajax({
+	dataType: 'json',
+	url: '/admin/file/get-file-json/groupId/0',
+	success: function(jsonObj) {
+		$.each(jsonObj.data, function(i,jo) {
+			var groupUl = $('#group-0');
+			var el = $("<li path='"+ jo.path +"' filename='" + jo.name + "'>"
+					+ "<div class='name'>" + jo.name + "</div>"
+					+ "<div class='size'>" + jo.size + "B</div>"
+					+ "<div class='time'>" + jo.upload + "</div>"
+					+ "</li>");
+//			el.contextMenu();
+			el.appendTo(groupUl);
+		});
+	}
+});
+<?} ?>
+
+$('#start').click(function() {
+	sendNextFile();
+});
+var uploadList;
+var uploadIndex;
+var liArr;
+
+$('#fileSelected').change(function(e) {
+	var fileLines = $('ul.file-lines');
+	delArr = [];
+    fileLines.empty();
+    uploadList = document.querySelector("#fileSelected").files;
+    uploadIndex = 0;
+    liArr = [];
+    for (var i = 0; i < uploadList.length; i++) {
+    	var li = $("<li id='" + i + "'>" + uploadList[i].name + "</li>");
+    	li.click(function() {
+			$(this).css('display', 'none');
+			$(this).attr('status', 'removed');
+        });
+    	fileLines.append(li);
+    	liArr.push(li);
+    }
+});
+var sendNextFile = function() {
+	if(uploadIndex < uploadList.length) {
+		if(liArr[uploadIndex].attr('status') == 'removed' || liArr[uploadIndex].attr('status') == 'uploaded') {
+			uploadIndex++;
+			sendNextFile();
+		} else {
+			liArr[uploadIndex].attr('class', 'uploading');
+    		fileUpload(uploadList[uploadIndex], uploadIndex);
+    		uploadIndex++;
+		}
+	} else {
+		return true;
+	}
+}
+
+function fileUpload(file, currentIndex) {
+	var formData = new FormData();
+	formData.append("fileId", file);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', "/admin/file/upload-json/groupId/0", true);
+	xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200 || xhr.status == 304) {
+            	liArr[currentIndex].attr('class', 'uploaded');
+            	liArr[currentIndex].attr('status', 'uploaded');
+            	sendNextFile();
+            }
+        }
+    }
+	xhr.send(formData);
+}
+</script>
+<!-- 
+
+<form action='/admin/file/upload-json/group/<?=$this->group?>' method='post' enctype="multipart/form-data" >
+<fieldset id="fieldset-main" class="main-form"><legend>基本信息</legend>
+<dl>
+<dt id="fileSelected-label"><label for="fileSelected" class="optional">上传新文件</label></dt>
+<dd>
+<input type="hidden" name="MAX_FILE_SIZE" value="33554432" id="MAX_FILE_SIZE">
+<input type="file" name="fileId" value='' /></dd>
+</dl>
+
+</fieldset>
+<input type='submit' name='submit' value='上传' />
+</form>
+
+-->

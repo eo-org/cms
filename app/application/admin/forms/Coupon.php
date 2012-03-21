@@ -1,0 +1,51 @@
+<?php
+Class Form_Coupon extends Zend_Form
+{
+	public function init()
+	{
+		$this->setMethod('post');
+
+		$this->addElement('text','code',array(
+			'label'=>'code',
+			'required'=>true,
+			'filters'=>array('StringTrim'),
+			'validators'=>array('Alnum'),
+			'attribs'=>array('readOnly'=>true)
+		));
+		$this->addElement('text','value',array(
+			'label'=>'value',
+			'required'=>true,
+			'filters'=>array('StringTrim'),
+			'validators'=>array()
+		));
+		$this->addElement('text','startDate',array(
+			'label'=>'开始生效日期',
+			'required'=>true,
+			'filters'=>array('StringTrim'),
+			'validators'=>array(),
+			'attribs'=>array('readOnly'=>true)
+		));
+		$this->addElement('text','endDate',array(
+			'label'=>'过期日期',
+			'required'=>true,
+			'filters'=>array('StringTrim'),
+			'validators'=>array(),
+			'attribs'=>array('readOnly'=>true)
+		));
+		$this->addElement('select','type',array(
+			'label'=>'类型',
+			'required'=>true,
+			'filters'=>array('StringTrim','StringToLower'),
+			'multiOptions'=>array('shippingfree'=>'shippingfree',
+								'discountpercentage'=>'discountpercentage',
+								'discountprice'=>'discountprice'),
+		));
+		$this->addElement('select','active',array(
+			'label'=>'激活',
+			'required'=>true,
+			'filters'=>array('StringTrim','StringToLower'),
+			'multiOptions'=>array(1=>'Y',0=>'N'),				
+		));
+		
+	}
+}

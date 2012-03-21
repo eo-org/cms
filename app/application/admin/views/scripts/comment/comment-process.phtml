@@ -1,0 +1,38 @@
+<div style="padding: 25px;line-height: 18px;">
+	<h1>评论处理页</h1>
+	<br/>
+	<br/>
+	<form action='' method='post'>
+	<dl>
+		<dt class='left'>内&nbsp;&nbsp;&nbsp;&nbsp;容：</dt>
+		<dd class='right'><?=$this->escape($this->comment->getData('content'))?></dd>
+		<dt class='left'>作&nbsp;&nbsp;&nbsp;&nbsp;者：</dt>
+		<dd class='right'><?=is_null($this->comment->getData('poster'))?'匿名用户':$this->escape($this->comment->getData('poster'))?></dd>
+		<dt class='left'>时&nbsp;&nbsp;&nbsp;&nbsp;间：</dt>
+		<dd class='right'><?=$this->escape($this->comment->getData('created'))?></dd>
+		<dt class='left'>是否显示：</dt>
+		<dd class='right'><select name="visible">
+				<option <?=$this->comment->getData('visible') == 1?'selected':''?> value='1'>是</option>  
+				<option <?=$this->comment->getData('visible') == 0?'selected':''?> value='0' >否</option>
+			</select> 
+		</dd>
+		<?if(!is_null($this->replyList)){?>
+			<?foreach($this->replyList as $reply){?>
+			<dt class='left'><?=$reply->getData('poster')?$this->escape($reply->getData('poster')):'匿名用户'?>：</dt>
+			<dd class='right'><?=$this->escape($reply->getData('content'))?>[<?=$this->escape($reply->getData('created'))?>]</dd>
+			<?}?>
+		<?}?>
+		<?if($this->comment->getData('replied') != 1 && $this->comment->getData('type') == 'consult'){?>
+		<dt class='left'>回&nbsp;&nbsp;&nbsp;&nbsp;复：</dt>
+		<dd>
+			<textarea id="comment-reply-content"name='reply-content'><?//=$this->comment['replyArray']['content']?>
+			</textarea>
+		</dd>
+		<?}?>
+		<div class='clear'></div>
+	</dl>
+	<div class='clear'></div>
+	<br>
+	<p><input id="comment-sava"type='submit'name='submit' value='保存'/><a id="comment-delete"href='/admin/comment/delete/type/<?=$this->comment->getData('type')?>/id/<?=$this->comment->getData('id')?>'>删除</a></p>
+	</form>
+</div>

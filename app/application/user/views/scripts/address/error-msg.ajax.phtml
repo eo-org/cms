@@ -1,0 +1,12 @@
+<ul class='error-msg'>
+<?php
+foreach($this->errorMsg as $field => $msg) {
+	foreach($msg as $v) {
+?>
+
+	<li><?php echo $field?>: <?php echo $v?></li>
+<?php
+	}
+}
+?>
+</ul>

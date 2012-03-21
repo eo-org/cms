@@ -1,0 +1,30 @@
+<?php echo $this->action($this->actionLinks)?>
+
+<div class='attributeset-pattern'>	
+<?php
+foreach($this->attributeRowset as $attr) {
+?>
+	<div class='attribute'>
+		<div class='action'>
+			<a class='link' href='/admin/message-pattern/edit-question/id/<?php echo $attr->id?>'>编辑</a>
+		</div>
+		<div class='title'>问题:</div>
+		<div class='label'><?php echo $attr->label?></div>
+		
+		<?php if($attr->inputType == 'select') { ?>
+		<div class='title'>答案:</div>
+		<ul class='options' style='padding: 0 5px;'>
+		<?php
+			$options = $attr->getOptions(); 
+			foreach($options as $key => $op) {
+		?>
+			<li id='option-<?php echo $key?>'><?php echo $op?></li>
+		<?php
+			}
+		?>
+		</ul>
+		<?} ?>
+	</div>
+<?php }?>
+
+</div>

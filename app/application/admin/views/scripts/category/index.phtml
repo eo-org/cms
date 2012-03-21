@@ -1,0 +1,16 @@
+<div class='tree-structure'>
+<?php echo $this->linkHead->render(); ?>
+</div>
+
+<script type='text/javascript'>
+var ajaxFunc = function() {
+	var str = '';
+	var allLis = $('.tree-structure li');
+	allLis.each(function(i, liEl) {
+		if($(liEl).hasClass('solid')) {
+			str+= $(liEl).attr('id') + ':' + $(liEl).attr('parentId') + '|';
+		}
+	});
+	return str;
+}
+</script>

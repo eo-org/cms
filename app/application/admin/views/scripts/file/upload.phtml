@@ -1,0 +1,14 @@
+<form action='/admin/file/upload/bricks/disabled/groupId/<?=$this->groupId?>' method='post' enctype="multipart/form-data" >
+	<fieldset id="fieldset-main" class="main-form"><legend>基本信息</legend>
+	<dl>
+		<dt id="fileSelected-label"><label for="fileSelected" class="optional">上传新文件</label></dt>
+		<dd>
+			<input type="hidden" name="MAX_FILE_SIZE" value="33554432" id="MAX_FILE_SIZE">
+			<input type="file" name="fileId" value='' />
+		</dd>
+		<dt>
+			<input type='submit' name='submit' value='上传' />
+		</dt>
+	</dl>
+	</fieldset>
+</form>

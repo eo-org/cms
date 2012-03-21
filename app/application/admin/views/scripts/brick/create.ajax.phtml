@@ -1,0 +1,14 @@
+<?php
+	foreach($this->rowset as $row) {
+?>
+	<a href='/admin/brick/edit/extName/<?php echo $row->name?>' class='brick-selector-row'>
+		<div class='icon extension-icon <?php echo $row->extName ?>'></div>
+		<div class='detail'>
+			<div class='ext-name'><?php echo $row->extName ?></div>
+			<?php echo $row->brickName ?><br /><br />
+			<?php echo $row->description ?>
+		</div>
+	</a>
+<?php
+	}
+?>

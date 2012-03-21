@@ -1,0 +1,37 @@
+<?php echo $this->form?>
+
+<div class='attributeset-pattern'>	
+<?php
+$i = 0;
+foreach($this->attributeRowset as $attr) {
+?>
+	<div class='attribute'>
+		<div class='action'>
+			<a class='link' href='/admin/message-pattern/edit-question/id/<?php echo $attr->id?>'>编辑</a>
+		</div>
+		<div class='title'>问题<?php echo ++$i;?>&nbsp;[<?php echo $attr->inputType?>]<?php echo $attr->isRequired == 1 ? "&nbsp;*" : ""?>:</div>
+		<div class='label'>
+			<div class='icon'></div>
+			<div class='text'><?php echo $attr->label?></div>
+		</div>
+		
+		<?php if($attr->inputType == 'select') { ?>
+		<div class='title'>答案:</div>
+		<ul class='options'>
+		<?php
+			$options = $attr->getOptions(); 
+			foreach($options as $key => $op) {
+		?>
+			<li id='option-<?php echo $key?>'>
+				<div class='icon'></div>
+				<div class='text'><?php echo $op?></div>
+			</li>
+		<?php
+			}
+		?>
+		</ul>
+		<?} ?>
+	</div>
+<?php }?>
+
+</div>

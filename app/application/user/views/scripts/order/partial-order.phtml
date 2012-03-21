@@ -1,0 +1,24 @@
+<?
+  $paymentMethod = array(
+      '1'=>'货到付款',
+      '2'=>'支付宝',
+      '3'=>'快钱'
+  );
+  $orderStatus = array(
+      'new'=>'新订单',
+      'processed'=>'处理中',
+      'sent'=>'已发送',
+      'received'=>'已收到',
+      'cancelled'=>'已取消',
+      'complete'=>'已完成'
+  );
+?>
+<tr>
+<td class='no'><?=$this->order_id ?></td>
+<td class='person'><?=$this->consignee ?></td>
+<td class='pay'><?=isset($paymentMethod[$this->paymentMethod])? $paymentMethod[$this->paymentMethod]:''; ?></td>
+<td class='money'><?=$this->total ?></td>  
+<td class='time'><?=date('Y-m-d',strtotime($this->created)) ?></td>          
+<td class='status'><?=$orderStatus[$this->status] ?></td>
+<td class='do'><a href="/user/order-list/id/<?=$this->order_id?>/" >查看</a> <? if($this->status=='new' ) { ?><a style="margin-left:20px;"  href="/user/cancel-order/id/<?=$this->order_id?>">取消</a><? } ?></td>
+</tr>

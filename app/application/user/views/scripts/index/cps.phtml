@@ -1,0 +1,29 @@
+<div class='title-item'>
+   <div class='title'>cps管理</div>
+   <br class='clear' />    
+</div>
+<?php if(count($this->cpsList)){?>
+<table border="1" width=100% style="text-align:center;border:1px solid #b3b3b3;">
+	<tr>
+		<th>ID</th>
+		<th>订单id</th>
+		<th>用户id</th>
+		<th>支付与否</th>
+		<th>支付时间</th>
+		<th>是否需要支付</th>
+	</tr>
+	<?php foreach($this->cpsList as $cps){?>
+	<tr>
+		<td><?php echo $cps->getData('id');?></td>
+		<td><?php echo $cps->getData('orderId');?></td>
+		<td><?php echo $cps->getData('customerRefId');?></td>
+		<td><?php echo $cps->getData('paid');?></td>
+		<td><?php echo $cps->getData('payTime');?></td>
+		<td><?php echo $cps->getData('valid');?></td>
+	</tr>
+	<?php }?>
+</table>
+<a href='/user/get-cps-pay/customerId/<?=$this->customerId?>'>点击获取提成</a>
+<?php }else{?>
+<div style="margin: 20px;">无cps！</div>
+<?php }?>

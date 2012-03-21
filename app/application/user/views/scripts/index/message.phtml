@@ -1,0 +1,72 @@
+<?=$this->partial('user/partial-userMenu.phtml',array('actionName'=>$this->request->getActionName())) ?>
+<div class='title-item'>
+   <div class='title'>留言管理</div>
+   <br style="clear:both;" />    
+</div>
+<div style='height:5px;'></div>
+<?if(empty($this->arr[0])):?>
+<table class="user-message">
+    <tr>
+        <th class='created'>时间</th>
+        <th class='product'>商品名称</th>
+        <th class='mycontent'>内容</th>
+    </tr>
+    <tr>
+        <td colspan='3'>您暂无留言记录</td>
+    </tr>
+</table>
+<?else:?>
+<table class="user-message">
+    <tr>
+        <th class='created'>时间</th>
+        <th class='product'>商品名称</th>
+        <th class='mycontent'>内容</th>
+    </tr>
+<?for($i=0;$i<count($this->arr[0]); $i++) {
+     $message = $this->arr[0][$i];
+     $reply = $this->arr[1][$i];
+?>
+<tr>
+    <td class='created'><?=$message['created'] ?> </td>
+    <td class='product'>
+        <a href='#' onclick='window.open("/product-detail/<?=$message['productId'] ?>", "newwindow", "height=1000, width=1024, toolbar= no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=300")'  ><?=$message['name'] ?></a>
+    </td>
+    <td class='mycontent'>
+        <div class='mess'> <?=$message['content'] ?></div>
+        <div class='rep'> Pipo说：  <?=$reply[0]['content'] ?></div>
+    </td>
+</tr>
+<?
+
+   }
+endif; ?>
+</table>
+
+
+<div align='center'>
+<?
+if( $this->page > 1)
+{
+?>
+  <a href="<?echo $this->url(array('controller'=>'user','action'=>'message','page'=>($this->page - 1) )) ;?>">上一页</a> 
+<?
+}
+
+for($i = 1; $i <= $this->pages; $i ++){
+  if($i == $this->page){
+    echo " $i ";
+  } 
+  else{
+    ?>
+    <a href="<?echo $this->url( array('controller'=>'user','action'=>'message','page'=> $i )) ;?>"><?=$i ?></a>
+    <? 
+  }
+}
+if($this->page < $this->pages)
+{
+?>
+  <a href="<?echo $this->url(array('controller'=>'user','action'=>'message','page'=>($this->page + 1))) ;?>">下一页</a> 
+<?
+}
+?>
+</div>

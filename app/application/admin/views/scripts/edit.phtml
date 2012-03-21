@@ -1,0 +1,33 @@
+<?=$this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?=$this->partial('layout-partial/head.phtml', $this) ?>
+</head>
+
+<body>
+<div class='container'>
+    <div>
+<?Class_Mod::render('top')?>
+    </div>
+    
+    <div>
+<?Class_Mod::render('menu-top')?>
+    </div>
+    
+    <div class='left_inner_container'>
+<?Class_Mod::render('left')?>
+    </div>
+    
+    <div class='right_inner_container' style='width: 800px;'>
+<?Class_Mod::render('center')?>
+
+<?=$this->layout()->content ?>
+    </div>
+	
+    <div class="clear">&nbsp;</div>
+    
+    <?=$this->partial('layout-partial/footer.phtml', $this) ?>
+</div>
+</body>
+</html>

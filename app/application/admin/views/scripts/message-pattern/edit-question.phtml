@@ -1,0 +1,57 @@
+<form method='post' action=''>
+	<table>
+		<tr>
+			<th>标题</th>
+			<td colspan='2'><input type='text' name='label' value='<?php echo $this->attr->label?>' /></td>
+		</tr>
+		<tr>
+			<th>必填</th>
+			<td colspan='2'>
+				<select name='isRequired'>
+					<option value=0 <?php echo $this->attr->isRequired == 0 ? 'selected' : ''?>>选填项</option>
+					<option value=1 <?php echo $this->attr->isRequired == 1 ? 'selected' : ''?>>必填项</option>
+				</select>
+			</td>
+		</tr>
+		
+<?php
+if($this->attr->inputType == 'select') {
+?>
+		<tr>
+			<td colspan='3'><hr /></td>
+		</tr>
+<?php
+	foreach($this->attr->getOptions() as $optionId => $optionValue) {
+?>
+		<tr>
+			<th>答案</th>
+			<td><input type='text' name='options[<?php echo $optionId?>]' value='<?php echo $optionValue?>' /></td>
+			<td><input class='delete' type='button' name='delete' value='删除' /></td>
+		</tr>
+<?php
+	}
+?>
+		<tr>
+			<td colspan='3'><input class='add' type='button' name='add' value='添加新答案' /></td>
+		</tr>
+<?php
+}
+?>
+		
+	</table>
+</form>
+
+<script>
+var initDeleteButton = function() {
+	$('.delete').click(function() {
+		var TR = $(this).parents('tr');
+		TR.remove();
+	});
+}
+$('.add').click(function() {
+	var newTR = $("<tr><th>答案</th><td><input type='text' name='newOptions[]' value='' /></td><td><input class='delete' type='button' name='delete' value='删除' /></td></tr>");
+	newTR.insertBefore($(this).parents('tr'));
+	initDeleteButton();
+});
+initDeleteButton();
+</script>

@@ -1,0 +1,11 @@
+<ul id='address-selector-list'>
+<?php foreach($this->addressList as $address) { ?>
+	<li>
+		<label for='address_<?php echo $address['id']?>'><?php echo $address['fullAddress'] ?></label>
+	</li>
+<?php } ?>
+</ul>
+
+<form method='post' action='' id='address-selector-newform'></form>
+
+<input id='address-selector-newbutton' type='button' name='' value='' />

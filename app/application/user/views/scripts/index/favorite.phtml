@@ -1,0 +1,42 @@
+<div class='title-item'>
+   <div class='title'>收藏夹</div>
+   <br style="clear:both;" />  
+</div>
+<div style='height:5px;'></div>
+<?if(count($this->favorites) < 1) { ?>
+    <table class='favorite'>
+        <tr>
+            <th class='pic'>产品图片</th>
+            <th class='no'>商品编码</th>
+            <th class='name'>产品名称</th> 
+            <th class='show'>查看详情</th>
+            <th class='fav'>取消收藏</th>
+        </tr>
+        <tr>
+            <td colspan='5'>您暂无收藏的宝贝</td>
+        </tr>
+    </table>
+<?} else  { ?> 
+<table class='favorite'>
+    <tr>
+        <th class='pic'>产品图片</th>
+    	<th class='no'>商品编码</th>
+       	<th class='name'>产品名称</th>
+       	<th class='price'>售价</th> 
+       	<th class='show'>查看详情</th>
+       	<th class='fav'>取消收藏</th>
+   	</tr>
+	<?foreach($this->favorites as $fav) { ?>
+	<tr>
+    	<td class='pic'>
+            <img src="<?=Class_Core::layGraphic($fav->getData('value').'_S.jpg', 'thumb')?>" alt='<?=$fav->getData('alt') ?>'/>
+        </td>
+    	<td class='no'><span><?=$fav->getData('sku')?></span></td>
+    	<td class='name'><span><?=$fav->getData('name')?></span></td>
+    	<td class='price'><span>￥<?printf("%.2f",$fav->getData('price'));?></span></td> 
+    	<td class='show'><a href='/product-<?=$fav->getData('productId') ?>.html' target='_new'>查看</a></td>
+     	<td class='fav'><a href='/user/cancel-favorite/id/<?=$fav->getData('id') ?>'>取消</a></td>
+ 	</tr>
+	<?} ?>   
+</table>
+<?} ?>

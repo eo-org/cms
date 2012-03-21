@@ -1,0 +1,9 @@
+<dl>
+	<dt>发布人：</dt>
+	<dd><?php echo $this->row->owner?></dd>
+
+<?php foreach($this->valueRowset as $value) {?>
+	<dt><?php echo $value->attributeAlias?>:</dt>
+	<dd><?php echo $value->valueAlias?></dd>
+<?php } ?>
+</dl>

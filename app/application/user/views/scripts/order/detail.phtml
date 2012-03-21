@@ -1,0 +1,70 @@
+<div>
+	<div class='order-info'>
+		<dl>
+			<dt>
+				订单状态
+			</dt>
+			<dd>
+				<?php echo $this->orderDoc->status?>
+			</dd>
+			<dt>
+				收件人
+			</dt>
+			<dd>
+				<?php echo $this->orderDoc->consinee?>
+			</dd>
+			<dt>
+				联系电话
+			</dt>
+			<dd>
+				<?php echo $this->orderDoc->mobilePhone?>
+			</dd>
+			<dt>
+				配送地址
+			</dt>
+			<dd>
+				<?php echo $this->orderDoc->fullAddress?>
+			</dd>
+			<dt>
+				下单日期
+			</dt>
+			<dd>
+				<?php echo $this->orderDoc->created?>
+			</dd>
+			<dt class='itemlist'>
+				订单详情
+			</dt>
+			<dd class='itemlist'>
+				<table>
+					<thead>
+						<tr>
+							<td>产品名</td>
+							<td>编码</td>
+							<td>单价</td>
+							<td>数量</td>
+							<td>小计</td>
+						</tr>
+					</thead>
+					<?php
+					$itemList = $this->orderDoc->itemList;
+					foreach($itemList as $key => $item) {
+					?>
+					<tr>
+						<td><?php echo $item['info']['label']?></td>
+						<td><?php echo $item['info']['name']?></td>
+						<td><?php echo $item['price']?></td>
+						<td><?php echo $item['qty']?></td>
+						<td><?php echo ($item['price'] * $item['qty']) ?></td>
+					</tr>
+					<?php }?>
+					<tfoot>
+						<tr>
+							<th>总价</th>
+							<th colspan='4'><?php echo $item['subtotal']?></th>
+						</tr>
+					</tfoot>
+				</table>
+			</dd>
+		</dl>
+	</div>
+</div>

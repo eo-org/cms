@@ -1,0 +1,79 @@
+<?php if(!empty($this->row->id)) { ?>
+<fieldset class='above-form'>
+	<legend>内容基本信息</legend>
+	创建人：<?php echo $this->row->createdByAlias?><br />
+	创建日期：<?php echo $this->row->created?><br />
+	<?php if(empty($this->row->alias)) {?>
+	URL地址：/article-<?php echo $this->id?>.shtml
+	<?php } else {?>
+	URL地址：<?php echo $this->row->alias?>
+	<?php }?>
+</fieldset>
+<div class='clear'></div>
+<?php } ?>
+
+<?=$this->form?>
+<fieldset class='attachment-form'>
+	<legend>附件</legend>
+	<ul id='attachment-list'>
+		<?foreach($this->attachmentRowset as $row) {?>
+		<li attachmentId='<?=$row->id?>'><?=$row->filename?></li>
+		<?} ?>
+	</ul>
+	<button class="append-attachment" type="button" name="appendAttachment">添加附件</button>
+</fieldset>
+<div class='clear'></div>
+
+<script type="text/javascript">
+$('#attachment-list li').click(function() {
+	if(confirm('移除附件？')) {
+		finder.show(true);
+		var LI = $(this);
+		$.ajax({
+			url: "/admin/artical/delete-attachment-json/id/" + $(this).attr('attachmentid'),
+			success: function() {
+				LI.remove();
+				finder.hide();
+			}
+		});
+	}
+});
+var articalId = '<?=$this->id?>';
+var attachmentFilename = null;
+var attachmentList = $('#attachment-list');
+var attachmentSelector = $(".append-attachment");
+
+attachmentSelector.click(function() {
+	FINDER.show();
+	$.ajax({
+		url: "/admin/file/get-file-selector/format/html/group/attachment",
+		success: function(HTML) {
+			FINDER.attr('currentGroup', 'attachment');
+			content = FINDER.appendToContent(HTML);
+			content.find('.file').click(function() {
+				var path = $(this).attr('path');
+				insertAttachment($(this).attr('name'));
+				FINDER.hide();
+			});
+		}
+	});
+});
+var insertAttachment = function(name) {
+	var h = $("<input type='hidden' name='attachment[]' value='" + name + "' />");
+	h.appendTo($('form'));
+	var l = $("<li>" + name + "</li>");
+	l.click(function() {
+		if(confirm('移除附件？')) {
+			l.remove();
+			h.remove();
+		}
+	});
+	l.appendTo(attachmentList);
+};
+</script>
+
+
+
+
+<ul class='file-list'>
+</ul>

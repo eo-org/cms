@@ -1,0 +1,44 @@
+<div class='desc'>
+	<div class='head'>
+		<?php echo $this->head?>
+	</div>
+	<?php echo $this->tabLinks()?>
+</div>
+<div class='breadcrumb'>
+	<?php
+	$request = Zend_Controller_Front::getInstance()->getRequest();
+	//$bc = Class_Brick_Controller::getInstance();
+	//$solidBrick = $bc->createSolidBrick('Admin_Breadcrumb', $request);
+	
+	//echo $solidBrick->render();
+	?>
+</div>
+<div class='control'>
+	<?php
+	$bc = Class_Brick_Controller::getInstance();
+	$solidBrick = $bc->createSolidBrick('Admin_ActionMenu', $request);
+	$solidBrick->setMenu($this->actionMenu);
+	echo $solidBrick->render();
+	?>
+</div>
+<div class='flash-message'>
+<?php 
+	$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
+	$messages = $messenger->getMessages();
+	if(count($messages) > 0) {
+?>
+	<div class='brick-admin-flash-message'>
+<?php	
+		foreach($messages as $m) {
+			echo "<div>".$m."</div>";
+		}
+?>
+	</div>
+<?php 
+	}
+?>
+</div>
+
+<div class='under-desc'>
+	<?=$this->layout()->content ?>
+</div>

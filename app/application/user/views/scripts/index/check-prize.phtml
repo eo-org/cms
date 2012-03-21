@@ -1,0 +1,20 @@
+<?
+foreach($this->productList as $product) {
+?>
+    <div class='<?=$product->getData('claimed') == 1 ? 'available' : 'claimed'?>'>
+    	
+        <?=$product->getData('name')?><br />
+        <img src='<?=Class_HTML::graphic($product->getData('value'))?>' alt='<?=$product->getData('alt')?>' /><br />
+        <?=$product->getData('level')?><br />
+    	<?if($product->getData('claimed') == 1) { ?>
+    	已经认领: <?=$product->getData('claimTime')?>
+    	<?} else { ?>
+    	<form action='/lucky/claim-prize/' method='post'>
+    	<input type='hidden' name='prizeId' value='<?=$product->getData('prizeId')?>'>
+    	<input id='claim-prize' type='submit' name='claim' value='claim' />
+    	</form>
+    	<?} ?>
+    </div>
+<?
+} 
+?>

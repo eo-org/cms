@@ -1,0 +1,1 @@
+<a href='/'><img src='{{ logoPath|outputImage }}' /></a>

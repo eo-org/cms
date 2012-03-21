@@ -1,0 +1,16 @@
+<div class='brick-content'>
+<?if(!is_null($this->errMsg)) {?>
+	<div class='errMsg'>
+		<?=$this->errMsg?>
+	</div>
+<?} ?>
+	<ul>
+<?foreach($this->rowset as $row) {?>
+		<li>
+			<a href='<?=$this->url(array('id' => $row->id), 'artical')?>'>
+				<?=$row->title?><div class='date'><?=$row->created?></div>
+			</a>
+		</li>
+<?} ?>
+	</ul>
+</div>

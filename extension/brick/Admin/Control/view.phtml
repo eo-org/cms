@@ -1,0 +1,103 @@
+<div class='brick-control'>
+<div class='control-title'>
+    <span class='control'>[<?=$this->title?>]</span>
+    <span class='action'>
+    <?
+    switch($this->actionName) {
+        case 'index':
+            echo ': 列表';
+            break;
+        case 'create':
+            echo ': 新建';
+            break;
+        case 'edit':
+            echo ': 编辑';
+            break;
+    }
+    ?>
+    </span>
+</div>
+<div class='control-buttons'>
+	<?
+	foreach($this->controls as $con) {
+	    switch($con) {
+	        case 'create':
+	            echo "<a class='create' title='创建新栏目' href='/admin/".$this->controllerName."/create/' >";
+	            echo "<div>创建</div>";
+	            echo "</a>";
+	            break;
+	        case 'create-section':
+	            echo "<a class='create' title='创建新栏目' href='".$this->url(array('action'=>'create'))."/' >";
+	            echo "<div>创建</div>";
+	            echo "</a>";
+	            break;
+	        case 'confirm-save':
+	            echo "<a class='confirm-save' title='确认保存' href='javascript: void(0);' onclick=\"$('form:first').submit();\">";
+	            echo "<div>保存</div>";
+	            echo "</a>";
+	            break;
+	        case 'delete':
+	            echo "<a class='delete' title='删除此栏目' href='".$this->url(array('action'=>'delete'))."/' onclick=\"javascript:return confirm('您确定需要删除此项目?');\">";
+	            echo "<div>删除</div>";
+	            echo "</a>";
+	            break;
+	        case 'export':
+	            echo "<a class='export' title='导出为模板' href='".$this->url(array('action'=>'export'))."/'>";
+	            echo "<div>导出</div>";
+	            echo "</a>";
+	            break;
+	        case 'confirm-save-and-exit':
+	            echo "<a href='javascript: void(0);' onclick=\"$('form:first').submit();\">";
+	            echo "<image src='/images/admin/save.png' alt='save'><span>Save</span>";
+	            echo "</a>";
+	            break;
+	        case 'ajax-save':
+	            echo "<a href='javascript: void(0);' onclick=\"ajaxSave();\">";
+	            echo "<image src='/images/admin/save.png' alt='save'><span>Save</span>";
+	            echo "</a>";
+	            break;
+	        case 'ssh-save':
+	            echo "<a href='javascript: void(0);' onclick=\"sshSave();\">";
+	            echo "<image src='/images/admin/save.png' alt='save'><span>Save</span>";
+	            echo "</a>";
+	            break;
+	        case 'copy':
+	            echo "<a href='".$this->url(array('action'=>'copy'))."/'>";
+	            echo "<image src='/images/admin/copy.png' alt='copy'><span>Copy</span>";
+	            echo "</a>";
+	            break;
+	        case 'next':
+	            echo "<a class='next' title='下一步' href='javascript: void(0);' onclick=\"$('form:first').submit();\">";
+	            echo "<div>确认</div>";
+	            echo "</a>";
+	            break;
+	        case 'exit':
+	            if($this->hashParam != "") {
+	                echo "<a class='exit' title='退出编辑' href='/admin/".$this->controllerName."/index/hashParam/".$this->hashParam."'>";
+	                echo "<div>退出</div>";
+	            } else {
+	                echo "<a class='exit' title='退出编辑' href='/admin/".$this->controllerName."/index/'>";
+	                echo "<div>退出</div>";
+	            }
+	            echo "</a>";
+	            break;
+	        case 'print':
+	            echo "<a href='".$this->url(array('action'=>'print'))."/' target='printPage'>";
+	            echo "<image src='/images/admin/print.png' alt='print'><span>Print</span>";
+	            echo "</a>";
+	            break;
+	        case 'sync':
+	            echo "<a class='sync' title='同步文件到文件服务器' href='#' onclick=\"sync();\">";
+	            echo "<div>同步</div>";
+	            echo "</a>";
+	            break;
+	        case 'seperator':
+	            echo "<div class='seperator'></div>";
+	            break;
+	    }
+	}
+	?>
+	<a class='help' title='帮助' href='http://www.enorange/help/system/<?=$this->controllerName.'-'.$this->actionName?>'><div>帮助</div></a>
+</div>
+<div class='clear'></div>
+</div>

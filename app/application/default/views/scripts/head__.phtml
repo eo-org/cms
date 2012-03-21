@@ -1,0 +1,33 @@
+<head>
+<?php
+$siteInfo = Zend_Registry::get('siteInfo');
+$csa = Class_Session_Admin::getInstance();
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<?=$this->headMeta() ?>
+<?=$this->headTitle() ?>
+
+<link href="<?=Class_HTML::server('lib')?>/style/reset.css" media="screen" rel="stylesheet" type="text/css" >
+<link href="<?=Class_HTML::server('lib')?>/style/effect.css" media="screen" rel="stylesheet" type="text/css" >
+<link href="<?=Class_HTML::server('lib')?>/style/sprite.css" media="screen" rel="stylesheet" type="text/css" >
+<link href="<?=Class_HTML::server('lib')?>/style/effect/s3slide.plugin.css" media="screen" rel="stylesheet" type="text/css" >
+<?php if($csa->getSessionData('localCssMode') == 'active') {?>
+<link uselocal='true' href="http://local.host/<?php echo $siteInfo['id']?>/template.css" media="screen" rel="stylesheet" type="text/css">
+<?php } else {?>
+<link href="http://<?=Class_HTML::server('file', true)?>/template.css" media="screen" rel="stylesheet" type="text/css">
+<?php }?>
+<?=$this->headLink() ?>
+
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/script/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/script/ext/jquery.jBrowserBookmark.min.js"></script>
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/script/effect.js"></script>
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/script/effect/fancytransitions.1.8.plugin.js"></script>
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/script/set.js"></script>
+<script type="text/javascript" src="<?=Class_HTML::server('lib')?>/v1/script/product.js"></script>
+<?=$this->headScript() ?>
+
+<?php if($csa->isLogin()) { ?>
+<link 	type="text/css" 		href="<?=Class_HTML::server('lib')?>/style/admin-structure.css" media="screen" rel="stylesheet">
+<link	type="text/css"			href="<?=Class_HTML::server('lib')?>/style/admin-front.css" media="screen" rel="stylesheet">
+<?php } ?>
+</head>

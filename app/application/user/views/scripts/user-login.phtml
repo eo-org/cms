@@ -1,0 +1,23 @@
+<?=$this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?=$this->partial('layout-partial/head.phtml', $this) ?>
+</head>
+
+<body><div class='container_16'>
+<div class='grid_16' style="z-index: 3;">
+	<?Class_Mod::render('top');?>
+</div>
+
+<div class='grid_16' style="z-index: 2;">
+	<?Class_Mod::render('menu-top');?>
+</div>
+
+<div class='grid_16' style="z-index: 1;">
+	<?=$this->layout()->content ?>
+</div>
+
+<?=$this->partial('layout-partial/footer.phtml') ?>
+</div></body>
+</html>

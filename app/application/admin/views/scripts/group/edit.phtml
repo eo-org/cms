@@ -1,0 +1,63 @@
+<?=$this->form?>
+<div class='clear'></div>
+
+<script type='text/javascript'>
+//var lightBox = $().LightBox();
+
+var parentSelector = $('#parentId');
+var orderSelector = $('#sort');
+var currentOrder = <?=$this->currentOrder ? $this->currentOrder : 0?>;
+parentSelector.change(function() {
+	fetchChildren();
+});
+var fetchChildren = function() {
+//	lightBox.show(true);
+	$.ajax({
+		dataType: 'json',
+		url:'/admin/group/get-group-json/filter_parentId/' + parentSelector.val(),
+		success: function(jsonObj) {
+			orderSelector.empty();
+			var op = $("<option value='0'>" + '[最顶端]' + "</option>");
+			op.appendTo(orderSelector);
+			$.each(jsonObj.data, function(i, obj) {
+				if(i+1 == currentOrder) {
+					var op = $("<option value='" + (i+1) + "' selected>" + obj.label + "</option>");
+				} else {
+					var op = $("<option value='" + (i+1) + "'>" + obj.label + "</option>");
+				}
+				op.appendTo(orderSelector);
+			});
+//			lightBox.hide();
+		}
+	});
+}
+fetchChildren();
+
+var imageSelector = $("#introImagePath");
+var toContent = $('#to-content');
+
+imageSelector.css({'background-color':'#ddeeff'});
+imageSelector.click(function() {
+	lightBox.show();
+	$.ajax({
+		url: "/admin/file/get-file-selector/format/html/group/icon",
+		success: function(HTML) {
+			lightBox.setContent(HTML);
+			container = lightBox.getContent();
+			container.find('.file').click(function() {
+				var path = $(this).attr('path');
+				imageSelector.val(path);
+				lightBox.hide();
+			});
+		}
+	});
+});
+
+var linkSelector = $(".select-link");
+linkSelector.click(function() {
+	lightBox.show();
+	content = lightBox.getContent();
+	content.append(toContent);
+	toContent.css('display','block');
+});
+</script>

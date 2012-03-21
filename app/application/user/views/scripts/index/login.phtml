@@ -1,0 +1,12 @@
+<div class='login'>
+	<div class='title'>用户登陆</div>
+	<div class='content'>
+		<?php echo $this->loginForm ?>
+		<div class='forgot-password'>
+			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'forgot-password'),'default',true) ?>">忘记密码</a>
+		</div>
+		<div class='register-new'>
+			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'register'),'default',true) ?>">注册新用户</a>
+		</div>
+	</div>
+</div>

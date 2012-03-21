@@ -1,0 +1,54 @@
+<?php if(count($this->tplArray['user']) > 0) { ?>
+	<fieldset>
+		<legend>编辑现有TPL文件</legend>
+		<?php foreach($this->tplArray['user'] as $t) {?>
+		<a href='#/admin/brick/edit-tpl/brick-id/<?php echo $this->brickId?>/tpl-name/<?php echo $t?>'><?php echo $t?></a>&nbsp;&nbsp;&nbsp;
+		<?php }?>
+	</fieldset>
+	<div class='clear'></div>
+	<hr />
+<?php } ?>
+
+<div class='left-form' style='float: left;'>
+	<?php echo $this->form?>
+</div>
+
+<div class='right-form' style='float: right; width: 540px;'>
+	<div class='system-tpl-list'>
+		查看tpl文件内容：
+		<select id='system-tpl-selector' extName='<?php echo $this->extName?>'>
+		<?php
+		foreach($this->tplArray['system'] as $t) {
+			if($t == 'view.tpl') {
+				echo "<option value='".$t."' selected>".$t."</li>";
+			} else {
+				echo "<option value='".$t."'>".$t."</li>";
+			}
+		}
+		?>
+		</select>
+	</div>
+	<div style='border: 1px solid #456; background: #f0f0f0;'>
+		<textarea class='tpl-displayer' readonly='readonly' style='width: 500px; height: 450px; resize: none; border: none; background: #f0f0f0;'><?php echo $this->viewFileData?></textarea>
+	</div>
+</div>
+
+<div class='clear'></div>
+
+<script>
+	var td = $('.tpl-displayer');
+
+	var selector = $('#system-tpl-selector');
+	selector.change(function(e) {
+		e.preventDefault();
+		var extName = $(this).attr('extName');
+		$.ajax({
+			type: "POST",
+			url: '/admin/brick/get-tpl-content-ajax',
+			data: 'extName=' + extName + '&tplName=' + $(this).val(),
+			success: function(html) {
+				td.val(html);
+			}
+		});
+	});
+</script>

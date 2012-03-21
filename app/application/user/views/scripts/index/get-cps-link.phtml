@@ -1,0 +1,48 @@
+<div class='title-item'>
+   <div class='title'>生成cps</div>
+   <br class='clear' />    
+</div>
+<script type="text/javascript">
+function copyToClickboard(){
+	var txt = $('#url').text();
+	if (window.clipboardData) {//ie
+		window.clipboardData.clearData();
+		window.clipboardData.setData("Text", txt)
+	};
+	if (window.netscape){
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		} catch (e) {
+			if (e.flag == 0) {
+				alert("You are using the Firefox browser, copy the function browser refuse！\nPlease in the browser address bar enter'about:config' and Enter \n and set'signed.applets.codebase_principal_support' to 'true'");
+			} else {
+				alert("你使用的是Firefox 浏览器,复制功能被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
+			}
+		}
+		var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+		if (!clip)
+			return
+		var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+		if (!trans)
+			return
+		trans.addDataFlavor('text/unicode');
+		var str = new Object();
+		var len = new Object();
+		var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+		var copytext = txt;
+		str.data = copytext;
+		trans.setTransferData("text/unicode", str, copytext.length * 2);
+		var clipid = Components.interfaces.nsIClipboard;
+		if (!clip)
+			return false
+		clip.setData(trans, null, clipid.kGlobalClipboard);
+	}
+}
+</script>
+<div class="cps-link">cps link: <span id='url'><?=$this->escape ( $this->cpsUrl )?></span>
+</div>
+<input id='cps-submit'type='button' name='copy' value='复制到剪切板'
+	onclick="return copyToClickboard();" />
+<div class="cps-help">
+	复制以上链接发到群里，或者论坛，每通过该链接来阿猫阿狗成功购物一次，你就能获得一些折扣！
+</div>

@@ -1,0 +1,8 @@
+
+<?if($this->showLink) { ?>
+<a href='<?=$this->url(array('action'=>'delete-category', 'cid'=>$this->row->id, 'confirm'=>'true')) ?>'>确认删除</a>
+<?} else { ?>
+<div class='errorMsg'>
+folder delete not allowed while other folders depending on it!!
+</div>
+<?} ?>

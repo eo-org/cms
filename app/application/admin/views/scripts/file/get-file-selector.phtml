@@ -1,0 +1,119 @@
+<fieldset style='width: 80%;'><legend>基本信息</legend>
+<dl>
+<dt id="fileSelected-label"><label for="fileSelected" class="optional">上传新文件</label></dt>
+<dd>
+<input type="hidden" name="MAX_FILE_SIZE" value="33554432" id="MAX_FILE_SIZE">
+<input type="file" name="fileSelected[]" id="fileSelected" multiple="true"></dd>
+</dl>
+
+<dl><dd>
+	<ul class='file-lines'>
+	</ul>
+	<div id='start'>上传文件</div>
+</dd></dl>
+</fieldset>
+<div class='clear'></div>
+
+<div class='file-selector'>
+<?foreach($this->rowset as $row) { ?>
+	<div class='file finder-responder' draggable='true' message='<?php echo $row->urlName?>' name='<?=$row->name?>'>
+		<div class='frame'>
+<?
+	switch($row->type) {
+		case 'image':
+			echo "<img src='http://".$this->fileServer.'/'.$this->siteId.'/'.$row->urlName."' name='".$row->name."' />";
+			break;
+		case 'javascript':
+		case 'style':
+			echo "<img src='".Class_HTML::server('lib')."/image/file.png' name='".$row->name."' />";
+			break;
+		case 'file':
+			echo "<img src='".Class_HTML::server('lib')."/image/file.png' name='".$row->name."' />";
+			break;
+	}
+?>
+		</div>
+		<div class='info'>
+			<?=Class_HTML::substr($row->name, 0, 12)?><br />
+			<?=intval(($row->size)/1024)?>KB
+		</div>
+		<div class='delete'>
+			<a href='/admin/file/delete-json/id/<?php echo $row->id?>'>删除</a>
+		</div>
+	</div>
+<?} ?>
+</div>
+<div class='clear'></div>
+<script type='text/javascript'>
+$('#start').click(function() {
+	sendNextFile();
+});
+var uploadList;
+var uploadIndex;
+var liArr;
+
+$('#fileSelected').change(function(e) {
+	var fileLines = $('ul.file-lines');
+	delArr = [];
+    fileLines.empty();
+    uploadList = document.querySelector("#fileSelected").files;
+    uploadIndex = 0;
+    liArr = [];
+    for (var i = 0; i < uploadList.length; i++) {
+    	var li = $("<li id='" + i + "'>" + uploadList[i].name + "</li>");
+    	li.click(function() {
+			$(this).css('display', 'none');
+			$(this).attr('status', 'removed');
+        });
+    	fileLines.append(li);
+    	liArr.push(li);
+    }
+});
+var sendNextFile = function() {
+	if(uploadIndex < uploadList.length) {
+		if(liArr[uploadIndex].attr('status') == 'removed' || liArr[uploadIndex].attr('status') == 'uploaded') {
+			uploadIndex++;
+			sendNextFile();
+		} else {
+			liArr[uploadIndex].attr('class', 'uploading');
+    		fileUpload(uploadList[uploadIndex], uploadIndex);
+    		uploadIndex++;
+		}
+	} else {
+		var subContainer = $('#sub-container');
+		$.ajax({
+			type: "GET",
+			url: "/admin/file/get-file-selector/groupId/<?php echo $this->groupId?>",
+			success: function(html) {
+				subContainer.empty();
+				subContainer.append(html);
+				$('#sub-container .file').bind('dragstart', function(e) {
+					dragSrcEl = this;
+					$(this).css('opacity', 0.2);
+					e.dataTransfer.setData('text', $(this).attr('name'));
+				}).bind('dragend', function(e) {
+					$(this).css('opacity', 1);
+				});
+			}
+		});
+	}
+}
+
+function fileUpload(file, currentIndex) {
+	$('#start').html('文件上传中，请勿刷新或关闭本页面！');
+	var formData = new FormData();
+	formData.append("fileId", file);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', "/admin/file/upload-json/groupId/<?php echo $this->groupId?>", true);
+	xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200 || xhr.status == 304) {
+            	liArr[currentIndex].remove();
+            	sendNextFile();
+            }
+        }
+    }
+	xhr.send(formData);
+}
+</script>
