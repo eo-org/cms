@@ -28,13 +28,8 @@ class Front_Link extends Class_Brick_Solid_Abstract
     
     public function configParam($form)
     {
-    	$siteInfo = Zend_Registry::get('siteInfo');
 		$tb = new Class_Model_Category_Section_Tb();
-		if($siteInfo['type'] == 'multiple') {
-    		$rowset = $tb->fetchAll($tb->select()->where('subdomainId = -1 or subdomainId = ?', $siteInfo['subdomain']['id']));
-		} else {
-			$rowset = $tb->fetchAll();
-		}
+		$rowset = $tb->fetchAll();
 		$rowsetArr = Class_Func::buildArr($rowset, 'id', 'name');
     	
     	$form->addElement('select', 'param_sectionId', array(

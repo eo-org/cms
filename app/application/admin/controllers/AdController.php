@@ -100,19 +100,19 @@ class Admin_AdController extends Zend_Controller_Action
             'id' => 'ID',
             'label' => '链接名'
         );
-        $hashParam = $this->getRequest()->getParam('hashParam');
-        $partialHTML = $this->view->partial('select-search-header.phtml', array(
-            'labels' => $labels,
-        	'selectFields' => array(
-                'id' => null
-            ),
-            'url' => '/admin/category/get-category-json/',
-            'actionId' => 'id',
-            'initSelectRun' => 'true',
-            'hashParam' => $hashParam
-        ));
-
-        $this->view->partialHTML = $partialHTML;
+//        $hashParam = $this->getRequest()->getParam('hashParam');
+//        $partialHTML = $this->view->partial('select-search-header-front.phtml', array(
+//            'labels' => $labels,
+//        	'selectFields' => array(
+//                'id' => null
+//            ),
+//            'url' => '/admin/category/get-category-json/',
+//            'actionId' => 'id',
+//            'initSelectRun' => 'true',
+//            'hashParam' => $hashParam
+//        ));
+//
+//        $this->view->partialHTML = $partialHTML;
 		$this->view->form = $form;
 		$this->_helper->template->actionMenu(array('save', 'delete'));
 	}

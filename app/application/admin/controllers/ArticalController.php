@@ -1,13 +1,10 @@
 <?php
 class Admin_ArticalController extends Zend_Controller_Action
 {
-	protected $_siteInfo;
 	protected $_controls;
 	
 	public function init()
 	{
-//		$this->_siteInfo = Zend_Registry::get('siteInfo');
-
 		$this->_helper->template->portal(array(
 			array('label' => '内容', 'controllerName' => 'artical', 'href' => '/admin/artical/index'),
 			array('label' => '内容分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/article'),
@@ -101,11 +98,9 @@ class Admin_ArticalController extends Zend_Controller_Action
 	            $row->created = date('Y-m-d H:i:s');
 	            $row->createdBy = $csa->getRoleId();
 	            $row->createdByAlias = $csa->getLoginName();
-//	            $row->subdomainId = $this->_siteInfo['subdomain']['id'];
             }
             $row->save();
-            $siteInfo = Zend_Registry::get('siteInfo');
-            $siteId = $siteInfo['id'];
+            
             $attachmentArr = $this->getRequest()->getParam('attachment');
             if(!is_null($attachmentArr)) {
 	            $attachmentTb = new Zend_Db_Table('artical_attachment');
@@ -245,10 +240,6 @@ class Admin_ArticalController extends Zend_Controller_Action
 	    	->from($tb, array('id', 'title', 'groupId', 'alias', 'featured'))
 	    	->order('id DESC')
 	        ->limitPage(1, $pageSize);
-	    $siteInfo = Zend_Registry::get('siteInfo');
-        if($siteInfo['type'] == 'multiple') {
-//	    	$selector->where('subdomainId = ?', $this->_siteInfo['subdomain']['id']);
-	    }
 		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {

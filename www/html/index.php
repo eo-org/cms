@@ -10,8 +10,9 @@ define("MD5_SALT", getenv('MD5_SALT'));
 define("LOCAL_CHARSET", getenv('LOCAL_CHARSET') ? getenv('LOCAL_CHARSET') : 'UTF-8');
 
 $libPath = BASE_PATH.'/include';
-$cmsLibPath = CONTAINER_PATH.'/library';
-set_include_path($libPath.PATH_SEPARATOR.$cmsLibPath);
+$commonLibPath = BASE_PATH.'/libraries/common';
+$cmsLibPath = BASE_PATH.'/libraries/cms';
+set_include_path($libPath.PATH_SEPARATOR.$commonLibPath.PATH_SEPARATOR.$cmsLibPath);
 
 //set db adaptors and other configs
 require_once $libPath.'/Zend/Db/Adapter/Pdo/Mysql.php';
@@ -45,10 +46,11 @@ Zend_Db_Table::setDefaultAdapter($db);
 
 define('CACHE_PATH', $config->path->misc);
 define('TEMPLATE_PATH', $config->path->template);
+
+Class_Server::setConfigPath(BASE_PATH.'/configs/cms/server.ini');
 Class_Server::config(APP_ENV, 'v1', 'cms.eo.test');
 
-
 require_once $libPath."/Zend/Application.php";
-$application = new Zend_Application(APP_ENV, APP_PATH.'/configs/application.ini');
+$application = new Zend_Application(APP_ENV, BASE_PATH.'/configs/cms/application.ini');
 $application->bootstrap()->run();
 //echo $startTime - time();
