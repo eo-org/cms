@@ -82,7 +82,7 @@ class Front_News extends Class_Brick_Solid_Abstract
 		$this->view->articalRowset = $articalRowset;
     }
     
-    public function configParam(Class_Form_Edit $form)
+    public function configParam($form)
     {
     	$table = new Class_Model_GroupV2_Tb();
     	$selector = $table->select()->where('type = ?', 'article');

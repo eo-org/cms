@@ -23,7 +23,7 @@ class Front_AdGroupV2 extends Class_Brick_Solid_Abstract
         $this->view->rowset = $rowset;
     }
     
-    public function configParam(Class_Form_Edit $form)
+    public function configParam($form)
     {
     	$tb = Class_Base::_('GroupV2');
     	$selector = $tb->select();
