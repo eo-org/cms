@@ -4,7 +4,8 @@
 	"height":"{{ height }}",
 	"delay": "{{ delay }}",
 	"numPerSlide": "{{ numPerSlide }}",
-	"margin": "{{ margin }}"
+	"margin": "{{ margin }}",
+	"numSwitching":"{{ numSwitching }}"
 }'>
 	<div class="alternate">
 		<div id="leftalternate"></div>

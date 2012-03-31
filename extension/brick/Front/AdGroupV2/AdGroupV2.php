@@ -80,6 +80,11 @@ class Front_AdGroupV2 extends Class_Brick_Solid_Abstract
             'required' => true,
         	'multiOptions' => array(1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5', 6 => '6', 8 => '8')
         ));
+        $form->addElement('select', 'param_numSwitching', array(
+        		'label' => '切换图片数量：',
+        		'required' => true,
+        		'multiOptions' => array(1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5', 6 => '6', 8 => '8')
+        ));
     	$paramArr = array('param_groupId', 'param_showLabel', 'param_showDescription', 'param_width', 'param_height', 'param_margin', 'param_delay', 'param_numPerSlide');
     	$form->setParam($paramArr);
     	return $form;
