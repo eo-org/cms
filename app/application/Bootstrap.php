@@ -30,7 +30,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'default' => APP_PATH.'/default/controllers',
         	'user' => APP_PATH.'/user/controllers',
         	'shop' => APP_PATH.'/shop/controllers',
-            'admin' => APP_PATH.'/admin/controllers')
+            'admin' => APP_PATH.'/admin/controllers',
+        	'forbidden' => APP_PATH.'/forbidden/controllers')
         );
         $controller->throwExceptions(true);
                 
