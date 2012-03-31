@@ -7,6 +7,7 @@
 	"margin": "{{ margin }}",
 	"numSwitching":"{{ numSwitching }}"
 }'>
+
 	<div class="alternate">
 		<div id="leftalternate"></div>
 		<div style=' position: absolute;'>
