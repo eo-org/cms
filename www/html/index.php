@@ -48,7 +48,7 @@ define('CACHE_PATH', $config->path->misc);
 define('TEMPLATE_PATH', $config->path->template);
 
 Class_Server::setConfigPath(BASE_PATH.'/configs/cms/server.ini');
-Class_Server::config(APP_ENV, 'v1', 'cms.eo.test');
+Class_Server::config(APP_ENV, 'v1', 1, '4f729d24017d1a1927431710', 'cms.eo.test');
 
 require_once $libPath."/Zend/Application.php";
 $application = new Zend_Application(APP_ENV, BASE_PATH.'/configs/cms/application.ini');
