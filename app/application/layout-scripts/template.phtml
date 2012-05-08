@@ -14,8 +14,8 @@ $layoutRow = $layoutFront->getLayoutRow();
 
 <body>
 <?php
-if($csa->isLogin()) {
-	echo $this->partial('admin-toolbar.phtml', array('csa' => $csa, 'layoutRow' => '$layoutRow'));
+if($csa->hasPrivilege()) {
+	echo $this->partial('admin-toolbar.phtml', array('csa' => $csa, 'layoutRow' => $layoutRow));
 }
 ?>
 
@@ -61,9 +61,9 @@ foreach($typeArr as $key => $spriteType) {
 		<?php echo array_key_exists('body_tail', $HTML_ARR) ? $HTML_ARR['body_tail'] : "" ?>
 	</div>
 </div>
-<?php if($csa->isLogin()) { // disable front controll, it is a disaster?>
-<div class="blackbox"></div>
-<div class="whitebox">
+<?php if($csa->hasPrivilege()) { ?>
+<div id="lightbox-blackbox"></div>
+<div id="lightbox-whitebox">
 	<div class='closer'></div>
 	<div class='content'></div>
 </div>

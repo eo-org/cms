@@ -1,0 +1,18 @@
+<div style='height: 400px; width: 90%; margin-left: 5%; overflow: auto;'>
+<?php foreach($this->groupRowset as $r) { ?>
+<div class='ad-group-row finder-responder' message='<?php echo $r->id ?>' style='overflow: auto;' >
+	<?php echo $r->label ?>
+	<hr />
+	<?php
+	$adRowArr = $r->getAdRowArr();
+	foreach($adRowArr as $a) {
+	?>
+	<div class='ad' style='float: left;'>
+		<img style='width: 100px; heigth: 100px;' src='<?php echo Class_HTML::outputImage($a->image)?>' />
+	</div>
+	<?php
+	}
+	?>
+</div>
+<?php }?>
+</div>

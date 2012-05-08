@@ -40,7 +40,7 @@ class Admin_LayoutController extends Zend_Controller_Action
         	$row->save();
         	
 //        	$linkRow->save();
-			$this->_helper->switchContent->gotoSimple('index');
+			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
         
         $this->view->form = $form;
@@ -62,7 +62,7 @@ class Admin_LayoutController extends Zend_Controller_Action
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
         	$layoutRow->setFromArray($this->getRequest()->getParams());
 			$layoutRow->save();
-            $this->_helper->switchContent->gotoSimple('index');
+            $this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
         
         $this->view->form = $form;

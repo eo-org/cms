@@ -30,11 +30,11 @@ class Front_AdGroupV2 extends Class_Brick_Solid_Abstract
     	$rowset = $tb->fetchAll($selector->where('type = ?', 'ad'));
     	$rowsetArr = Class_Func::buildArr($rowset, 'id', 'label');
     	
-        $form->addElement('text', 'param_groupId', array(
+        $form->addElement('select', 'param_groupId', array(
             'filters' => array('StringTrim'),
             'label' => '广告组：',
             'required' => true,
-        	'class' => 'ad-group-selector'
+        	'multiOptions' => $rowsetArr
         ));
         $form->addElement('select', 'param_showLabel', array(
             'label' => '显示广告名：',

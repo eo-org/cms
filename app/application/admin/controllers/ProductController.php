@@ -48,6 +48,7 @@ class Admin_ProductController extends Zend_Controller_Action
 		$attributesetCo = new Class_Mongo_Attributeset_Co();
 		
 		$attrDocSet = $attributesetCo->setFields(array('label'))
+			->addFilter('type', 'product')
 			->fetchAll();
 			
 		$this->view->attrRowset = $attrDocSet;

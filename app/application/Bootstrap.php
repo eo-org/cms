@@ -16,7 +16,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initMongoDb()
 	{
-		$mongoDb = new App_Mongo_Db_Adapter('mongodb_32');
+		$siteId = Class_Server::getSiteId();
+		$mongoDb = new App_Mongo_Db_Adapter('mongodb_'.$siteId);
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 	
@@ -31,8 +32,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         	'user' => APP_PATH.'/user/controllers',
         	'shop' => APP_PATH.'/shop/controllers',
             'admin' => APP_PATH.'/admin/controllers',
-        	'forbidden' => APP_PATH.'/forbidden/controllers')
-        );
+        	'rest' => APP_PATH.'/rest/controllers'
+		));
         $controller->throwExceptions(true);
                 
         Zend_Layout::startMvc();
@@ -40,7 +41,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $layout->getView()->addScriptPath(APP_PATH."/layout-scripts");
         $layout->setLayout('template');
         
-        $controller->registerPlugin(new Class_Plugin_Acl());
+        $csa = Class_Session_Admin::getInstance();
+        
+        $controller->registerPlugin(new App_Plugin_BackendSsoAuth(
+        	$csa,
+        	App_Plugin_BackendSsoAuth::CMS,
+        	Class_Server::API_KEY
+        ));
         $controller->registerPlugin(new Class_Plugin_LayoutSwitch($layout));
         $controller->registerPlugin(new Class_Plugin_BrickRegister($layout));
         
@@ -101,6 +108,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             ),
             'product-list-%1$s/page%2$s.shtml'
         ));
+        
+        $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
+        
         unset($router);
     }
 }

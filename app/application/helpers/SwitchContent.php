@@ -12,7 +12,10 @@ class Helper_SwitchContent extends Zend_Controller_Action_Helper_Abstract
 //			$params['format'] = 'html';
 //		}
 		if($this->_actionController->getRequest()->isXmlHttpRequest() && $returnString) {
-			echo 'success';
+			if($returnString === true) {
+				$returnString = 'success';
+			}
+			echo $returnString;
 			exit(0);
 		}
 		$redirector = new Zend_Controller_Action_Helper_Redirector();

@@ -34,7 +34,7 @@ foreach($rowset as $row) {
 			<li><a id='enter-sprite-mode' href='javascript:void(0);'>添加模块</a></li>
 			<li><a id='enter-brick-mode' href='javascript:void(0);'>编辑页面模块</a></li>
 			<?php
-			if($this->csa->getAdminType() == 'designer') {
+			if($this->csa->getUserData('userType') == 'designer') {
 				if($this->csa->getSessionData('localCssMode') == 'active') {?>
 			<li><a id='unload-local-css' href='javascript:void(0);' style='color: red;'>停止读取本地CSS</a></li>
 			<li><a id='reload-local-css' href='javascript:void(0);' style='color: green;'>Reload CSS</a></li>
@@ -46,6 +46,7 @@ foreach($rowset as $row) {
 			?>
 		</ul>
 		<ul class='right'>
+			<li><a class='link' href='/admin/layout/edit/id/<?php echo $this->layoutRow->id?>'>编辑页面属性</a></li>
 			<li><a id='enter-normal-mode' href='javascript:void(0);'>退出编辑模式</a></li>
 		</ul>
 	</div>
@@ -62,8 +63,6 @@ foreach($rowset as $row) {
 		<div class='clear'></div>
 		
 		<div style='margin: 5px;'>拖动方框至页面，为此布局添加新的STAGE。确认布局方式后点击[保存布局方案]以保存当前设置。(点击右上角[退出编辑模式]放弃所做的修改)</div>
-		<a href='#/admin/layout/edit/id/<?php echo $this->layoutRow->id?>'>编辑页面属性</a>
 		<div class='button' id='save-sprite-layout'>保存页面布局</div>
-		<div class='button' id='enter-normal-mode'>退出页面布局</div>
 	</div>
 </div>

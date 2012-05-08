@@ -22,7 +22,7 @@ if($request->getParam('bricks') != 'disabled') {
 }
 ?>
 
-	<div class='whitebox' context='backend'><div class='content'>
+	<div id='lightbox-whitebox' context='backend'><div class='content'>
 		<?php
 		if($csa->isLogin()) {
 		?>
@@ -108,7 +108,5 @@ if($request->getParam('bricks') != 'disabled') {
 	<div class='closer'>CLOSE</div>
 	<div class='content'></div>
 </div>
-
-<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/main" src="<?=Class_Server::libUrl()?>/admin/script/app/require-jquery.js"></script>
 </body>
 </html>

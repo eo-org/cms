@@ -11,25 +11,30 @@ $csa = Class_Session_Admin::getInstance();
 <?php if($csa->getSessionData('localCssMode') == 'active') {?>
 <link uselocal='true' href="http://local.host/<?php echo Class_Server::getSiteFolder()?>/template.css" media="screen" rel="stylesheet" type="text/css">
 <?php } else {?>
-<link href="<?=Class_Server::miscUrl()?>/template.css" media="screen" rel="stylesheet" type="text/css">
+<link href="<?=Class_Server::getImageFolderUrl()?>/template.css" media="screen" rel="stylesheet" type="text/css">
 <?php }?>
 <?=$this->headLink() ?>
 
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/jub.js"></script>
 <?=$this->headScript() ?>
 
-<?php if($csa->isLogin()) { ?>
+<?php if($csa->hasPrivilege()) { ?>
 <link 	type="text/css" 		href="<?=Class_Server::libUrl()?>/admin/style/structure.css" media="screen" rel="stylesheet">
 <link	type="text/css"			href="<?=Class_Server::libUrl()?>/admin/style/front.css" media="screen" rel="stylesheet">
 
-<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/ajax-select-grid.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::extUrl()?>/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jquery.ndd.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/admin/script/bootstrap.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/admin/script/front.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/admin/script/drag.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script>
 
+	<?php if(APP_ENV == 'development') {?>
+<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jquery.ndd.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/front.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/lightbox.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/links.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/bootstrap.js"></script>
+	<?php } else {?>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/minified.js"></script>	
+	<?php }?>
+	
 <script>
 /************************************/
 /*Declear Global Javascript Items****/
