@@ -97,7 +97,7 @@ class Admin_ArticalController extends Zend_Controller_Action
             	$csa = Class_Session_Admin::getInstance();
 	            $row->created = date('Y-m-d H:i:s');
 	            $row->createdBy = $csa->getRoleId();
-	            $row->createdByAlias = $csa->getLoginName();
+	            $row->createdByAlias = $csa->getUserData('loginName');
             }
             $row->save();
             
