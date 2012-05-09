@@ -3,11 +3,11 @@ class Admin_ProductController extends Zend_Controller_Action
 {
 	public function init()
 	{
-		$this->_helper->template->portal(array(
-			array('label' => '产品', 'controllerName' => 'product', 'href' => '/admin/product/index'),
-			array('label' => '产品属性', 'controllerName' => 'attributeset', 'href' => '/admin/attributeset/index/type/product'),
-			array('label' => '产品分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/product'),
-		));
+//		$this->_helper->template->portal(array(
+//			array('label' => '产品', 'controllerName' => 'product', 'href' => '/admin/product/index'),
+//			array('label' => '产品属性', 'controllerName' => 'attributeset', 'href' => '/admin/attributeset/index/type/product'),
+//			array('label' => '产品分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/product'),
+//		));
 	}
 	
     public function indexAction()

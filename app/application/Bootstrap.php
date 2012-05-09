@@ -17,7 +17,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initMongoDb()
 	{
 		$siteId = Class_Server::getSiteId();
-		$mongoDb = new App_Mongo_Db_Adapter('mongodb_'.$siteId);
+		$mongoDb = new App_Mongo_Db_Adapter('cms_'.$siteId, Class_Server::getMongoServer());
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 	
