@@ -33,26 +33,43 @@ class Admin_ProductTypeController extends Zend_Controller_Action
 	
 	public function createAction()
 	{
-		
+		$this->_forward('edit');
 	}
 	
 	public function editAction()
 	{
 		$id = $this->getRequest()->getParam('id');
+		$attributesetCo = App_Factory::_m('Attributeset');
+		if(empty($id)) {
+			$doc = $attributesetCo->create();
+		} else {
+			$doc = $attributesetCo->find($id);
+		}
 		require APP_PATH."/admin/forms/Product/Type/Edit.php";
 		$form = new Form_Product_Type_Edit();
 		
-		$mongoDb = Zend_Registry::get('mongoDb');
-		$ptCollection = $mongoDb->product_type;
-		$row = $ptCollection->findOne(array('_id' => new MongoID($id)));
-		$productType = new Class_Mongo_Product_Type_Row($row);
+//		$mongoDb = Zend_Registry::get('mongoDb');
+//		$ptCollection = $mongoDb->product_type;
+//		$row = $ptCollection->findOne(array('_id' => new MongoID($id)));
+//		$productType = new Class_Mongo_Product_Type_Row($row);
 		
-		$form->populate($row);
-		$form = $productType->appendAttributeList($form);
-		
+		$form->populate($doc->toArray());
+//		$form = $productType->appendAttributeList($form);
+		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+			$doc->setFromArray($form->getValues());
+			$doc->type = 'product';
+			$doc->save();
+			$this->_helper->redirector->gotoSimple('index');
+		}
 		
 		$this->view->form = $form;
-		Zend_Debug::dump($row);
+		
+		if(empty($id)) {
+			$this->_helper->template->actionMenu(array('save'));
+		} else {
+			$this->_helper->template->actionMenu(array('save', 'delete'));
+		}
+//		Zend_Debug::dump($row);
 	}
 	
 	public function deleteAction()
@@ -65,8 +82,7 @@ class Admin_ProductTypeController extends Zend_Controller_Action
 		$pageSize = 20;
 		$currentPage = 1;
 		
-        $mongoDb = Zend_Registry::get('mongoDb');
-		$ptCollection = $mongoDb->product_type;
+        $attributesetCo = App_Factory::_m('Attributeset');
 		$queryArray = array();
 		
         $result = array();
@@ -75,7 +91,7 @@ class Admin_ProductTypeController extends Zend_Controller_Action
                 $field = substr($key, 7);
                 switch($field) {
                 	case 'label':
-                		$queryArray['label'] = new MongoRegex("/^".$value."/");
+                		$attributesetCo->addFilter('label', new MongoRegex("/^".$value."/"));
                 		break;
                     case 'page':
             			if(intval($value) != 0) {
@@ -87,18 +103,9 @@ class Admin_ProductTypeController extends Zend_Controller_Action
             }
         }
 		
-		$dataSize = $ptCollection->find($queryArray)->count();
-		
-		$startRow = ($currentPage - 1)*$pageSize ;
-		$rowset = $ptCollection->find($queryArray, array('id', 'label'))
-			->limit($pageSize)
-			->skip($startRow);
-		
-		$data = array();
-		foreach($rowset as $id => $row) {
-			$row['id'] = $id;
-			$data[] = $row;
-		}
+		$attributesetCo->setPage($currentPage)->setPageSize($pageSize);
+		$data = $attributesetCo->fetchAll(true);
+		$dataSize = $attributesetCo->count();
 		
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
