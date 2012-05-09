@@ -52,7 +52,7 @@ class Admin_ProductController extends Zend_Controller_Action
 			->fetchAll();
 			
 		$this->view->attrRowset = $attrDocSet;
-		$this->_helper->template->actionMenu(array('save'));
+//		$this->_helper->template->actionMenu(array('save'));
 	}
 	
 	public function editAction()
