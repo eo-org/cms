@@ -28,7 +28,9 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		
 		$link = $linkController->getLink($groupId);
 		
-		if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
+		if(is_null($link)) {
+			$groupId = 0;
+		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
 			$subGroupRow = $link->getChildren();
 			$idArr = array();
 			foreach($subGroupRow as $r) {
@@ -61,7 +63,11 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
         
 		$rowset = $productCo->fetchAll(true);
 		
-		$this->view->title = $link->label;
+		if(is_null($link)) {
+			$this->view->title = '产品列表';
+		} else {
+			$this->view->title = $link->label;
+		}
 		$this->view->rowset = $rowset;
 //		$this->view->paginator = $paginator;
 	}

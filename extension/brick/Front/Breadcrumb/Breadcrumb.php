@@ -26,9 +26,15 @@ class Front_Breadcrumb extends Class_Brick_Solid_Abstract
 				break;
 			case 'product';
 				$product = $clf->getResource();
-				$id = $product->groupId;
-				$trailType = 'product';
-				$this->view->tailMark = $product->title;
+				if(is_null($product)) {
+					$id = 1;
+					$trailType = 'product';
+					$this->view->tailMark = 'Product Name';
+				} else {
+					$id = $product->groupId;
+					$trailType = 'product';
+					$this->view->tailMark = $product->title;
+				}
 		}
 		
 		

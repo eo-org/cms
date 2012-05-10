@@ -108,6 +108,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             ),
             'product-list-%1$s/page%2$s.shtml'
         ));
+        $router->addRoute('product-list-static', new Zend_Controller_Router_Route_Static(
+            'product-list.shtml',
+            array(
+                'controller' => 'product-list',
+            	'action' => null,
+            	'page' => 1
+            )
+        ));
         
         $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
         
