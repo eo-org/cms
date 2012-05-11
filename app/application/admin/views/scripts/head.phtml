@@ -12,7 +12,7 @@
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/ajax-select-grid.js"></script>
 
-<script type="text/javascript" src="<?=Class_Server::libUrl()?>/admin/script/admin.js"></script>
+<script type="text/javascript" src="<?=Class_Server::libUrl()?>/script/icon-selector.js"></script>
 <script type="text/javascript" src="<?=Class_Server::libUrl()?>/admin/script/back.js"></script>
 <script type="text/javascript" src="<?=Class_Server::libUrl()?>/script/links-admin.js"></script>
 <script>
@@ -24,4 +24,6 @@ var FINDER;
 var EventMessenger = {};
 _.extend(EventMessenger, Backbone.Events);
 var FILE_SERVER = "<?//=Class_HTML::server('file')?>";
+
+window.ORG_CODE = "<?php echo Class_Server::getOrgCode()?>";
 </script>
