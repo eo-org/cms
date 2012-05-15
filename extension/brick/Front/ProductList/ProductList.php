@@ -33,10 +33,11 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
 			$subGroupRow = $link->getChildren();
 			$idArr = array();
+			$idArr[] = $groupId;
 			foreach($subGroupRow as $r) {
 				$idArr[] = $r->getId();
 			}
-			$groupId = $groupId.','.implode($idArr, ',');
+			$groupId = $idArr;
 		}
 		
 		$productCo = App_Factory::_m('Product');
