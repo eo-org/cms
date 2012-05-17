@@ -126,7 +126,8 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
     		'param_showSubgroupContent',
     		'param_showIntrotext',
     		'param_showIntroicon',
-    		'param_created'
+    		'param_created',
+    		'param_paginatorLanguage'
     	);
     	$form->setParam($paramArr);
     	return $form;

@@ -1,15 +1,6 @@
 <?php
 class Admin_ProductController extends Zend_Controller_Action
 {
-	public function init()
-	{
-//		$this->_helper->template->portal(array(
-//			array('label' => '产品', 'controllerName' => 'product', 'href' => '/admin/product/index'),
-//			array('label' => '产品属性', 'controllerName' => 'attributeset', 'href' => '/admin/attributeset/index/type/product'),
-//			array('label' => '产品分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/product'),
-//		));
-	}
-	
     public function indexAction()
     {    	
         $labels = array(
@@ -52,7 +43,6 @@ class Admin_ProductController extends Zend_Controller_Action
 			->fetchAll();
 			
 		$this->view->attrRowset = $attrDocSet;
-//		$this->_helper->template->actionMenu(array('save'));
 	}
 	
 	public function editAction()
@@ -101,13 +91,13 @@ class Admin_ProductController extends Zend_Controller_Action
 	{
 		$id = $this->getRequest()->getParam('id');
 		
-		$tb = Class_Base::_('Product');
-		$row = $tb->find($id)->current();
+		$productCo = App_Factory::_m('Product');
+		$productDoc = $productCo->find($id);
 		
-		if($row == null){
+		if($productDoc == null){
 			throw new Class_Exception_Pagemissing();
 		}
-		$row->delete();
+		$productDoc->delete();
 		
 		$this->_helper->switchContent->gotoSimple('index');
 	}
