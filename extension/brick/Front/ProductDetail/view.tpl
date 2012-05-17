@@ -4,7 +4,7 @@
 		<img src='{{ row.introicon|outputImage }}' />
 	</div>
 	<div class='info'>
-		<div class='title'>{{ row.title }}</div>
+		<div class='title'>{{ row.label }}</div>
 		<div class='price'>{{ row.price }}</div>
 		<div class='introtext'>{{ row.introtext }}</div>
 	</div>

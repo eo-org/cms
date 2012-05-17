@@ -48,10 +48,17 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
 	        if($siteInfo['type'] == 'multiple' && $siteInfo['subdomain']['id'] != 0) {
 	        	$selector->where('subdomainId = ?', $siteInfo['subdomain']['id']);
 	        }
+	        if($this->getParam('paginatorLanguage') == 'en') {
+	        	Zend_View_Helper_PaginationControl::setDefaultViewPartial(
+			    	'pagination-control.en.phtml'
+			    );
+	        } else {
+				Zend_View_Helper_PaginationControl::setDefaultViewPartial(
+			    	'pagination-control.phtml'
+				);
+			}
 	        Zend_Paginator::setDefaultScrollingStyle('Sliding');
-			Zend_View_Helper_PaginationControl::setDefaultViewPartial(
-			    'pagination-control.phtml'
-			);
+			
 	        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbTableSelect($selector));
 	        $paginator->setCurrentPageNumber($page)
 	        	->setItemCountPerPage($pageSize);
@@ -106,6 +113,12 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
             'filters' => array('StringTrim'),
             'label' => '显示日期：',
         	'multiOptions' => array('n' => '否', 'y' => '是'),
+            'required' => false
+        ));
+        $form->addElement('select', 'param_paginatorLanguage', array(
+            'filters' => array('StringTrim'),
+            'label' => '页码语言：',
+        	'multiOptions' => array('default' => '中文', 'en' => '英文'),
             'required' => false
         ));
     	$paramArr = array(

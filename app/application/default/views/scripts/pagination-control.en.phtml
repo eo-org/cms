@@ -1,0 +1,55 @@
+<?if ($this->pageCount) { ?>
+<div class="pagination-control">
+	<?php
+	$clf = Class_Layout_Front::getInstance();
+	$layoutRow = $clf->getLayoutRow();
+	if($layoutRow->default == 1) {
+	?>
+		<!-- Previous page link -->
+		<?if (isset($this->previous)) { ?>
+			<a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lt; pre</a> |
+		<?} else { ?>
+			<span class="disabled">&lt; first</span> |
+		<?} ?>
+		
+		<!-- Numbered page links -->
+		<?foreach ($this->pagesInRange as $page) { ?>
+			<?if ($page != $this->current) { ?>
+		    <a href="<?php echo $this->url(array('page' => $page)); ?>"><?=$page; ?></a> |
+			<?} else { ?>
+			<?=$page?> |
+			<?} ?>
+		<?} ?>
+		
+		<!-- Next page link -->
+		<?if (isset($this->next)) { ?>
+		<a href="<?php echo $this->url(array('page' => $this->next)); ?>">next &gt;</a>
+		<?} else { ?>
+		<span class="disabled">last &gt;</span>
+		<?} ?>
+	<?php } else {?>
+		<!-- Previous page link -->
+		<?if (isset($this->previous)) { ?>
+			<a href="/<?php echo $layoutRow->controllerName.'/page'.$this->previous ?>.shtml">&lt; pre</a> |
+		<?} else { ?>
+			<span class="disabled">&lt; last</span> |
+		<?} ?>
+		
+		<!-- Numbered page links -->
+		<?foreach ($this->pagesInRange as $page) { ?>
+			<?if ($page != $this->current) { ?>
+			<a href="/<?php echo $layoutRow->controllerName.'/page'.$page ?>.shtml"><?=$page; ?></a> |
+			<?} else { ?>
+			<?=$page?> |
+			<?} ?>
+		<?} ?>
+		
+		<!-- Next page link -->
+		<?if (isset($this->next)) { ?>
+			<a href="/<?php echo $layoutRow->controllerName.'/page'.$this->next ?>.shtml">next &gt;</a>
+		<?} else { ?>
+			<span class="disabled">last &gt;</span>
+		<?} ?>
+	<?php }?>
+</div>
+<?} ?>
