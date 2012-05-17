@@ -43,6 +43,7 @@ class Admin_ProductController extends Zend_Controller_Action
 			->fetchAll();
 			
 		$this->view->attrRowset = $attrDocSet;
+		$this->_helper->template->head('创建新产品');
 	}
 	
 	public function editAction()
@@ -82,8 +83,10 @@ class Admin_ProductController extends Zend_Controller_Action
 		
 		if(empty($id)) {
 			$this->_helper->template->actionMenu(array('save'));
+			$this->_helper->template->head('创建新产品');
 		} else {
 			$this->_helper->template->actionMenu(array('save', 'delete'));
+			$this->_helper->template->head('编辑产品');
 		}
 	}
 	
@@ -128,6 +131,8 @@ class Admin_ProductController extends Zend_Controller_Action
                 }
             }
         }
+        $productCo->sort('$natural', -1);
+        
 		$productCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $productCo->fetchAll(true);
 		$dataSize = $productCo->count();
