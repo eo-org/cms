@@ -30,21 +30,6 @@ class User_IndexController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->view->headTitle("用户中心首页");
-
-
-		//        $rawData = Class_Customer::getData();
-		//
-		//        $customer = Class_Core::_('Customer')->setData($rawData);
-		//        $medalAttr = Class_Core::_('Eav_Attribute')->setData('code', 'customer_lottery_point')
-		//            ->load();
-		//
-		//        $medalAttr->loadValuesForEntity($customer);
-		//        $medalCount = 0;
-		//        if(count($medalAttr->getSelectedValue()) > 0) {
-		//            $medalCount = $medalAttr->getSelectedValue();
-		//            $medalCount = $medalCount[0];
-		//        }
-		//        $this->view->customer = $rawData;
 	}
 
 	public function loginAction()

@@ -48,6 +48,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         	App_Plugin_BackendSsoAuth::CMS,
         	Class_Server::API_KEY
         ));
+        $controller->registerPlugin(new Class_Plugin_HeadFile());
         $controller->registerPlugin(new Class_Plugin_LayoutSwitch($layout));
         $controller->registerPlugin(new Class_Plugin_BrickRegister($layout));
         

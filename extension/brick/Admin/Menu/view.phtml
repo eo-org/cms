@@ -6,12 +6,12 @@
 			<?php echo $this->aclLink('artical', 'index', '内容管理')?>
 			<?php echo $this->aclLink('product', 'index', '产品管理')?>
 			<?php echo $this->aclLink('ad', 'index', '广告管理')?>
-			<?php echo $this->aclLink('message-pattern', 'index', '编辑问卷')?>
-			<?php echo $this->aclLink('message', 'index', '用户反馈')?>
+			<?php echo $this->aclLink('user', 'index', '网络用户')?>
 			<?php echo $this->aclLink('system', 'index', '系统')?>
 			<?php echo $this->aclLink('brick', 'index', '模块管理')?>
 			<li><a href='<?php echo Class_Server::getFileServer()?>/admin/<?php echo $csa->getOrgCode()?>' target='_blank'>文件管理</a></li>
-			<li><a href='http://forum.enorange.com/admin/<?php echo $csa->getOrgCode()?>' target='_blank'>用户留言</a></li>
+			<li><a href='http://forum.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>用户留言</a></li>
+			<li><a href='http://form.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>问卷系统</a></li>
 		</ul>
 		<ul class='right'>
 			<li><a target='_blank' href='http://account.enorange.cn/<?php echo $csa->getUserId()?>/user/'>我的账户</a></li>

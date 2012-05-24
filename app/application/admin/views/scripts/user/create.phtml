@@ -1,0 +1,6 @@
+<ul>
+<?php foreach($this->attrRowset as $key => $row) {?>
+	<li><a href='/admin/product/edit/attributeset-id/<?php echo $key?>'><?php echo $row['label']?></a></li>
+<?php }?>
+</ul>
+<div class='clear'></div>

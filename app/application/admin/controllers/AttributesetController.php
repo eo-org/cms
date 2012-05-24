@@ -1,32 +1,38 @@
 <?php
 class Admin_AttributesetController extends Zend_Controller_Action
 {
+	protected $_type = 'product';
+	
+	public function init()
+	{
+		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/attributeset-editor.css');
+		$this->view->headScript()->appendFile(Class_Server::libUrl().'/admin/script/attributeset-editor.js');
+		
+		$type = $this->getRequest()->getParam('type');
+		if(!is_null($type)) {
+			$this->_type = $this->getRequest()->getParam('type');
+		}
+	}
+	
     public function indexAction()
     {
     	$this->_helper->template->head('属性组管理');
     	
-    	$type = $this->getRequest()->getParam('type');
         $hashParam = $this->getRequest()->getParam('hashParam');
         $labels = array(
-			'id' => 'ID',
-			'~selectedIds' => '#',
-			'title' => '内容标题',
-        	'alias' => '内容连接',
-			'groupId' => '内容分类',
-			'featured' => '精选',
+			'label' => '标题',
 			'~contextMenu' => ''
 		);
 		$partialHTML = $this->view->partial('select-search-header-front.phtml', array(
 			'labels' => $labels,
 			'selectFields' => array(),
-			'presetFields' => array('groupId' => $groupId),
-			'url' => '/admin/attributeset/get-attributeset-json/',
+			'url' => '/admin/attributeset/get-attributeset-json/type/'.$this->_type.'/',
 			'actionId' => 'id',
 			'click' => array(
 				'action' => 'contextMenu',
 				'menuItems' => array(
-					array('编辑', '/admin/attributeset/edit/id/'),
-					array('删除', '/admin/attributeset/delete/id/')
+					array('编辑', '/admin/attributeset/edit/type/'.$this->_type.'/id/'),
+					array('删除', '/admin/attributeset/delete/type/.'.$this->_type.'/id/')
 				)
 			),
 			'initSelectRun' => 'true',
@@ -39,80 +45,40 @@ class Admin_AttributesetController extends Zend_Controller_Action
     
     public function createAction()
     {
-        $this->_forward('edit');
-        $this->_helper->template->head('编辑新内容')
+//        $this->_forward('edit');
+		require APP_PATH."/admin/forms/Attributeset/Create.php";
+    	$form = new Form_Attributeset_Create();
+    	
+    	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+    		$attributesetCo = App_Factory::_am('Attributeset');
+    		$attributesetDoc = $attributesetCo->create();
+    		$attributesetDoc->label = $form->getValue('label');
+    		$attributesetDoc->type = $this->_type;
+    		$attributesetDoc->save();
+    		$attributesetId = $attributesetDoc->getId();
+    		
+    		$this->_helper->redirector->gotoSimple('edit', 'attributeset', 'admin', array(
+    			'type' => $this->_type,
+    			'id' => $attributesetId
+    		));
+    	}
+    	$this->view->form = $form;
+        $this->_helper->template->head('输入新表名')
         	->actionMenu(array('save'));
     }
     
     public function editAction()
     {
-        $this->view->headScript()->appendFile(Class_HTML::server('lib').'/script/ckeditor/ckeditor.js');
-        
-        require APP_PATH.'/admin/forms/Artical/Edit.php';
-        $form = new Form_Article_Edit();
-        
         $id = $this->getRequest()->getParam('id');
-        
-        $table = Class_Base::_('Artical');
-        $row = null;
-        if(empty($id)) {
-            $row = $table->createRow();
-        } else {
-        	$row = $table->fetchRow($table->select()->where('id = ?', $id));
-        }
-        if(is_null($row)) {
-            throw new Class_Exception_AccessDeny('没有权限访问此内容，或者内容id不存在');
+        $attributesetCo = App_Factory::_am('Attributeset');
+    	$attributesetDoc = $attributesetCo->find($id);
+        if(is_null($attributesetDoc)) {
+        	throw new Exception('attributeset not found');
         }
         
-        $form->populate($row->toArray());
-        //preset groupId from url
-    	$groupId = $this->getRequest()->getParam('groupId');
-        if(!empty($groupId)) {
-        	$form->groupId->setAttrib('disabled', 'disabled');
-        	$form->groupId->setValue($groupId);
-        }
-        //end preset
-        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-            $row->setFromArray($form->getValues());
-    		
-            if(is_null($id)) {
-            	$csa = Class_Session_Admin::getInstance();
-	            $row->created = date('Y-m-d H:i:s');
-	            $row->createdBy = $csa->getRoleId();
-	            $row->createdByAlias = $csa->getLoginName();
-//	            $row->subdomainId = $this->_siteInfo['subdomain']['id'];
-            }
-            $row->save();
-            $siteInfo = Zend_Registry::get('siteInfo');
-            $siteId = $siteInfo['id'];
-            $attachmentArr = $this->getRequest()->getParam('attachment');
-            if(!is_null($attachmentArr)) {
-	            $attachmentTb = new Zend_Db_Table('artical_attachment');
-	            foreach($attachmentArr as $attachmentName) {
-	            	$attachmentRow = $attachmentTb->createRow();
-	            	$attachmentRow->articalId = $row->id;
-	            	$attachmentRow->filename = $attachmentName;
-	            	$attachmentRow->filepath = '/file/'.$siteId.'/attachment/'.$attachmentName;
-	            	$attachmentRow->save();
-	            }
-            }
-			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
-        }
-    	
-        if(!is_null($id)) {
-            $tb = new Zend_Db_Table('artical_attachment');
-            $rowset = $tb->fetchAll($tb->select()->where('articalId = ?', $id));
-        } else {
-        	$rowset = array();
-        }
-        
-        $this->view->row = $row;
-        $this->view->attachmentRowset = $rowset;
-        $this->view->id = $id;
-        $this->view->form = $form;
-        
-        $this->view->controls = array('save', 'delete');
-        $this->_helper->template->head('编辑内容:<em>'.$row->title.'</em>')
+        $this->view->elementList = array();
+		$this->view->formid = $id;
+        $this->_helper->template->head('编辑')
         	->actionMenu(array('save', 'delete'));
     }
     
@@ -135,7 +101,8 @@ class Admin_AttributesetController extends Zend_Controller_Action
 		$currentPage = 1;
 		
 		$attributesetCo = App_Factory::_am('Attributeset');
-		$attributesetCo->setFields(array('name', 'label', 'sku', 'price'));
+		$attributesetCo->addFilter('type', $this->_type);
+		$attributesetCo->setFields(array('label'));
 		$queryArray = array();
 		
         $result = array();
@@ -165,5 +132,43 @@ class Admin_AttributesetController extends Zend_Controller_Action
         $result['currentPage'] = $currentPage;
         
         return $this->_helper->json($result);
+    }
+    
+    public function getElementTemplateAction()
+    {
+    	$type = $this->getRequest()->getParam('element-type');
+		$id = $this->getRequest()->getParam('id');
+		$attributeCo = App_Factory::_am('Attribute');
+		$formDoc = $formCo->create();
+		if($type == 'text' || $type == 'textarea') {
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述'));
+		} else if($type == 'button') {
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'提交','type'=>'submit'));
+		} else {
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述','option'=>array('第一选项','第二选项','第三选项')));
+		}
+		$formDoc->save();
+		$this->view->testid = $formDoc->getId();
+		switch($type) {
+			case 'text':
+				$this->render('element/text');
+				break;
+			case 'textarea':
+				$this->render('element/textarea');
+				break;
+			case 'select':
+				$this->render('element/select');
+				break;
+			case 'multi-checkbox':
+				$this->render('element/multi-checkbox');
+				break;
+			case 'menu':
+				$this->render('element/menu');
+				break;
+			case 'button':
+				$this->render('element/button');
+				break;
+		}
+		$this->getResponse()->setHeader('result', 'success');
     }
 }

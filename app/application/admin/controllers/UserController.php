@@ -1,13 +1,12 @@
 <?php
-class Admin_ProductController extends Zend_Controller_Action
+class Admin_UserController extends Zend_Controller_Action
 {
     public function indexAction()
     {    	
         $labels = array(
-        	'name' => '产品编号',
-        	'label' => '产品名',
-        	'sku' => 'SKU',
-        	'price' => '价格',
+        	'loginName' => '登陆名',
+        	'created' => '注册日期',
+        	'lastLoginDate' => '最后登陆日期',
         	'~contextMenu' => ''
         );
         
@@ -16,14 +15,15 @@ class Admin_ProductController extends Zend_Controller_Action
             'labels' => $labels,
             'selectFields' => array(
                 'id' => NULL,
-        		'created' => NULL
+        		'created' => NULL,
+        		'lastLoginDate' => NULL
             ),
-            'url' => '/admin/product/get-product-json/',
+            'url' => '/admin/user/get-user-json/',
             'actionId' => 'id',
             'click' => array(
             	'action' => 'contextMenu',
             	'menuItems' => array(
-            		array('编辑', '/admin/product/edit/id/')
+            		array('编辑', '/admin/user/edit/id/')
             	)
             ),
             'initSelectRun' => 'true',
@@ -31,50 +31,50 @@ class Admin_ProductController extends Zend_Controller_Action
         ));
 
         $this->view->assign('partialHTML', $partialHTML);
-        $this->_helper->template->head('产品列表')->actionMenu(array('create'));
+//        $this->_helper->template->head('用户列表')->actionMenu(array('create'));
 	}
 	
-	public function createAction()
-	{
-		$attributesetCo = new Class_Mongo_Attributeset_Co();
-		
-		$attrDocSet = $attributesetCo->setFields(array('label'))
-			->addFilter('type', 'product')
-			->fetchAll();
-			
-		$this->view->attrRowset = $attrDocSet;
-		$this->_helper->template->head('创建新产品');
-	}
+//	public function createAction()
+//	{
+//		$attributesetCo = new Class_Mongo_Attributeset_Co();
+//		
+//		$attrDocSet = $attributesetCo->setFields(array('label'))
+//			->addFilter('type', 'user')
+//			->fetchAll();
+//			
+//		$this->view->attrRowset = $attrDocSet;
+//		$this->_helper->template->head('创建新产品');
+//	}
 	
 	public function editAction()
 	{
 		$id = $this->getRequest()->getParam('id');
 		$attributesetId = $this->getRequest()->getParam('attributeset-id');
 		
-		$productCo = App_Factory::_m('Product');
+		$userCo = App_Factory::_m('User');
 		$attributesetCo = App_Factory::_m('Attributeset');
 		
 		if(empty($id)) {
-			$productDoc = $productCo->create();
-			$productDoc->attributesetId = $attributesetId;
+			$userDoc = $userCo->create();
+			$userDoc->attributesetId = $attributesetId;
 		} else {
-			$productDoc = $productCo->find($id);
+			$userDoc = $userCo->find($id);
 		}
 		
-		$attributesetId = $productDoc->attributesetId;
+		$attributesetId = $userDoc->attributesetId;
 		$attributesetDoc = $attributesetCo->find($attributesetId);
 		$attrElements = $attributesetDoc->getZfElements();
 		
-		require APP_PATH."/admin/forms/Product/Edit.php";
-		$form = new Form_Product_Edit();
+		require APP_PATH."/admin/forms/User/Edit.php";
+		$form = new Form_User_Edit();
 		$form->addElements($attrElements, 'main');
-		$form->populate($productDoc->getData());
+		$form->populate($userDoc->getData());
 		
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$result = $productDoc->setFromArray($form->getValues())
+			$result = $userDoc->setFromArray($form->getValues())
 				->save(false);
 			if($result) {
-				$this->_helper->flashMessenger->addMessage('产品已经成功保存');
+				$this->_helper->flashMessenger->addMessage('用户已经成功保存');
 				$this->_helper->switchContent->gotoSimple('index');
 			}
 		}
@@ -86,7 +86,7 @@ class Admin_ProductController extends Zend_Controller_Action
 			$this->_helper->template->head('创建新产品');
 		} else {
 			$this->_helper->template->actionMenu(array('save', 'delete'));
-			$this->_helper->template->head('编辑产品');
+			$this->_helper->template->head('编辑用户');
 		}
 	}
 	
@@ -94,25 +94,25 @@ class Admin_ProductController extends Zend_Controller_Action
 	{
 		$id = $this->getRequest()->getParam('id');
 		
-		$productCo = App_Factory::_m('Product');
-		$productDoc = $productCo->find($id);
+		$userCo = App_Factory::_m('User');
+		$userDoc = $productCo->find($id);
 		
-		if($productDoc == null){
+		if($userDoc == null){
 			throw new Class_Exception_Pagemissing();
 		}
-		$productName = $productDoc->label;
-		$productDoc->delete();
-		$this->_helper->flashMessenger->addMessage('产品 '.$productName.' 已经删除');
+		$loginName = $userDoc->loginName;
+		$userDoc->delete();
+		$this->_helper->flashMessenger->addMessage('用户 '.$loginName.' 已经删除');
 		$this->_helper->switchContent->gotoSimple('index');
 	}
 	
-	public function getProductJsonAction()
+	public function getUserJsonAction()
     {
     	$pageSize = 20;
 		$currentPage = 1;
 		
-		$productCo = new Class_Mongo_Product_Co();
-		$productCo->setFields(array('name', 'label', 'sku', 'price'));
+		$userCo = App_Factory::_m('User');
+		$userCo->setFields(array('email', 'created', 'lastLoginDate'));
 		$queryArray = array();
 		
         $result = array();
@@ -120,8 +120,8 @@ class Admin_ProductController extends Zend_Controller_Action
             if(substr($key, 0 , 7) == 'filter_') {
                 $field = substr($key, 7);
                 switch($field) {
-                	case 'label':
-                		$productCo->addFilter('label', new MongoRegex("/^".$value."/"));
+                	case 'email':
+                		$userCo->addFilter('email', new MongoRegex("/^".$value."/"));
                 		break;
                     case 'page':
             			if(intval($value) != 0) {
@@ -132,11 +132,11 @@ class Admin_ProductController extends Zend_Controller_Action
                 }
             }
         }
-        $productCo->sort('$natural', -1);
+        $userCo->sort('$natural', -1);
         
-		$productCo->setPage($currentPage)->setPageSize($pageSize);
-		$data = $productCo->fetchAll(true);
-		$dataSize = $productCo->count();
+		$userCo->setPage($currentPage)->setPageSize($pageSize);
+		$data = $userCo->fetchAll(true);
+		$dataSize = $userCo->count();
 		
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;

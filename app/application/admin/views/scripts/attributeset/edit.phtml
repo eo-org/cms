@@ -1,0 +1,95 @@
+<div class='element-library'>
+	<div class='element-library-item drag-handle' draggable='true' element-type='text'>
+		输入框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='select'>
+		单选框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='multi-checkbox'>
+		复选框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='menu'>
+		菜单域
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
+		文本域
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='button'>
+		按钮
+	</div>
+</div>
+<input type="hidden" name="form-id" value="<?php echo $this->id?>"/>
+
+<ul class='element-list'>
+
+</ul>
+
+<div class='element-current' style='min-height: 350px;'>
+	<ul class='form-editor'>
+		<li class='element-dropable'></li>
+	<?php
+	foreach($this->elementList as $row) {
+		$html = "<li id='form_element' org-id='".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
+		if($row['elementType'] != 'button'){
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
+			switch($row['elementType']) {
+				case 'text':
+					$html.= "<input type='text' disabled='disabled'>";
+					break;
+				case 'textarea':
+					$html.= "<textarea disabled='disabled'></textarea>";
+					break;
+				case 'select':
+					foreach($row['option'] as $arrone){
+						$html.= "<input type='radio' disabled='disabled' name='' value=''><label>".$arrone."</label>";
+					}
+					break;
+				case 'multi-checkbox':
+					foreach($row['option'] as $arrone){
+						$html.= "<input type='checkbox' disabled='disabled' name='' value=''><label>".$arrone."</label>";
+					}
+					break;
+				case 'menu':
+					$html.= "<select disabled='disabled' style='width:100px'><option></option></select><br />";
+					foreach($row['option'] as $arrone){
+						$html.= $arrone."&nbsp;&nbsp;&nbsp;&nbsp;";
+					}
+					break;
+			}
+			$html.= "</div><div class='element-desc'>".$row['desc']."</div><div class='element-controller'></div>";
+		} else {
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/editbutton/id/".$row['_id']."'>";
+			$html.="<input type='submit' name='button' id='button' value='".$row['label']."' /></a></div><div class='element'>";
+		}
+		echo $html;
+		echo "</li><li class='drag-dropable'></li><li class='element-dropable'></li>";
+	}
+	?>
+	</ul>
+</div>
+<div class='clear'></div>
+
+
+<script type='text/javascript'>
+$('.action-menu').click(function(){
+	var elementid = '';
+	$("li[id='form_element']").each(function(){
+		elementid+= $(this).attr("org-id")+':';
+	});
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/sort/',
+		data: "val="+elementid,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
+		}
+	});
+	return false;
+});
+</script>
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attributeset" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+<script type='text/template' id='element-template'>
+	<div class='info'>
+		{{ label }}
+	</div>
+</script>
