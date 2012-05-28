@@ -17,7 +17,13 @@ class Front_ListCurrentGroup extends Class_Brick_Solid_Abstract
 	public function prepare()
 	{
 		$groupId = $this->getParam('groupId');
-		
+		if($groupId == 'x') {
+			$clf = Class_Layout_Front::getInstance();
+			$resource = $clf->getResource();
+			if($resource != 'none') {
+				$groupId = $resource->groupId;
+			}
+		}
 		$articleTb = Class_Base::_('Artical');
 		$selector = $articleTb->select(false)->from($articleTb, array('id', 'title', 'alias', 'introtext', 'introicon', 'created'))
 			->where('groupId = ?', $groupId)
@@ -28,7 +34,9 @@ class Front_ListCurrentGroup extends Class_Brick_Solid_Abstract
 		$link = $linkController->getLink($groupId);
 		
 		$this->view->rowset = $articleRowset;
-		$this->view->title = $link->label;
+		if($groupId != 'x') {
+			$this->view->title = $link->label;
+		}
 	}
 	
 	public function configParam(Class_Form_Edit $form)
@@ -36,7 +44,7 @@ class Front_ListCurrentGroup extends Class_Brick_Solid_Abstract
     	$tb = Class_Base::_('GroupV2');
     	$select = $tb->select()->where('type = ?', 'article');
     	$rowset = $tb->fetchAll($select);
-        $groupArr = Class_Func::buildArr($rowset, 'id', 'label', array(0 => '未分类文章'));
+        $groupArr = Class_Func::buildArr($rowset, 'id', 'label', array('x' => '动态分配'));
     	
         $form->addElement('select', 'param_groupId', array(
         	'label' => '文章分组：',
