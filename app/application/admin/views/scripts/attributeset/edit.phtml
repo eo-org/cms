@@ -1,95 +1,118 @@
-<div class='element-library'>
-	<div class='element-library-item drag-handle' draggable='true' element-type='text'>
-		输入框
+<div class='attribute-list' entityId='<?php echo $this->entityId?>'>
+	<div class='attribute-library'>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='text' label='输入框'>
+			输入框
+		</div>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='radio' label='单选按钮'>
+			单选按钮
+		</div>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='select' label='单选下拉框'>
+			单选下拉框
+		</div>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='multicheckbox' label='多选框'>
+			多选框
+		</div>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='textarea' label='文本域'>
+			文本域
+		</div>
+		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='button' label='提交按钮'>
+			提交按钮
+		</div>
 	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='select'>
-		单选框
+	
+	<div class='attribute-current' style='min-height: 350px;'>
 	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='multi-checkbox'>
-		复选框
+	
+	<div class='attribute-editor'>
+		
 	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='menu'>
-		菜单域
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
-		文本域
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='button'>
-		按钮
-	</div>
+	
+	<div class='clear'></div>
 </div>
-<input type="hidden" name="form-id" value="<?php echo $this->id?>"/>
 
-<ul class='element-list'>
-
-</ul>
-
-<div class='element-current' style='min-height: 350px;'>
-	<ul class='form-editor'>
-		<li class='element-dropable'></li>
-	<?php
-	foreach($this->elementList as $row) {
-		$html = "<li id='form_element' org-id='".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
-		if($row['elementType'] != 'button'){
-			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
-			switch($row['elementType']) {
-				case 'text':
-					$html.= "<input type='text' disabled='disabled'>";
-					break;
-				case 'textarea':
-					$html.= "<textarea disabled='disabled'></textarea>";
-					break;
-				case 'select':
-					foreach($row['option'] as $arrone){
-						$html.= "<input type='radio' disabled='disabled' name='' value=''><label>".$arrone."</label>";
-					}
-					break;
-				case 'multi-checkbox':
-					foreach($row['option'] as $arrone){
-						$html.= "<input type='checkbox' disabled='disabled' name='' value=''><label>".$arrone."</label>";
-					}
-					break;
-				case 'menu':
-					$html.= "<select disabled='disabled' style='width:100px'><option></option></select><br />";
-					foreach($row['option'] as $arrone){
-						$html.= $arrone."&nbsp;&nbsp;&nbsp;&nbsp;";
-					}
-					break;
-			}
-			$html.= "</div><div class='element-desc'>".$row['desc']."</div><div class='element-controller'></div>";
-		} else {
-			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/editbutton/id/".$row['_id']."'>";
-			$html.="<input type='submit' name='button' id='button' value='".$row['label']."' /></a></div><div class='element'>";
-		}
-		echo $html;
-		echo "</li><li class='drag-dropable'></li><li class='element-dropable'></li>";
-	}
-	?>
-	</ul>
-</div>
-<div class='clear'></div>
-
-
-<script type='text/javascript'>
-$('.action-menu').click(function(){
-	var elementid = '';
-	$("li[id='form_element']").each(function(){
-		elementid+= $(this).attr("org-id")+':';
-	});
-	$.ajax({
-		type: "POST",
-		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/sort/',
-		data: "val="+elementid,
-		success: function(obj) {
-			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
-		}
-	});
-	return false;
-});
-</script>
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attributeset" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
-<script type='text/template' id='element-template'>
-	<div class='info'>
-		{{ label }}
+
+<script type='text/template' id='attribute-editor-template'>
+	标题：<input id='property-label' type="text" name="label" value="{{ label }}" />
+	<br />
+<%
+if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
+%>
+	<div>候选项：</div>
+	<ul class='option-container'>
+<%
+	for(idx in options) {
+%>
+		<li class='option-item'>
+			<input type='text' name='' value='{{ options[idx].label }}' />
+			<span class='option-remove op-remove'>-</span>
+		</li>
+<%
+	}
+%>
+	</ul>
+	<div>
+		<span class='option-add op-add'>+</span>
+	</div>
+<%
+}
+%>
+	提示：<textarea name="description">{{ description }}</textarea>
+	<div class='clear'></div>
+
+	<div class='attribute-save'>SAVE</div>
+</script>
+
+<script type='text/template' id='attribute-template'>
+	<div class='attribute-solid-item drag-handle' draggable='true'>
+		<div class='element-label'>
+			<a draggable='false' class='lightbox-trigger' attribute-id='{{ id }}' href='#'>{{ label }}</a>
+		</div>
+		<div class='element'>
+<%
+switch(type) {
+	case 'text':
+%>
+			<input type='text' disabled='disabled'>
+<%
+	break;
+	case 'textarea':
+%>
+			<textarea disabled='disabled'></textarea>
+<%
+	break;
+	case 'radio':
+		for(idx in options) {
+%>
+			<input type='radio' disabled='disabled' name='' value=''><label>{{ options[idx].label }}</label>
+<%
+		}
+	break;
+	case 'multicheckbox':
+		for(idx in options) {
+%>
+			<input type='checkbox' disabled='disabled' name='' value=''><label>{{ options[idx].label }}</label>
+<%
+		}
+	break;
+	case 'select':
+%>
+			<select disabled='disabled' style='width:100px'></select>
+<%
+	for(idx in options) {
+%>
+			<label>{{ options[idx].label }}</label>
+<%
+		}
+	break;
+	case 'button':
+%>
+			<input type='submit' name='button' id='button' value='{{ label }}' /></a>
+<%
+	break;
+}
+%>
+		</div>
+		<div class='element-desc'>{{ description }}</div>
 	</div>
 </script>

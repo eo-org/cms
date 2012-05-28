@@ -77,7 +77,7 @@ class Admin_AttributesetController extends Zend_Controller_Action
         }
         
         $this->view->elementList = array();
-		$this->view->formid = $id;
+		$this->view->entityId = $id;
         $this->_helper->template->head('编辑')
         	->actionMenu(array('save', 'delete'));
     }
