@@ -1,4 +1,4 @@
-<div class='attribute-list' entityId='<?php echo $this->entityId?>'>
+<div class='attribute-list' attributesetId ='<?php echo $this->entityId?>'>
 	<div class='attribute-library'>
 		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='text' label='输入框'>
 			输入框
@@ -33,7 +33,7 @@
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attributeset" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
 <script type='text/template' id='attribute-editor-template'>
-	标题：<input id='property-label' type="text" name="label" value="{{ label }}" />
+	标题：<input class='attribute-field' type="text" name="label" value="{{ label }}" />
 	<br />
 <%
 if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
@@ -44,7 +44,7 @@ if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
 	for(idx in options) {
 %>
 		<li class='option-item'>
-			<input type='text' name='' value='{{ options[idx].label }}' />
+			<input class='attribute-field' type='text' name='option' value='{{ options[idx].label }}' />
 			<span class='option-remove op-remove'>-</span>
 		</li>
 <%
@@ -57,7 +57,7 @@ if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
 <%
 }
 %>
-	提示：<textarea name="description">{{ description }}</textarea>
+	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
 	<div class='clear'></div>
 
 	<div class='attribute-save'>SAVE</div>

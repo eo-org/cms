@@ -63,11 +63,29 @@ class User_IndexController extends Zend_Controller_Action
 		$registerForm = new Form_Register();
 		$this->view->registerForm = $registerForm;
 		
+		$attributesetDoc = App_Factory::_am('Attributeset')
+			->addFilter('type', 'user')
+			->fetchOne();
+		
+		
+		$elementList = $attributesetDoc->getElementList();
+//		Zend_Debug::dump($elementList);
+		foreach($elementList as $el) {
+			$registerForm->addElement($el);
+		}
 		if($this->getRequest()->isPost() && $registerForm->isValid($this->getRequest()->getParams())) {
 			$csu = Class_Session_User::getInstance();
-			$result = $csu->register($registerForm->getValue('loginName'), $registerForm->getValue('password'));
+			$userDoc = $csu->register($registerForm->getValue('loginName'), $registerForm->getValue('password'));
 			
-			if ($result) {
+			if ($userDoc) {
+				foreach($this->getRequest()->getParams() as $key => $val) {
+					if(strpos($key, 'attr_') === 0) {
+						$userDoc->$key = $val;
+					}
+				}
+				$userDoc->setAttributesetDoc($attributesetDoc);
+				$userDoc->save();
+				
 				$this->_backToRef();
 			}
 		}

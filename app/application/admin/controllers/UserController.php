@@ -6,7 +6,7 @@ class Admin_UserController extends Zend_Controller_Action
         $labels = array(
         	'loginName' => '登陆名',
         	'created' => '注册日期',
-        	'lastLoginDate' => '最后登陆日期',
+        	'status' => '用户状态',
         	'~contextMenu' => ''
         );
         
@@ -16,7 +16,7 @@ class Admin_UserController extends Zend_Controller_Action
             'selectFields' => array(
                 'id' => NULL,
         		'created' => NULL,
-        		'lastLoginDate' => NULL
+        		'status' => array('active' => '激活', 'inactive' => '冻结')
             ),
             'url' => '/admin/user/get-user-json/',
             'actionId' => 'id',
@@ -49,10 +49,9 @@ class Admin_UserController extends Zend_Controller_Action
 	public function editAction()
 	{
 		$id = $this->getRequest()->getParam('id');
-		$attributesetId = $this->getRequest()->getParam('attributeset-id');
 		
 		$userCo = App_Factory::_m('User');
-		$attributesetCo = App_Factory::_m('Attributeset');
+//		$attributesetCo = App_Factory::_m('Attributeset');
 		
 		if(empty($id)) {
 			$userDoc = $userCo->create();
@@ -61,18 +60,17 @@ class Admin_UserController extends Zend_Controller_Action
 			$userDoc = $userCo->find($id);
 		}
 		
-		$attributesetId = $userDoc->attributesetId;
-		$attributesetDoc = $attributesetCo->find($attributesetId);
-		$attrElements = $attributesetDoc->getZfElements();
+//		$attributesetId = $userDoc->attributesetId;
+//		$attributesetDoc = $attributesetCo->find($attributesetId);
 		
 		require APP_PATH."/admin/forms/User/Edit.php";
 		$form = new Form_User_Edit();
-		$form->addElements($attrElements, 'main');
-		$form->populate($userDoc->getData());
+		$form->populate($userDoc->toArray());
 		
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
 			$result = $userDoc->setFromArray($form->getValues())
 				->save(false);
+			
 			if($result) {
 				$this->_helper->flashMessenger->addMessage('用户已经成功保存');
 				$this->_helper->switchContent->gotoSimple('index');
@@ -80,6 +78,7 @@ class Admin_UserController extends Zend_Controller_Action
 		}
 		
 		$this->view->form = $form;
+		$this->view->userDoc = $userDoc;
 		
 		if(empty($id)) {
 			$this->_helper->template->actionMenu(array('save'));
@@ -112,7 +111,7 @@ class Admin_UserController extends Zend_Controller_Action
 		$currentPage = 1;
 		
 		$userCo = App_Factory::_m('User');
-		$userCo->setFields(array('email', 'created', 'lastLoginDate'));
+		$userCo->setFields(array('loginName', 'created', 'status'));
 		$queryArray = array();
 		
         $result = array();

@@ -1,2 +1,19 @@
 <?php echo $this->form?>
 <div class='clear'></div>
+<div class='user'>
+	<div class='general-info'>
+	注册邮箱:<?php echo $this->userDoc->loginName?>
+	</div>
+	<hr />
+	<?php
+	$entityValue = $this->userDoc->entityValue;
+	foreach($entityValue as $k => $v) {
+	?>
+	<dl class='attribute-value' style='padding: 5px 0;'>
+		<dt style='font-weight: bold;'><?php echo $k?></dt>
+		<dd style='padding: 0 10px;'><?php echo $v?></dd>
+	</dl>
+	<?php
+	}
+	?>
+</div>
