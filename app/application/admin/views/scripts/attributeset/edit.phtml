@@ -58,6 +58,7 @@ if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
 }
 %>
 	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
+	排序：<input class='attribute-field' type='text' name='sort' value='' />
 	<div class='clear'></div>
 
 	<div class='attribute-save'>SAVE</div>
@@ -114,5 +115,6 @@ switch(type) {
 %>
 		</div>
 		<div class='element-desc'>{{ description }}</div>
+		<div class='drop-to-sort' style='background: red; height: 20px; width: 100%;'></div>
 	</div>
 </script>

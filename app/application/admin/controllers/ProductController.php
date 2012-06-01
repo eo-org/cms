@@ -132,7 +132,7 @@ class Admin_ProductController extends Zend_Controller_Action
                 }
             }
         }
-        $productCo->sort('$natural', -1);
+        $productCo->sort('_id', -1);
         
 		$productCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $productCo->fetchAll(true);
