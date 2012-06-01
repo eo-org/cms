@@ -134,6 +134,13 @@ class Admin_AttributesetController extends Zend_Controller_Action
         return $this->_helper->json($result);
     }
     
+    public function resortAttributesAction()
+    {
+    	Zend_Debug::dump($this->getRequest()->getParams());
+    	
+    	$this->_helper->json('ok');
+    }
+    
     public function getElementTemplateAction()
     {
     	$type = $this->getRequest()->getParam('element-type');

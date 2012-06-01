@@ -1,21 +1,21 @@
 <div class='attribute-list' attributesetId ='<?php echo $this->entityId?>'>
 	<div class='attribute-library'>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='text' label='输入框'>
+		<div class='attribute-library-item' attribute-type='text' label='输入框'>
 			输入框
 		</div>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='radio' label='单选按钮'>
+		<div class='attribute-library-item' attribute-type='radio' label='单选按钮'>
 			单选按钮
 		</div>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='select' label='单选下拉框'>
+		<div class='attribute-library-item' attribute-type='select' label='单选下拉框'>
 			单选下拉框
 		</div>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='multicheckbox' label='多选框'>
+		<div class='attribute-library-item' attribute-type='multicheckbox' label='多选框'>
 			多选框
 		</div>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='textarea' label='文本域'>
+		<div class='attribute-library-item' attribute-type='textarea' label='文本域'>
 			文本域
 		</div>
-		<div class='attribute-library-item drag-handle' draggable='true' attribute-type='button' label='提交按钮'>
+		<div class='attribute-library-item' attribute-type='button' label='提交按钮'>
 			提交按钮
 		</div>
 	</div>
@@ -26,6 +26,8 @@
 	<div class='attribute-editor'>
 		
 	</div>
+	
+	<div class='save-sort'>保存排序</div>
 	
 	<div class='clear'></div>
 </div>
@@ -58,16 +60,14 @@ if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
 }
 %>
 	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
-	排序：<input class='attribute-field' type='text' name='sort' value='' />
 	<div class='clear'></div>
 
 	<div class='attribute-save'>SAVE</div>
 </script>
 
 <script type='text/template' id='attribute-template'>
-	<div class='attribute-solid-item drag-handle' draggable='true'>
 		<div class='element-label'>
-			<a draggable='false' class='lightbox-trigger' attribute-id='{{ id }}' href='#'>{{ label }}</a>
+			<a class='lightbox-trigger' attribute-id='{{ id }}' href='#'>{{ label }}</a>
 		</div>
 		<div class='element'>
 <%
@@ -116,5 +116,4 @@ switch(type) {
 		</div>
 		<div class='element-desc'>{{ description }}</div>
 		<div class='drop-to-sort' style='background: red; height: 20px; width: 100%;'></div>
-	</div>
 </script>
