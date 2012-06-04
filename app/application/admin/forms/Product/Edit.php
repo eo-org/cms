@@ -71,10 +71,16 @@ class Form_Product_Edit extends App_Form_Edit
             )
         ));
         
-        $this->addElement('select', 'weight', array(
+        $this->addElement('text', 'weight', array(
             'label' => '权重',
             'filters' => array('StringTrim'),
-            'multiOptions' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10)
+        	'validators' => array(
+        		array('int'),
+        		array('between', false, array('min' => -10000, 'max' => 10000))
+        	),
+        	'description' => '数字越小排序越靠前',
+        	'value' => 1,
+        	'required' => false
         ));
         
 		$this->addElement('select', 'showWhere', array(
