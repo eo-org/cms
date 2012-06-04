@@ -43,24 +43,17 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		$productCo = App_Factory::_m('Product');
 		$productCo->addFilter('groupId', $groupId)
 			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price'));
+		switch($this->getParam('defaultSort')) {
+			case 'sw':
+				$productCo->sort('weight', 1);
+				break;
+			case 'sc':
+				break;
+			case 'sn':
+				$productCo->sort('name', 1);
+				break;
+		}
 			
-			
-//		$selector = $table->select()->from($table, array('id', 'sku', 'title', 'introicon', 'introtext', 'price'))
-//			->where('groupId in ('.$groupId.')')
-//			->limitPage($page, $pageSize)
-//			->order('id DESC');
-			
-			
-			
-			
-			
-//        Zend_Paginator::setDefaultScrollingStyle('Sliding');
-//		Zend_View_Helper_PaginationControl::setDefaultViewPartial(
-//		    'pagination-control.phtml'
-//		);
-//        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbTableSelect($selector));
-//        $paginator->setCurrentPageNumber($page)
-//        	->setItemCountPerPage($pageSize);
         
 		$rowset = $productCo->fetchAll(true);
 		
@@ -85,7 +78,18 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
             'required' => false
         ));
         
-    	$paramArr = array('param_showSubgroupContent');
+        $form->addElement('select', 'param_defaultSort', array(
+            'filters' => array('StringTrim'),
+            'label' => '产品默认排序：',
+        	'multiOptions' => array(
+        		'sw' => '权重排序',
+        		'sc' => '产品添加顺序',
+        		'sn' => '产品名排序'
+       		),
+            'required' => true
+        ));
+        
+    	$paramArr = array('param_showSubgroupContent', 'param_defaultSort');
     	$form->setParam($paramArr);
     	return $form;
     }
