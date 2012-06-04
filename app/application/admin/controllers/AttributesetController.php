@@ -136,7 +136,27 @@ class Admin_AttributesetController extends Zend_Controller_Action
     
     public function resortAttributesAction()
     {
-    	Zend_Debug::dump($this->getRequest()->getParams());
+    	$attrIdStr = $this->getRequest()->getParam('sortedIdsStr');
+    	$attrIdArr = explode(',', $attrIdStr);
+    	
+    	$attributeCo = App_Factory::_am('Attribute');
+    	foreach($attrIdArr as $key => $aId) {
+    		$attributeDoc = $attributeCo->find($aId);
+    		$attributeDoc->sort = $key;
+    		$attributeDoc->save();
+    	}
+    	
+//    	$mongoIdArr = array();
+//    	foreach($attrIdArr as $aId) {
+//    		$mongoIdArr[] = new MongoId($aId);
+//    	}
+//    	
+//    	$attributeCo = App_Factory::_am('Attribute');
+//    	$attributeDocs = $attributeCo->addFilter('_id', array('$in' => $mongoIdArr))->fetchDoc();
+////    	Zend_Debug::dump($attributeDocs);
+//    	foreach($attributeDocs as $doc) {
+//    		echo $doc->getId().',';
+//    	}
     	
     	$this->_helper->json('ok');
     }

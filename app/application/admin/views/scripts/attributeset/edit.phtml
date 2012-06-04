@@ -18,6 +18,9 @@
 		<div class='attribute-library-item' attribute-type='button' label='提交按钮'>
 			提交按钮
 		</div>
+		<div class='attribute-library-item' attribute-type='label' label='文字信息'>
+			文字信息
+		</div>
 	</div>
 	
 	<div class='attribute-current' style='min-height: 350px;'>
@@ -60,9 +63,11 @@ if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
 }
 %>
 	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
+	className: <input class='attribute-field' type="text" name="className" value="{{ className }}" />
 	<div class='clear'></div>
 
 	<div class='attribute-save'>SAVE</div>
+	<div class='attribute-delete'>DELETE</div>
 </script>
 
 <script type='text/template' id='attribute-template'>
@@ -109,6 +114,11 @@ switch(type) {
 	case 'button':
 %>
 			<input type='submit' name='button' id='button' value='{{ label }}' /></a>
+<%
+	break;
+	case 'label':
+%>
+			<hr style='width: 80%' />
 <%
 	break;
 }

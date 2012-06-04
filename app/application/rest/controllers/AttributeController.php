@@ -45,6 +45,9 @@ class Rest_AttributeController extends Zend_Rest_Controller
 	
 	public function deleteAction()
 	{
-		
+		$id = $this->getRequest()->getParam('id');
+		$attributeDoc = App_Factory::_am('Attribute')->find($id);
+		$attributeDoc->delete();
+		$this->getResponse()->setHeader('result', 'sucess');
 	}
 }

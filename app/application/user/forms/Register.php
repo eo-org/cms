@@ -55,9 +55,9 @@ class Form_Register extends Zend_Form
                     'Class/Form/Decorator',
                     'decorator');
 		$this->setDecorators(array(
-    		'FormElements',
-		array('HtmlTag', array('tag' => 'div', 'class' => 'register-form')),
-      		'Form'
-      		));
+			'FormElements',
+			array('HtmlTag', array('tag' => 'dl', 'class' => 'register-form')),
+			'Form'
+      	));
 	}
 }
