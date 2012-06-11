@@ -3,11 +3,18 @@ class Front_Login extends Class_Brick_Solid_Abstract
 {
     public function prepare()
     {
+    	$login = false;
+    	$csu = Class_Session_User::getInstance();
+    	if($csu->isLogin()) {
+    		$login = true;
+    	}
+    	
     	$linksOnly = false;
     	if($this->_params->linksOnly == 'y') {
     		$linksOnly = true;
     	}
     	
+    	$this->view->login = $login;
     	$this->view->linksOnly = $linksOnly;
     }
     

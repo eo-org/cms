@@ -20,6 +20,7 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
 		}
 		$clf = Class_Layout_Front::getInstance();
 		$groupRow = $clf->getResource();
+		
 		$page = $this->_request->getParam('page');
 		$groupId = $groupRow->id;
 		
@@ -39,15 +40,14 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
 //				$groupId = $groupId.','.implode($idArr, ',');
 //			}
 			
-			$table = Class_Base::_('Artical');
-			$selector = $table->select()->from($table, array('id', 'title', 'introtext', 'introicon', 'created'))
-				->where('groupId in ('.$groupId.')')
-				->limitPage($page, $pageSize)
-				->order('id DESC');
-			$siteInfo = Zend_Registry::get('siteInfo');
-	        if($siteInfo['type'] == 'multiple' && $siteInfo['subdomain']['id'] != 0) {
-	        	$selector->where('subdomainId = ?', $siteInfo['subdomain']['id']);
-	        }
+			$co = App_Factory::_m('Article');
+			$co->setFields(array('id', 'label', 'introtext', 'introicon', 'created'))
+//				->addFilter('groupId', array('$in' => $groupId))
+				->addFilter('groupId', $groupId)
+				->setPage($page)
+				->setPageSize($pageSize)
+				->sort('weight');
+				
 	        if($this->getParam('paginatorLanguage') == 'en') {
 	        	Zend_View_Helper_PaginationControl::setDefaultViewPartial(
 			    	'pagination-control.en.phtml'
@@ -59,14 +59,15 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
 			}
 	        Zend_Paginator::setDefaultScrollingStyle('Sliding');
 			
-	        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbTableSelect($selector));
+	        $dataSize = $co->count();
+	        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_Null($dataSize));
 	        $paginator->setCurrentPageNumber($page)
 	        	->setItemCountPerPage($pageSize);
 	        
-			$rowset = $table->fetchAll($selector);
+			$data = $co->fetchDoc();
 			$this->view->displayBrickName = $this->_brick->displayBrickName;
 			$this->view->title = $groupRow->label;
-			$this->view->rowset = $rowset;
+			$this->view->rowset = $data;
 			$this->view->paginator = $paginator;
 		}
 	}

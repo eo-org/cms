@@ -33,19 +33,22 @@ class Front_News extends Class_Brick_Solid_Abstract
 		$groupTb = Class_Base::_('Group');
 		$groupRow = $groupTb->find($groupId)->current();
 		
-		$articalTable = Class_Base::_('Artical');
-        $selector = $articalTable->select(false)->setIntegrityCheck(false)
-        	->from($articalTable, array('id', 'groupId', 'title', 'introtext', 'introicon', 'created', 'modified', 'featured'))
-        	->limit($this->getParam('limit'), 0);
-		
-		$featuredOnly = $this->getParam('featuredOnly');
-		if($featuredOnly == 'y') {
-			$selector->where('featured = 1');
-		} else if($featuredOnly == 'top') {
-			$selector->order('featured DESC');
-		}
-		$selector->order('id DESC');
-		
+		$co = App_Factory::_m('Article');
+//        $selector = $articalTable->select(false)->setIntegrityCheck(false)
+//        	->from($articalTable, array('id', 'groupId', 'title', 'introtext', 'introicon', 'created', 'modified', 'featured'))
+//        	->limit($this->getParam('limit'), 0);
+		$co->setFields(array('id', 'groupId', 'label', 'introtext', 'introicon', 'created', 'modified', 'featured'))
+			->setPagesize($this->getParam('limit'))
+			->setPage(1)
+			->sort('_id', -1);
+//		$featuredOnly = $this->getParam('featuredOnly');
+//		if($featuredOnly == 'y') {
+//			$selector->where('featured = 1');
+//		} else if($featuredOnly == 'top') {
+//			$selector->order('featured DESC');
+//		}
+//		$selector->order('id DESC');
+//		echo $groupId.'<br />';
     	if(!is_null($groupRow)) {
 			if($groupRow->hasChildren == 1) {
 				$subgroupRowset = $groupTb->fetchAll($groupTb->select(false)
@@ -54,28 +57,28 @@ class Front_News extends Class_Brick_Solid_Abstract
 				);
 				$subgroupIdArr = Class_Func::buildArr($subgroupRowset, 'id', 'id');
 				$subgroupIdArr[] = $groupId;
-				$selector->where('groupId in ('.implode(',', $subgroupIdArr).')');
+				$co->addFilter('groupId', array('$in' => $subgroupIdArr));
 			} else {
-				$selector->where('groupId = ?', $groupRow->id);
+				$co->addFilter('groupId', $groupRow->id);
 			}
     	} else {
     		$this->setParam('header', 'none');
     	}
     	
-    	if($this->getParam('titlePrefix') == 'group') {
-    		$selector->joinLeft(
-    			array('g' => 'group'),
-    			'artical.groupId = g.id',
-    			array('g.label')
-    		);
-    	} else if($this->getParam('titlePrefix') == 'subdomain') {
-    		$selector->joinLeft(
-    			array('s' => 'subdomain'),
-    			'artical.subdomainId = s.id',
-    			array('s.label', 'subdomainName' => 's.name')
-    		);
-    	}
-    	$articalRowset = $articalTable->fetchAll($selector);
+//    	if($this->getParam('titlePrefix') == 'group') {
+//    		$selector->joinLeft(
+//    			array('g' => 'group'),
+//    			'artical.groupId = g.id',
+//    			array('g.label')
+//    		);
+//    	} else if($this->getParam('titlePrefix') == 'subdomain') {
+//    		$selector->joinLeft(
+//    			array('s' => 'subdomain'),
+//    			'artical.subdomainId = s.id',
+//    			array('s.label', 'subdomainName' => 's.name')
+//    		);
+//    	}
+    	$articalRowset = $co->fetchDoc();
 		
     	$this->view->groupId = $groupId;
 		$this->view->groupRow = $groupRow;
@@ -138,7 +141,7 @@ class Front_News extends Class_Brick_Solid_Abstract
         $form->addElement('select', 'param_limit', array(
             'filters' => array('StringTrim'),
             'label' => '显示新闻数量：',
-        	'multiOptions' => array('global' => '使用默认设置',
+        	'multiOptions' => array(
         		4 => 4,
         		5 => 5,
         		6 => 6,
@@ -158,7 +161,6 @@ class Front_News extends Class_Brick_Solid_Abstract
             'filters' => array('StringTrim'),
             'label' => '单条新闻字数：',
     		'multiOptions' => array(
-    			'global' => '使用默认设置',
     			11 => 11,
     			12 => 12,
     			13 => 13,
@@ -179,7 +181,6 @@ class Front_News extends Class_Brick_Solid_Abstract
             'filters' => array('StringTrim'),
             'label' => '首条新闻字数：',
     		'multiOptions' => array(
-    			'global' => '使用默认设置',
     			11 => 11,
     			12 => 12,
     			13 => 13,
@@ -199,13 +200,13 @@ class Front_News extends Class_Brick_Solid_Abstract
         $form->addElement('select', 'param_shortItems', array(
             'filters' => array('StringTrim'),
             'label' => '图片右侧新闻条数：',
-        	'multiOptions' => array('global' => '使用默认设置', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+        	'multiOptions' => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
             'required' => false
         ));
         $form->addElement('select', 'param_shortCharCount', array(
             'filters' => array('StringTrim'),
             'label' => '图片右侧新闻字数：',
-        	'multiOptions' => array('global' => '使用默认设置', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+        	'multiOptions' => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
             'required' => false
         ));
         $form->addElement('select', 'param_created', array(
@@ -217,7 +218,7 @@ class Front_News extends Class_Brick_Solid_Abstract
         $form->addElement('select', 'param_moreLink', array(
             'filters' => array('StringTrim'),
             'label' => '更多连接：',
-        	'multiOptions' => array('global' => '使用默认设置', 1 => 'MORE', 2 => '更多', 3 => 'MORE++', 4 => '更多++', 5 => '仅显示DIV', 'none' => '不显示'),
+        	'multiOptions' => array(1 => 'MORE', 2 => '更多', 3 => 'MORE++', 4 => '更多++', 5 => '仅显示DIV', 'none' => '不显示'),
             'required' => false
         ));
     	$paramArr = array('param_groupId',

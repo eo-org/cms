@@ -1,6 +1,6 @@
 {% if row != 'none' %}
 	{% if showTitle == 'y' %}
-	<div class='title'>{{ row.title }}</div>
+	<div class='title'>{{ row.label }}</div>
 	{% endif %}
 	
 	{% if showDate == 'y' %}

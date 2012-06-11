@@ -1,16 +1,9 @@
 <?php
-//build layout selector
-$tb = Class_Base::_('Layout');
-$rowset = $tb->fetchAll();
-$defaultLayoutArr = array();
-$userLayoutArr = array();
-foreach($rowset as $row) {
-	if($row->default == 1) {
-		$defaultLayoutArr[] = $row;
-	} else {
-		$userLayoutArr[] = $row;
-	}
-}
+$clf = Class_Layout_Front::getInstance();
+
+$co = App_Factory::_m('Layout');
+$userLayoutDocs = $co->addFilter('default', 0)
+	->fetchDoc();
 ?>
 <div class='toolbar'>
 	<div class='main'>
@@ -18,13 +11,19 @@ foreach($rowset as $row) {
 			<li>
 				<select id='layout-selector' name='layout'>
 					<optgroup label='默认页面'>
-					<?php foreach($defaultLayoutArr as $row) {?>
-						<option value='/<?php echo $row->controllerName?>.shtml' layoutId='<?php echo $row->id?>'><?php echo $row->label?></option>
-					<?php }?>
+						<option value='/' layoutId='default-index'>首页</option>
+						<option value='/article.shtml' layoutId='default-article'>文章内容</option>
+						<option value='/list.shtml' layoutId='default-list'>文章列表</option>
+						<option value='/product.shtml' layoutId='default-product'>产品详情</option>
+						<option value='/product-list.shtml' layoutId='default-product-list'>产品列表</option>
+						<option value='/user/index/' layoutId='user-index'>用户管理</option>
+						<option value='/shop/index/' layoutId='shop-index'>购物车</option>
+						<option value='/shop/order/' layoutId=shop-order'>订单页面</option>
+						<option value='/shop/payment-gateway/' layoutId='shop-payment-gateway'>支付页面</option>
 					</optgroup>
 					<optgroup label='自定义页面'>
-					<?php foreach($userLayoutArr as $row) {?>
-						<option value='/<?php echo $row->controllerName?>.shtml' layoutId='<?php echo $row->id?>'><?php echo $row->label?></option>
+					<?php foreach($userLayoutDocs as $doc) {?>
+						<option value='/<?php echo $doc->controllerName?>.shtml' layoutId='default-<?php echo $doc->controllerName?>'><?php echo $doc->label?></option>
 					<?php }?>
 					</optgroup>
 					<option style='background: #789; border-radius: 2px; font: italic;' value='#/admin/layout/create/'>创建新页面</option>
@@ -66,3 +65,14 @@ foreach($rowset as $row) {
 		<div class='button' id='save-sprite-layout'>保存页面布局</div>
 	</div>
 </div>
+<script>
+	var layoutId = "<?php echo $clf->getCurrentModuleName()?>-<?php echo $clf->getCurrentControllerName()?>";
+	$('#layout-selector').change(function() {
+		window.location.href = $(this).val();
+	});
+	$('#layout-selector').find('option').each(function(i, ls) {
+		if($(ls).attr('layoutId') == layoutId) {
+			$(ls).attr('selected', 'selected');
+		}
+	});
+</script>

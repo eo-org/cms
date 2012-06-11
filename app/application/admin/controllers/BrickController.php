@@ -34,20 +34,20 @@ class Admin_BrickController extends Zend_Controller_Action
         $this->view->assign('partialHTML', $partialHTML);
     }
     
-    public function listCreatedAction()
-    {
-    	$spriteId = $this->getRequest()->getParam('spriteId');
-    	
-    	$tb = Class_Base::_('Brick');
-    	$selector = $tb->select(false)->setIntegrityCheck(false)
-	    	->from($tb, array('brickId', 'extName', 'brickName', 'description', 'cssSuffix', 'order'))
-	    	->order('brick.order')
-	    	->limitPage(1, 10);
-	    $rowset = $tb->fetchAll($selector);
-	    
-	    $this->view->stageId = $spriteId;
-	    $this->view->rowset = $rowset;
-    }
+//    public function listCreatedAction()
+//    {
+//    	$spriteId = $this->getRequest()->getParam('spriteId');
+//    	
+//    	$tb = Class_Base::_('Brick');
+//    	$selector = $tb->select(false)->setIntegrityCheck(false)
+//	    	->from($tb, array('brickId', 'extName', 'brickName', 'description', 'cssSuffix', 'order'))
+//	    	->order('brick.order')
+//	    	->limitPage(1, 10);
+//	    $rowset = $tb->fetchAll($selector);
+//	    
+//	    $this->view->stageId = $spriteId;
+//	    $this->view->rowset = $rowset;
+//    }
     
     public function createAction()
     {
@@ -81,13 +81,13 @@ class Admin_BrickController extends Zend_Controller_Action
 	    		$this->_helper->redirector()->gotoSimple('index');
 	    	}
     	}
-    	$brickTb = Class_Base::_('Brick');
+//    	$brickTb = Class_Base::_('Brick');
+    	$co = App_Factory::_m('Brick');
     	if($status == 'edit') {
-    		$brick = $brickTb->find($brickId)->current();
+    		$brick = $co->find($brickId);
     	} else {
-    		$brick = $brickTb->createRow();
+    		$brick = $co->create();
     		$brick->extName = $extName;
-    		$brick->params = "{}";
     		$form->addElement('hidden', 'extName', array(
     			'value' => $extName
     		));
@@ -98,10 +98,17 @@ class Admin_BrickController extends Zend_Controller_Action
     	$form = $solidBrick->configParam($form);
     	
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+    		
+    		
+//    		Zend_Debug::dump($this->getRequest()->getParams());
+//    		die();
+    		
+    		
     		$brick->setFromArray($form->getValues());
-    		if($brick->stageId == 0) {
+    		if($form->getValue('stageId') == '0') {
     			$brick->layoutId = 0;
     		}
+    		
     		$paramArr = array();
     		foreach($form->getValues() as $key => $value) {
     			if(strpos($key, 'param_') !== false) {
@@ -109,28 +116,30 @@ class Admin_BrickController extends Zend_Controller_Action
     				$paramArr[$jsonKey] = $value;
     			}
     		}
-    		$paramStr = Zend_Json_Encoder::encode($paramArr);
-    		$brick->params = $paramStr;
     		
-    		$db = Zend_Registry::get('db');
-    		$db->beginTransaction();
-		    try {
-		    	if($brick->sort == "") {
-		    		$brick->sort = NULL;
-		    	}
+    		$brick->params = $paramArr;
+    		$brick->active = 1;
+//    		$db = Zend_Registry::get('db');
+//    		$db->beginTransaction();
+//		    try {
+//		    	if($brick->sort == "") {
+//		    		$brick->sort = NULL;
+//		    	}
 				$brick->save();
 		    	$brickId = $brick->brickId;
-                $db->commit();
-            } catch(Exception $e) {
-		        $db->rollBack();
-		        throw $e;
-            }
+//                $db->commit();
+//            } catch(Exception $e) {
+//		        $db->rollBack();
+//		        throw $e;
+//            }
+
             $this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
     	}
     	
     	$form->populate($brick->toArray());
+    	
     	if(!is_null($brick->params)) {
-	    	$params = Zend_Json_Decoder::decode($brick->params);
+	    	$params = $brick->params;
 	    	foreach($params as $key => $value) {
 	    		$el = $form->getElement('param_'.$key);
 	    		if(!is_null($el)) {
@@ -138,6 +147,7 @@ class Admin_BrickController extends Zend_Controller_Action
 	    		}
 	    	}
     	}
+    	
         $selectedIds = array();
     	$this->view->form = $form;
     	$this->view->solidBrick = $solidBrick;
@@ -150,7 +160,7 @@ class Admin_BrickController extends Zend_Controller_Action
     public function deleteAction()
     {
     	$brickId = $this->getRequest()->getParam('brick-id');
-    	$brick = Class_Base::_('Brick')->find($brickId)->current();
+    	$brick = App_Factory::_m('Brick')->find($brickId);
     	if(is_null($brick)) {
     		throw new Exception('brick not found');
     	}
@@ -163,7 +173,7 @@ class Admin_BrickController extends Zend_Controller_Action
     	$brickId = $this->getRequest()->getParam('brick-id');
     	$tplName = $this->getRequest()->getParam('tpl-name');
     	
-    	$brick = Class_Base::_('Brick')->find($brickId)->current();
+    	$brick = App_Factory::_m('Brick')->find($brickId);
     	if(is_null($brick)) {
     		throw new Exception('Brick not found by id :'.$brickId);
     	}

@@ -3,7 +3,7 @@ class Form_Article_Edit extends Class_Form_Edit
 {
     public function init()
     {
-        $this->addElement('text', 'title', array(
+        $this->addElement('text', 'label', array(
             'filters' => array('StringTrim'),
             'label' => '文章名：',
             'required' => true
@@ -45,7 +45,7 @@ class Form_Article_Edit extends Class_Form_Edit
         	'required' => false
         ));
         
-        $this->addElement('text', 'alias', array(
+        $this->addElement('text', 'link', array(
             'filters' => array('StringTrim'),
             'label' => '文章静态链接：',
         	'validators' => array(
@@ -56,29 +56,10 @@ class Form_Article_Edit extends Class_Form_Edit
         	),
             'required' => false
         ));
-//        $this->addElement('select', 'attrib_showTitle', array(
-//            'filters' => array('StringTrim'),
-//            'label' => '显示标题：',
-//        	'multiOptions' => array('' => '默认', 'y' => '显示', 'n' => '不显示'),
-//            'required' => false
-//        ));
-//        $this->addElement('select', 'attrib_showDate', array(
-//            'filters' => array('StringTrim'),
-//            'label' => '显示日期：',
-//        	'multiOptions' => array('' => '默认', 'y' => '显示', 'n' => '不显示'),
-//            'required' => false
-//        ));
-//        $this->addElement('select', 'attrib_showHits', array(
-//            'filters' => array('StringTrim'),
-//            'label' => '浏览次数：',
-//        	'multiOptions' => array('' => '默认', 'y' => '显示', 'n' => '不显示'),
-//            'required' => false
-//        ));
         
-        $this->_main = array('title', 'fulltext', 'appendImage');
+        $this->_main = array('label', 'fulltext', 'appendImage');
         $this->_required = array('groupId');
         $this->_optional = array('layoutId', 'introicon', 'introtext', 'featured');
-//        $this->_param = array('alias', 'attrib_showTitle', 'attrib_showDate', 'attrib_showHits');
-		$this->_param = array('alias');
+		$this->_param = array('link');
     }
 }

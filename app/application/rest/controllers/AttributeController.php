@@ -33,12 +33,20 @@ class Rest_AttributeController extends Zend_Rest_Controller
 	
 	public function putAction()
 	{
-		$id = $this->getRequest()->getParam('id');
 		$modelString = $this->getRequest()->getParam('model');
 		$jsonArray = Zend_Json::decode($modelString);
 		
-		$attributeDoc = App_Factory::_am('Attribute')->find($id);
+		$attributeDoc = App_Factory::_am('Attribute')->find($jsonArray['id']);
+		
+//		Zend_Debug::dump($attributeDoc);
+		
+		Zend_Debug::dump($jsonArray);
+		
 		$attributeDoc->setFromArray($jsonArray);
+		
+		
+		Zend_Debug::dump($attributeDoc);
+		
 		$attributeDoc->save();
 		$this->getResponse()->setHeader('result', 'sucess');
 	}

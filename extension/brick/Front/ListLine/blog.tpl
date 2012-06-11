@@ -8,11 +8,11 @@
 {% block rowset %}
 {% for row in rowset %}
 	<li>
-		<a href='/article-{{row.id}}.shtml' title='{{row.title}}'>
+		<a href='/article-{{row.id}}.shtml' title='{{row.label}}'>
 			<img src='{{ row.introicon|outputImage }}' /> 
 		</a>
-		<a href='/article-{{row.id}}.shtml' title='{{row.title}}'>
-			{{row.title}}
+		<a href='/article-{{row.id}}.shtml' title='{{row.label}}'>
+			{{row.label}}
 		</a>
 	</li>
 {% endfor %}

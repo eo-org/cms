@@ -16,6 +16,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initMongoDb()
 	{
+		Class_Server::setLibVersion('v2');
+		
 		$siteId = Class_Server::getSiteId();
 		$mongoDb = new App_Mongo_Db_Adapter('cms_'.$siteId, Class_Server::getMongoServer());
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
@@ -72,7 +74,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $controller = $this->getPluginResource('frontController')->getFrontController();
         $router = $controller->getRouter();
         $router->addRoute('article', new Zend_Controller_Router_Route_Regex(
-            'article-(\d+)\.shtml',
+            'article-(\w+)\.shtml',
             array('controller' => 'article'),
             array(
                 1 => 'action'
@@ -80,7 +82,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'article-%1$s.shtml'
         ));
         $router->addRoute('list', new Zend_Controller_Router_Route_Regex(
-            'list-(\d+)/page(\d+)\.shtml',
+            'list-(\w+)/page(\d+)\.shtml',
             array(
                 'controller' => 'list',
             	'page' => 1),
@@ -99,7 +101,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'product-%1$s.shtml'
         ));
         $router->addRoute('product-list', new Zend_Controller_Router_Route_Regex(
-            'product-list-(\d+)/page(\d+)\.shtml',
+            'product-list-(\w+)/page(\d+)\.shtml',
             array(
                 'controller' => 'product-list',
             	'page' => 1),

@@ -24,16 +24,16 @@ class Front_ListCurrentGroup extends Class_Brick_Solid_Abstract
 				$groupId = $resource->groupId;
 			}
 		}
-		$articleTb = Class_Base::_('Artical');
-		$selector = $articleTb->select(false)->from($articleTb, array('id', 'title', 'alias', 'introtext', 'introicon', 'created'))
-			->where('groupId = ?', $groupId)
-			->order('id DESC');
-		$articleRowset = $articleTb->fetchAll($selector);
-		
+		$articleCo = App_Factory::_m('Article');
+		$articleCo->setFields(array('id', 'label', 'link', 'introtext', 'introicon', 'created'))
+			->addFilter('groupId', $groupId)
+			->sort('weight');
+		$articleDocs = $articleCo->fetchDoc();
+//		Zend_Debug::dump($articleDocs);
 		$linkController = Class_Link_Controller::factory('article');
 		$link = $linkController->getLink($groupId);
 		
-		$this->view->rowset = $articleRowset;
+		$this->view->rowset = $articleDocs;
 		if($groupId != 'x') {
 			$this->view->title = $link->label;
 		}

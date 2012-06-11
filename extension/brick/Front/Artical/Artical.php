@@ -17,16 +17,17 @@ class Front_Artical extends Class_Brick_Solid_Abstract
     	$clf = Class_Layout_Front::getInstance();
     	$layoutType = $clf->getType();
     	$article = $clf->getResource();
-    	$attachmentRowset = null;
+//    	$attachmentRowset = null;
     	
-        if($layoutType == 'article' && $article != 'none') {
-	        $title = $article->title;
+    	
+        if($layoutType == 'article' && $article != null && $article != 'none') {
+	        $title = $article->label;
 	        if($this->getParam('showHits') == 'y') {
 	        	$article->hits++;
 	        	$article->save();
 	        }
-	        $aTb = new Zend_Db_Table('artical_attachment');
-	        $attachmentRowset = $aTb->fetchAll($aTb->select()->where('articalId = ?', $article->id));
+//	        $aTb = new Zend_Db_Table('artical_attachment');
+//	        $attachmentRowset = $aTb->fetchAll($aTb->select()->where('articalId = ?', $article->id));
 	        
 	        $this->_id = $article->id;
         } else {
@@ -37,7 +38,7 @@ class Front_Artical extends Class_Brick_Solid_Abstract
         	$view->headTitle()->prepend($title);
         }
         $this->view->row = $article;
-        $this->view->attachmentRowset = $attachmentRowset;
+//        $this->view->attachmentRowset = $attachmentRowset;
     }
     
     public function configParam(Class_Form_Edit $form)

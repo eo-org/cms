@@ -165,6 +165,76 @@ class Admin_LayoutPositionController extends Zend_Controller_Action
 	
 	public function getPositionJsonAction()
     {
+    	$pageSize = 20;
+		$currentPage = 1;
+		
+		$articleCo = App_Factory::_m('Article');
+		$articleCo->setFields(array('id', 'label', 'groupId', 'link', 'featured'));
+		$queryArray = array();
+		
+        $result = array();
+        foreach($this->getRequest()->getParams() as $key => $value) {
+            if(substr($key, 0 , 7) == 'filter_') {
+                $field = substr($key, 7);
+                switch($field) {
+                	case 'label':
+                		$articleCo->addFilter('label', new MongoRegex("/^".$value."/"));
+                		break;
+                	case 'groupId':
+                		$articleCo->addFilter('groupId', $value);
+                		break;
+                	case 'link':
+                		$articleCo->addFilter('link', $value);
+                		break;
+                	case 'featured':
+                		$articleCo->addFilter('featured', $value);
+                		break;
+                    case 'page':
+            			if(intval($value) != 0) {
+            				$currentPage = $value;
+            			}
+                        $result['currentPage'] = intval($value);
+            		    break;
+                }
+            }
+        }
+        $articleCo->sort('_id', -1);
+        
+		$articleCo->setPage($currentPage)->setPageSize($pageSize);
+		$data = $articleCo->fetchAll(true);
+		$dataSize = $articleCo->count();
+		
+		$result['data'] = $data;
+        $result['dataSize'] = $dataSize;
+        $result['pageSize'] = $pageSize;
+        $result['currentPage'] = $currentPage;
+        
+        return $this->_helper->json($result);
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         $pageSize = 30;
         
 	    $tb = Class_Base::_('Layout_Position');

@@ -33,11 +33,11 @@ class Admin_LayoutController extends Zend_Controller_Action
         $form = new Form_Layout_Create();
         
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	$tb = Class_Base::_('Layout');
-        	$row = $tb->createRow();
-        	$row->setFromArray($form->getValues());
-        	$row->default = 0;
-        	$row->save();
+        	$co = App_Factory::_m('Layout');
+        	$doc = $co->create();
+        	$doc->setFromArray($form->getValues());
+        	$doc->default = 0;
+        	$doc->save();
         	
 //        	$linkRow->save();
 			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
@@ -91,6 +91,54 @@ class Admin_LayoutController extends Zend_Controller_Action
         $this->view->form = $form;
         $this->_helper->template->actionMenu(array('save'));
     }
+    
+	public function saveStageJsonAction()
+	{
+		$jsonString = $this->getRequest()->getParam('jsonString');
+		$jsonObj = Zend_Json::decode($jsonString);
+		$layoutId = $jsonObj['layoutId'];
+		$stagesObj = $jsonObj['stages'];
+		
+		$co = App_Factory::_m('Layout');
+//		$docs = $co->addFilter('layoutId', $layoutId)
+//			->fetchDoc();
+			
+		$doc = $co->find($layoutId);
+		if(is_null($doc)) {
+			$doc = $co->create();
+			
+		}
+//		$currentStageIds = array();
+//		
+//		foreach($stagesObj as $obj) {
+//			if($obj['stageId'] == 0) {
+//				$doc = $co->create();
+//				$doc->layoutId = $layoutId;
+//				$doc->type = $obj['type'];
+//				$doc->sort = $obj['sort'];
+//				$doc->save();
+//			} else {
+//				$currentStageIds[] = $obj['stageId'];
+//				foreach($docs as $doc) {
+//					if($doc->id == $obj['stageId'] && $doc->sort != $obj['sort']) {
+//						$doc->sort = $obj['sort'];
+//						$doc->save();
+//					}
+//				}
+//			}
+//		}
+//		foreach($docs as $doc) {
+//			if(!in_array($doc->id, $currentStageIds)) {
+//				$doc->delete();
+//			}
+//		}
+
+		$doc->stage = $stagesObj;
+		$doc->save();
+		
+		
+		return $this->_helper->json(array('result' => 'success'));
+	}
     
     public function setPageAction()
     {
