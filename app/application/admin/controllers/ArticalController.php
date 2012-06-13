@@ -226,8 +226,8 @@ class Admin_ArticalController extends Zend_Controller_Action
         $pageSize = 20;
 		$currentPage = 1;
 		
-		$articleCo = App_Factory::_m('Article');
-		$articleCo->setFields(array('id', 'label', 'groupId', 'link', 'featured'));
+		$co = App_Factory::_m('Article');
+		$co->setFields(array('id', 'label', 'groupId', 'link', 'featured'));
 		$queryArray = array();
 		
         $result = array();
@@ -236,16 +236,16 @@ class Admin_ArticalController extends Zend_Controller_Action
                 $field = substr($key, 7);
                 switch($field) {
                 	case 'label':
-                		$articleCo->addFilter('label', new MongoRegex("/^".$value."/"));
+                		$co->addFilter('label', new MongoRegex("/^".$value."/"));
                 		break;
                 	case 'groupId':
-                		$articleCo->addFilter('groupId', $value);
+                		$co->addFilter('groupId', $value);
                 		break;
                 	case 'link':
-                		$articleCo->addFilter('link', $value);
+                		$co->addFilter('link', $value);
                 		break;
                 	case 'featured':
-                		$articleCo->addFilter('featured', $value);
+                		$co->addFilter('featured', $value);
                 		break;
                     case 'page':
             			if(intval($value) != 0) {
@@ -256,11 +256,11 @@ class Admin_ArticalController extends Zend_Controller_Action
                 }
             }
         }
-        $articleCo->sort('_id', -1);
+        $co->sort('_id', -1);
         
-		$articleCo->setPage($currentPage)->setPageSize($pageSize);
-		$data = $articleCo->fetchAll(true);
-		$dataSize = $articleCo->count();
+		$co->setPage($currentPage)->setPageSize($pageSize);
+		$data = $co->fetchAll(true);
+		$dataSize = $co->count();
 		
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;

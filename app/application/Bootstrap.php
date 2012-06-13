@@ -56,16 +56,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         
 		$view = new Zend_View();
 		$view->headTitle()->setSeparator('_');
-		$tb = new Zend_Db_Table('site_general');
-		$row = $tb->fetchAll()->current();
-		if(!is_null($row->pageTitle)) {
-			$view->headTitle($row->pageTitle);
+		
+		$co = App_Factory::_m('Info');
+		$doc = $co->fetchOne();
+		if(!is_null($doc->pageTitle)) {
+			$view->headTitle($doc->pageTitle);
 		}
-		if(!empty($row->metakey)) {
-			$view->headMeta()->appendName('keywords', $row->metakey);
+		if(!empty($doc->metakey)) {
+			$view->headMeta()->appendName('keywords', $doc->metakey);
 		}
-		if(!empty($row->metadesc)) {
-			$view->headMeta()->appendName('description', $row->metadesc);
+		if(!empty($doc->metadesc)) {
+			$view->headMeta()->appendName('description', $doc->metadesc);
 		}
     }
     

@@ -11,7 +11,7 @@ class Form_Ad_Edit extends Class_Form_Edit
             'multiOptions' => $rowsetArr,
     		'required' => true
         ));
-        $this->addElement('text', 'name', array(
+        $this->addElement('text', 'label', array(
             'filters' => array('StringTrim'),
             'label' => '广告名（系统）：',
             'required' => true
@@ -34,7 +34,7 @@ class Form_Ad_Edit extends Class_Form_Edit
             'required' => false
         ));
         
-        $this->_main = array('groupId', 'name', 'description');
+        $this->_main = array('groupId', 'label', 'description');
         $this->_required = array('url', 'image');
     }
 }

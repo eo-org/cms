@@ -3,15 +3,18 @@ class Admin_SiteController extends Zend_Controller_Action
 {
 	public function indexAction()
     {
-    	include_once APP_PATH.'/admin/forms/Site/Edit.php';
-    	$form = new Form_Site_Edit();
+    	include_once APP_PATH.'/admin/forms/Info/Edit.php';
+    	$form = new Form_Info_Edit();
     	
-        $tb = new Zend_Db_Table('site_general');
-        $row = $tb->fetchAll()->current();
-        $form->populate($row->toArray());
+        $co = App_Factory::_m('Info');
+        $doc = $co->fetchOne();
+        if(is_null($doc)) {
+        	$doc = $co->create();
+        }
+        $form->populate($doc->toArray());
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	$row->setFromArray($form->getValues());
-        	$row->save();
+        	$doc->setFromArray($form->getValues());
+        	$doc->save();
         	$this->_helper->flashMessenger->addMessage('网站基本信息已保存');
         	$this->_helper->switchContent->gotoSimple('index');
         }

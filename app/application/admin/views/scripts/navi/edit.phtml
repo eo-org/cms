@@ -1,0 +1,39 @@
+<div class='navi tree' naviId ='1'>
+	<div>add new</div>
+	<div><input type='text'>
+</div>
+
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/navi" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+<script type='text/template' id='attribute-editor-template'>
+	标题：<input class='attribute-field' type="text" name="label" value="{{ label }}" />
+	<br />
+<%
+if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
+%>
+	<div>候选项：</div>
+	<ul class='option-container'>
+<%
+	for(idx in options) {
+%>
+		<li class='option-item'>
+			<input class='attribute-field' type='text' name='option' value='{{ options[idx].label }}' />
+			<span class='option-remove op-remove'>-</span>
+		</li>
+<%
+	}
+%>
+	</ul>
+	<div>
+		<span class='option-add op-add'>+</span>
+	</div>
+<%
+}
+%>
+	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
+	className: <input class='attribute-field' type="text" name="className" value="{{ className }}" />
+	<div class='clear'></div>
+
+	<div class='attribute-save'>SAVE</div>
+	<div class='attribute-delete'>DELETE</div>
+</script>

@@ -1,5 +1,5 @@
 <?php
-class Form_Site_Edit extends Class_Form_Edit
+class Form_Info_Edit extends Class_Form_Edit
 {
     public function init()
     {
@@ -18,12 +18,7 @@ class Form_Site_Edit extends Class_Form_Edit
             'label' => 'Description：',
             'required' => false
         ));
-        $this->addElement('text', 'logoPath', array(
-            'filters' => array('StringTrim'),
-            'label' => '网站LOGO：',
-            'required' => false
-        ));
-        $this->_main = array('pageTitle', 'logoPath');
+        $this->_main = array('pageTitle');
         $this->_optional = array('metakey', 'metadesc');
     }
 }

@@ -1,21 +1,21 @@
 <?php
 class Admin_AdController extends Zend_Controller_Action
 {
-	public function init()
-	{
-		$this->_helper->template->portal(array(
-			array('label' => '广告', 'controllerName' => 'ad', 'href' => '/admin/ad/index'),
-			array('label' => '广告分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/ad'),
-		));
-	}
+//	public function init()
+//	{
+//		$this->_helper->template->portal(array(
+//			array('label' => '广告', 'controllerName' => 'ad', 'href' => '/admin/ad/index'),
+//			array('label' => '广告分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/ad'),
+//		));
+//	}
 	
 	public function indexAction()
 	{
 		$sectionId = $this->getRequest()->getParam('sectionId');
     	
         $labels = array(
-            'id' => 'ID',
-            'name' => '广告名',
+            'label' => '广告名',
+        	'url' => '连接',
             'clicks' => '点击次数',
         	'~contextMenu' => ''
         );
@@ -26,7 +26,6 @@ class Admin_AdController extends Zend_Controller_Action
         	'selectFields' => array(
                 'id' => null,
             ),
-            'presetFields' => array('sectionId' => $sectionId),
             'url' => '/admin/ad/get-ad-json/',
             'actionId' => 'id',
         	'click' => array(
@@ -45,21 +44,21 @@ class Admin_AdController extends Zend_Controller_Action
 	
 	public function listGroupAction()
 	{
-		$adTable = Class_Base::_('Ad');
-		$adRowset = $adTable->fetchAll();
-		
-		$groupTable = Class_Base::_('GroupV2');
-		$groupRowset = $groupTable->fetchAll($groupTable->select()->where('type = ?', 'ad'));
-		
-		foreach($groupRowset as $groupRow) {
-			foreach($adRowset as $adRow) {
-				if($adRow->groupId == $groupRow->id) {
-					$groupRow->appendAdRow($adRow);
-				}
-			}
-		}
-		
-		$this->view->groupRowset = $groupRowset;
+//		$adTable = Class_Base::_('Ad');
+//		$adRowset = $adTable->fetchAll();
+//		
+//		$groupTable = Class_Base::_('GroupV2');
+//		$groupRowset = $groupTable->fetchAll($groupTable->select()->where('type = ?', 'ad'));
+//		
+//		foreach($groupRowset as $groupRow) {
+//			foreach($adRowset as $adRow) {
+//				if($adRow->groupId == $groupRow->id) {
+//					$groupRow->appendAdRow($adRow);
+//				}
+//			}
+//		}
+//		
+//		$this->view->groupRowset = $groupRowset;
 	}
 	
 	public function createAction()
@@ -74,25 +73,26 @@ class Admin_AdController extends Zend_Controller_Action
 		
 		require APP_PATH.'/admin/forms/Ad/Edit.php';
 		$form = new Form_Ad_Edit();
-		$tb = new Class_Model_Ad_Tb();
+		$co = App_Factory::_m('Ad');
 		if(is_null($id)) {
-			$row = $tb->createRow();
-			$row->created = new Zend_Db_Expr('NOW()');
+			$doc = $co->create();
+			$doc->created = new MongoDate();
+			$doc->clicks = 0;
 		} else {
-			$row = $tb->find($id)->current();
+			$doc = $co->find($id);
 		}
 		
-		$form->populate($row->toArray());
+		$form->populate($doc->toArray());
 		//preset groupId from url
-    	$groupId = $this->getRequest()->getParam('groupId');
-        if(!empty($groupId)) {
-        	$form->groupId->setAttrib('disabled', 'disabled');
-        	$form->groupId->setValue($groupId);
-        }
+//    	$groupId = $this->getRequest()->getParam('groupId');
+//        if(!empty($groupId)) {
+//        	$form->groupId->setAttrib('disabled', 'disabled');
+//        	$form->groupId->setValue($groupId);
+//        }
         //end preset
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$row->setFromArray($form->getValues());
-			$row->save();
+			$doc->setFromArray($form->getValues());
+			$doc->save();
 			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
 		}
 		
@@ -100,19 +100,6 @@ class Admin_AdController extends Zend_Controller_Action
             'id' => 'ID',
             'label' => '链接名'
         );
-//        $hashParam = $this->getRequest()->getParam('hashParam');
-//        $partialHTML = $this->view->partial('select-search-header-front.phtml', array(
-//            'labels' => $labels,
-//        	'selectFields' => array(
-//                'id' => null
-//            ),
-//            'url' => '/admin/category/get-category-json/',
-//            'actionId' => 'id',
-//            'initSelectRun' => 'true',
-//            'hashParam' => $hashParam
-//        ));
-//
-//        $this->view->partialHTML = $partialHTML;
 		$this->view->form = $form;
 		$this->_helper->template->actionMenu(array('save', 'delete'));
 	}
@@ -120,56 +107,57 @@ class Admin_AdController extends Zend_Controller_Action
 	public function deleteAction()
 	{
 		$id = $this->getRequest()->getParam('id');
-		$tb = new Class_Model_Ad_Tb();
-		$row = $tb->find($id)->current();
-		if(!is_null($row)) {
-			$row->delete();
+		$co = App_Factory::_m('Ad');
+		$doc = $co->find($id);
+		if(!is_null($doc)) {
+			$doc->delete();
 		}
 		$this->_helper->switchContent->gotoSimple('index');
 	}
 	
-	public function getAdGroupSelectorAction()
-	{
-		
-	}
-	
 	public function getAdJsonAction()
 	{
-		$pageSize = 30;
-        
-	    $tb = Class_Base::_('Ad');
-	    $selector = $tb->select()
-	    	->order('id DESC')
-	        ->limitPage(1, $pageSize);
+		$pageSize = 20;
+		$currentPage = 1;
+		
+		$co = App_Factory::_m('Ad');
+		$co->setFields(array('label', 'groupId', 'url', 'clicks'));
+		$queryArray = array();
+		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
                 $field = substr($key, 7);
                 switch($field) {
-            		case 'page':
-            			if(intval($value) == 0) {
-            				$value = 1;
+                	case 'label':
+                		$co->addFilter('label', new MongoRegex("/^".$value."/"));
+                		break;
+                	case 'groupId':
+                		$co->addFilter('groupId', $value);
+                		break;
+                	case 'url':
+                		$co->addFilter('url', $value);
+                		break;
+                    case 'page':
+            			if(intval($value) != 0) {
+            				$currentPage = $value;
             			}
-            		    $selector->limitPage(intval($value), $pageSize);
                         $result['currentPage'] = intval($value);
             		    break;
-            		case 'selectedIds':
-					    if($value != 'all') {
-					        $selector->where('id in (?)', explode(',', $value));
-					    }
-					    break;
                 }
             }
         }
+        $co->sort('_id', -1);
         
-        $rowset = $tb->fetchAll($selector)->toArray();
-        $result['data'] = $rowset;
-        $result['dataSize'] = Class_Func::count($selector);
+		$co->setPage($currentPage)->setPageSize($pageSize);
+		$data = $co->fetchAll(true);
+		$dataSize = $co->count();
+		
+		$result['data'] = $data;
+        $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
+        $result['currentPage'] = $currentPage;
         
-        if(!isset($result['currentPage'])) {
-        	$result['currentPage'] = 1;
-        }
         return $this->_helper->json($result);
 	}
 }

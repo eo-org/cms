@@ -17,8 +17,10 @@ $csa = Class_Session_Admin::getInstance();
 
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/jub.js"></script>
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/func.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/jquery.jplayer.min.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/player.js"></script>
 <?=$this->headScript() ?>
 
 <?php if($csa->hasPrivilege()) { ?>
@@ -57,4 +59,7 @@ var FILE_SERVER = "<?=Class_Server::miscUrl()?>";
 window.ORG_CODE = "<?php echo Class_Server::getOrgCode()?>";
 </script>
 <?php } ?>
+<script type="text/javascript" >
+window.LIB_URI = "http://lib.eo.test/cms/v2";
+</script>
 </head>
