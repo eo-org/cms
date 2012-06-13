@@ -1,1 +1,3 @@
 move all database to mongodb so database is not needed recreation when open new account.
+shared with lujingjing
+added player extension
