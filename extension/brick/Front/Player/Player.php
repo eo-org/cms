@@ -13,8 +13,12 @@ class Front_Player extends Class_Brick_Solid_Abstract
             'label' => '媒体文件url：',
             'required' => true
         ));
-		
-		$paramArr = array('param_fileurl');
+        $form->addElement('select', 'param_showplayer', array(
+        		'label' => '是否显示播放器：',
+        		'required' => true,
+        		'multiOptions' => array('n' => '不显示', 'y' => '显示')
+        ));
+		$paramArr = array('param_fileurl','param_showplayer');	
 		$form->setParam($paramArr);
     	return $form;
     }

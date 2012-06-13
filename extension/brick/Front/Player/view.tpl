@@ -1,7 +1,10 @@
+{% block header %}{% endblock %}
+<div class='player-box' data='{"fileurl":"{{fileurl}}","showplayer":"{{showplayer}}"}'>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/player.js"></script>
 
 {% block header %}{% endblock %}
 <div class='player-box' data='{"fileurl":"{{fileurl}}"}'>
+>>>>>>> 684f35c8c55f723db3613de8364f48fd019ba1ad
 	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 		<div id="jp_container_1">
 			<div class="jp-gui">
