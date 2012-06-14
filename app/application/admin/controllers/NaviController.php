@@ -55,6 +55,29 @@ class Admin_NaviController extends Zend_Controller_Action
     
     public function editAction()
     {
+    	$co = App_Factory::_('Navi');
+    	$doc = $co->fetchOne();
+    	if(is_null($doc)) {
+    		$doc->label = '主导航';
+    		$doc->navi = array(
+    			array('label' => '首页', 'url' => '/'),
+    			array('label' => '关于公司', 'url' => '/about/us.shtml'),
+    			array('label' => '公司产品', 'url' => '/company/products.shtml'),
+    			array('label' => '分子机构', 'url' => '/branch/a.shtml', 'children' => array(
+    				'label' => '分子机构A', 'url' => '/branch/a.shtml', 'children' => array(
+    					array('label' => '首页', 'url' => '/'),
+    					array('label' => '首页', 'url' => '/')
+    				)
+    			)
+    		);
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	
 //        $id = $this->getRequest()->getParam('id');
 //        
 //        require APP_PATH.'/admin/forms/Section/Edit.php';
