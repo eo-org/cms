@@ -12,9 +12,9 @@ class Front_AdGroupV2 extends Class_Brick_Solid_Abstract
     {
     	$this->_id = $this->getParam('groupId');
     	
-    	$tb = Class_Base::_('Ad');
-    	$selector = $tb->select()->where('groupId = ?', $this->_id);
-    	$rowset = $tb->fetchAll($selector);
+    	$co = App_Factory::_m('Ad');
+    	$rowset = $co->addFilter('groupId', $this->_id)
+    		->fetchDoc();
     	
     	$numPerSlide = $this->getParam('numPerSlide');
     	$numPerSlide = empty($numPerSlide) ? 1 : $numPerSlide;
