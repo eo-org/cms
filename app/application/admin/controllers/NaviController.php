@@ -55,21 +55,31 @@ class Admin_NaviController extends Zend_Controller_Action
     
     public function editAction()
     {
-    	$co = App_Factory::_('Navi');
+    	$co = App_Factory::_m('Navi');
     	$doc = $co->fetchOne();
     	if(is_null($doc)) {
+    		$doc = $co->create();
     		$doc->label = '主导航';
     		$doc->navi = array(
     			array('label' => '首页', 'url' => '/'),
     			array('label' => '关于公司', 'url' => '/about/us.shtml'),
     			array('label' => '公司产品', 'url' => '/company/products.shtml'),
     			array('label' => '分子机构', 'url' => '/branch/a.shtml', 'children' => array(
-    				'label' => '分子机构A', 'url' => '/branch/a.shtml', 'children' => array(
-    					array('label' => '首页', 'url' => '/'),
-    					array('label' => '首页', 'url' => '/')
-    				)
-    			)
+    				array('label' => '分子机构A', 'url' => '/branch/a.shtml', 'children' => array(
+    					array('label' => 'A1', 'url' => '/branch/a1.shtml'),
+    					array('label' => 'A2', 'url' => '/branch/a2.shtml'),
+    					array('label' => 'A3', 'url' => '/branch/a3.shtml'),
+    				)),
+    				array('label' => '分子机构B', 'url' => '/branch/b.shtml', 'children' => array(
+    					array('label' => 'B1', 'url' => '/branch/b1.shtml'),
+    					array('label' => 'B2', 'url' => '/branch/b2.shtml'),
+    					array('label' => 'B3', 'url' => '/branch/b3.shtml'),
+    				)),
+    				array('label' => '分子机构C', 'url' => '/branch/c.shtml'),
+    				array('label' => '分子机构D', 'url' => '/branch/d.shtml')
+    			))
     		);
+    		$doc->save();
     	}
     	
     	
