@@ -5,36 +5,39 @@ class Front_Link extends Class_Brick_Solid_Abstract
 	
 	protected function _prepareGearLinks()
 	{
-		$this->_addGearLink('修改目录连接', '/admin/category/index/sectionId/'.$this->_id)
-			->_addGearLink('新增目录连接', '/admin/category/create/sectionId/'.$this->_id);
+		$this->_addGearLink('修改目录连接', '/admin/navi/edit/id/'.$this->_id);
 	}
 	
     public function prepare()
     {
-		$sectionId = $this->_params->sectionId;
-		$this->_id = $sectionId;
-		
-		$naviTb = Class_Base::_('Category');
-		$selector = $naviTb->select()->where('sectionId = ?', $sectionId)
-		    ->order('order ASC');
-		$naviRows = $naviTb->fetchAll($selector);
-		Class_Link_Controller::setRenderer(new Class_Link_Renderer_Default());
-		
-		$linkController = new Class_Link_Controller($naviRows);
-		$head = $linkController->getLinkHead();
-		
-		$this->view->head = $head;
+    	$co = App_Factory::_m('Navi');
+    	$doc = $co->fetchOne();
+    	
+    	$this->view->naviDoc = $doc;
+    	
+//		$sectionId = $this->_params->sectionId;
+//		$this->_id = $sectionId;
+//		
+//		$naviTb = Class_Base::_('Category');
+//		$selector = $naviTb->select()->where('sectionId = ?', $sectionId)
+//		    ->order('order ASC');
+//		$naviRows = $naviTb->fetchAll($selector);
+//		Class_Link_Controller::setRenderer(new Class_Link_Renderer_Default());
+//		
+//		$linkController = new Class_Link_Controller($naviRows);
+//		$head = $linkController->getLinkHead();
+//		
+//		$this->view->head = $head;
     }
     
     public function configParam($form)
     {
-		$tb = new Class_Model_Category_Section_Tb();
-		$rowset = $tb->fetchAll();
-		$rowsetArr = Class_Func::buildArr($rowset, 'id', 'name');
-    	
+		$co = App_Factory::_m('Navi');
+    	$docArr = $co->setFields('label')->fetchArr('label');
+		
     	$form->addElement('select', 'param_sectionId', array(
             'label' => '选择目录组：',
-    		'multiOptions' => $rowsetArr,
+    		'multiOptions' => $docArr,
             'required' => true
         ));
     	
