@@ -1,5 +1,6 @@
 # Eclipse files #
 ######################
+.zfproject.xml
 .buildpath
 .project
 .settings
