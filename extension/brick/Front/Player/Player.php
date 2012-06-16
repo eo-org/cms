@@ -3,7 +3,14 @@ class Front_Player extends Class_Brick_Solid_Abstract
 {
     public function prepare()
     {
+    	$fileurl = $this->getParam('fileurl');
+    	$showplayer = $this->getParam('showplayer');
+    	$liburl = Class_Server::libUrl();
     	
+    	
+    	$this->view->liburl = $liburl;
+    	$this->view->fileurl = $fileurl;
+    	$this->view->showplayer = $showplayer;
     }
     
     public function configParam(Class_Form_Edit $form)
