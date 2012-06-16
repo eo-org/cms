@@ -5,9 +5,9 @@ class Front_Ad extends Class_Brick_Solid_Abstract
     {
     	$id = $this->getParam('id');
     	
-    	$tb = Class_Base::_('Ad');
-    	$row = $tb->find($id)->current();
-        $this->view->row = $row;
+    	$co = App_Factory::_m('Ad');
+    	$doc = $co->find($id);
+        $this->view->row = $doc;
     }
     
     public function configParam(Class_Form_Edit $form)

@@ -5,10 +5,9 @@ class Front_AdGroupFancyTransition extends Class_Brick_Solid_Abstract
     {
     	$groupId = $this->getParam('groupId');
     	
-    	$tb = Class_Base::_('Ad');
-    	$selector = $tb->select()->where('groupId = ?', $groupId);
-    	$siteInfo = Zend_Registry::get('siteInfo');
-    	$rowset = $tb->fetchAll($selector);
+    	$co = App_Factory::_m('Ad');
+    	$rowset = $co->addFilter('groupId', $groupId)
+    		->fetchDoc();
         $this->view->rowset = $rowset;
     }
     
