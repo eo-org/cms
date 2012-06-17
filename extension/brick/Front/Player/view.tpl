@@ -1,6 +1,6 @@
 {% block header %}{% endblock %}
-<script type="text/javascript"	src="{{liburl}}/front/script/player.js"></script>
 <script type="text/javascript">window.LIB_URI= "{{liburl}}"</script>
+<script type="text/javascript"	src="{{liburl}}/front/script/player.js"></script>
 <div class='player-box' data='{"fileurl":"{{fileurl}}","showplayer":"{{showplayer}}"}'>
 	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 		<div id="jp_container_1">
