@@ -41,7 +41,7 @@ class Front_Artical extends Class_Brick_Solid_Abstract
 //        $this->view->attachmentRowset = $attachmentRowset;
     }
     
-    public function configParam(Class_Form_Edit $form)
+    public function configParam($form)
     {
     	$showTitle = new Zend_Form_Element_Select('param_showTitle', array(
     		'filters' => array('StringTrim'),

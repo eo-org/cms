@@ -1,5 +1,5 @@
 <?php
-class Admin_ArticalController extends Zend_Controller_Action
+class Admin_ArticleController extends Zend_Controller_Action
 {
 	protected $_controls;
 	
@@ -65,6 +65,10 @@ class Admin_ArticalController extends Zend_Controller_Action
     {
         require APP_PATH.'/admin/forms/Article/Edit.php';
         $form = new Form_Article_Edit();
+	
+        $co = App_Factory::_m('Group');
+        $multioptions = $co->getByType('article', true);
+        $form->groupId->setMultioptions($multioptions);
         
         $id = $this->getRequest()->getParam('id');
         
@@ -125,7 +129,6 @@ class Admin_ArticalController extends Zend_Controller_Action
         $this->view->id = $id;
         $this->view->form = $form;
         
-        $this->view->controls = array('save', 'delete');
         $this->_helper->template->head('编辑内容:<em>'.$doc->title.'</em>')
         	->actionMenu(array('save', 'delete'));
     }
