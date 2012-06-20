@@ -2,6 +2,20 @@
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $csa = Class_Session_Admin::getInstance();
 $controllerName = $request->getControllerName();
+
+$naviArr = array(
+	array('title' => '目录导航', 'url' =>'/admin/navi/'),
+	array('title' => '内容管理', 'url' => '/admin/article/'),
+	array('title' => '内容管理', 'url' => '/admin/book/'),
+	array('title' => '产品管理', 'url' => '/admin/product/'),
+	array('title' => '用户管理', 'url' => '/admin/user/'),
+	array('title' => '系统管理', 'url' => '/admin/system/'),
+	array('title' => '模块管理', 'url' => '/admin/brick/'),
+	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.$csa->getOrgCode().'/admin/'),
+	array('title' => '问卷管理', 'url' => 'http://forum.enorange.cn/'.$csa->getOrgCode().'/admin/'),
+	array('title' => '留言管理', 'url' => 'http://form.enorange.cn/'.$csa->getOrgCode().'/admin/')
+);	
+
 ?>
 
 <?=$this->doctype() ?>
@@ -14,10 +28,16 @@ $controllerName = $request->getControllerName();
 <?php
 if($request->getParam('bricks') != 'disabled') {
 	if($csa->isLogin()) {
-		$bc = Class_Brick_Controller::getInstance();
-		$solidBrick = $bc->createSolidBrick('Admin_Menu', $request);
+		echo $this->extension('Navi', $naviArr);
 		
-		echo $solidBrick->render();
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 }
 ?>

@@ -21,7 +21,8 @@ class Form_Layout_Create extends Class_Form_Edit
 				'list' => '文章列表',
 				'product' => '单个产品',
 				'product-list' => '产品列表',
-				'frontpage' => '综合页面',
+				'book' => '手册',
+				'frontpage' => '综合页面'
 			),
 			'required' => true
 		));
