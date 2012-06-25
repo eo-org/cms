@@ -1,6 +1,17 @@
 <?php
 class Admin_BookController extends Zend_Controller_Action
 {
+	public function init()
+	{
+		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/book-editor.css');
+		//$this->view->headScript()->appendFile(Class_Server::libUrl().'/admin/script/attributeset-editor.js');
+		
+		//$type = $this->getRequest()->getParam('type');
+		//if(!is_null($type)) {
+		//	$this->_type = $this->getRequest()->getParam('type');
+		//}
+	}
+	
     public function indexAction()
     {
     	$this->_helper->template->head('Book列表');
@@ -87,7 +98,8 @@ class Admin_BookController extends Zend_Controller_Action
     	if(is_null($bookId)) {
     		throw new Exception('book id missing');
     	}
-    	$bookDoc = App_Factory::_m('Book')->find($bookId);
+    	$bookDoc = App_Factory::_m('Book')->setFields(array('label'))
+    		->find($bookId);
     	
     	require APP_PATH.'/admin/forms/Book/Page/Edit.php';
     	$form = new Form_Book_Page_Edit();
@@ -129,6 +141,45 @@ class Admin_BookController extends Zend_Controller_Action
 		
         $this->_helper->flashMessenger->addMessage('文章:'.$doc->label.'已删除！');
 		$this->_helper->switchContent->gotoSimple('index');
+    }
+    
+    public function pageSortAction()
+    {
+    	$jsonStr = $this->getRequest()->getParam('pageSortJsonStr');
+    	$pageArr = Zend_Json::decode($jsonStr);
+    	
+    	$co = App_Factory::_m('Book_Page');
+    	$pageDocs = $co->setFields(array('parentId', 'sort', 'level'))
+			->sort('sort', 1)
+			->fetchDoc();
+    	foreach($pageDocs as $pageDoc) {
+    		$pageId = $pageDoc->getId();
+    		$newPageValue = $pageArr[$pageId];
+    		$sort = intval($newPageValue['sort']);
+    		$parentId = $newPageValue['parentId'];
+    		if($pageDoc->sort != $sort || $pageDoc->parentId != $parentId) {
+    			$pageDoc->sort = $sort;
+    			$pageDoc->parentId = $parentId;
+    			$pageDoc->save();
+    		}
+    	}
+    	
+    	$this->_helper->json(array('result' => 'success'));
+    }
+    
+    public function redoNaviAction()
+    {
+    	$id = $this->getRequest()->getParam('id');
+    	
+		$bookDoc = App_Factory::_m('Book')->find($id);
+    	$bookDoc->readPages();
+    	
+    	$pageIndex = $bookDoc->buildIndex();
+    	
+    	$bookDoc->pageIndex = $pageIndex;
+    	$bookDoc->save();
+    	
+    	$this->_helper->json(array('result' => 'success'));
     }
     
 //	public function deleteAttachmentJsonAction()
