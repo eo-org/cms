@@ -59,13 +59,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		$co = App_Factory::_m('Info');
 		$doc = $co->fetchOne();
-		if(!is_null($doc->pageTitle)) {
+		if(!is_null($doc)) {
 			$view->headTitle($doc->pageTitle);
-		}
-		if(!empty($doc->metakey)) {
 			$view->headMeta()->appendName('keywords', $doc->metakey);
-		}
-		if(!empty($doc->metadesc)) {
 			$view->headMeta()->appendName('description', $doc->metadesc);
 		}
     }
