@@ -6,10 +6,11 @@
 	"itemWidth":"{{ width }}",
 	"height":"{{ height }}",
 	"delay": "{{ delay }}",
+	"rolldelay":"{{ rolldelay }}",
 	"numPerSlide": "{{ numPerSlide }}",
 	"margin": "{{ margin }}"
 }'>
-	<div>
+	<div class="leftroll" id="rollborder">
 		<ul>
 		{% for row in rowset %}
 		<li>
