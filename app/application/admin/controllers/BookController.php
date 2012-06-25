@@ -52,20 +52,18 @@ class Admin_BookController extends Zend_Controller_Action
         $id = $this->getRequest()->getParam('id');
         
 		$co = App_Factory::_m('Book');
-		$doc = $co->find($id);
-		$pageIds = $doc->pageIds;
-		$bookPageDoc = App_Factory::_m('Book_Page')->addField('label', 'link')
-			->addFilter('bookId', $doc->getId())
-			->fetchArr();
+		$book = $co->find($id);
+//		$pageIds = $doc->pageIds;
 		
+		$book->readPages();
 		
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
         	
         }
         
-        $this->view->pageIds = $pageIds;
-        $this->view->bookPageDoc = $bookPageDoc;
-        $this->_helper->template->head('编辑BOOK:<em>'.$doc->title.'</em>')
+        $this->view->book = $book;
+//        $this->view->bookPageDoc = $bookPageDoc;
+        $this->_helper->template->head('编辑BOOK:<em>'.$book->title.'</em>')
         	->actionMenu(array(
         		'create-page' => array('label' => '添加新书页', 'callback' => '/admin/book/edit-page/book-id/'.$id),
         		'save',
@@ -97,14 +95,15 @@ class Admin_BookController extends Zend_Controller_Action
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
     		$pageDoc->setFromArray($form->getValues());
     		$pageDoc->bookId = $bookId;
+    		$pageDoc->parentId = 0;
     		$pageDoc->save();
     		
-    		if($op == 'create') {
-	    		$page = $bookDoc->page;
-				$page[] = $pageDoc->getId();
-	    		$bookDoc->page = $page;
-	    		$bookDoc->save();
-    		}
+//    		if($op == 'create') {
+//	    		$page = $bookDoc->page;
+//				$page[] = $pageDoc->getId();
+//	    		$bookDoc->page = $page;
+//	    		$bookDoc->save();
+//    		}
     		
     		$this->_helper->redirector->gotoSimple('edit', null, null, array('id' => $bookId));
     	}
@@ -141,42 +140,6 @@ class Admin_BookController extends Zend_Controller_Action
 //    	
 //    	$this->_helper->json(array('result' => 'success'));
 //    }
-    
-    public function setFeaturedJsonAction()
-    {
-    	$id = $this->getRequest()->getParam('id');
-    	$tb = App_Factory::_m('Article');
-    	$row = $tb->find($id)->current();
-    	
-    	$result = array(
-    		'result' => 'success',
-    		'msg' => ''
-    	);
-    	if($row == null) {
-    		$result = array(
-	    		'result' => 'fail',
-	    		'msg' => 'can not find artical with given id'
-	    	);
-    	} else {
-    		if($row->featured == 0) {
-    			$row->featured = 1;
-    		} else {
-    			$row->featured = 0;
-    		}
-    		$row->save();
-    	}
-    	if($this->getRequest()->getParam('format') == 'html') {
-			if($this->getRequest()->getParam('callback') == 'refresh') {
-				echo 'success';
-				$this->_helper->viewRenderer->setNoRender(true);
-				exit(0);
-			} else {
-				$this->_helper->redirector->gotoSimple('index', null, null, array('format' => 'html'));
-			}
-		} else {
-			$this->_helper->json($result);
-		}
-    }
     
     public function getBookJsonAction()
     {

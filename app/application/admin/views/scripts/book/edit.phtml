@@ -1,3 +1,7 @@
-<?php foreach($this->pageIds as $page) {?>
+<?php //foreach($this->pageIds as $page) {?>
+<?php foreach(array() as $page) {?>
 <a href='/admin/book/edit-page/id/<?php echo $page?>'><?php echo $this->bookPageDoc[$page]['label']?></a><br />
 <?php }?>
+
+
+<?php echo $this->book->renderPages()?>
