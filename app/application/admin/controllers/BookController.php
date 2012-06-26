@@ -4,12 +4,6 @@ class Admin_BookController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/book-editor.css');
-		//$this->view->headScript()->appendFile(Class_Server::libUrl().'/admin/script/attributeset-editor.js');
-		
-		//$type = $this->getRequest()->getParam('type');
-		//if(!is_null($type)) {
-		//	$this->_type = $this->getRequest()->getParam('type');
-		//}
 	}
 	
     public function indexAction()
@@ -64,8 +58,6 @@ class Admin_BookController extends Zend_Controller_Action
         
 		$co = App_Factory::_m('Book');
 		$book = $co->find($id);
-//		$pageIds = $doc->pageIds;
-		
 		$book->readPages();
 		
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
@@ -73,7 +65,6 @@ class Admin_BookController extends Zend_Controller_Action
         }
         
         $this->view->book = $book;
-//        $this->view->bookPageDoc = $bookPageDoc;
         $this->_helper->template->head('编辑BOOK:<em>'.$book->title.'</em>')
         	->actionMenu(array(
         		'create-page' => array('label' => '添加新书页', 'callback' => '/admin/book/edit-page/book-id/'.$id),
@@ -106,16 +97,12 @@ class Admin_BookController extends Zend_Controller_Action
     	$form->populate($pageDoc->toArray());
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
     		$pageDoc->setFromArray($form->getValues());
-    		$pageDoc->bookId = $bookId;
-    		$pageDoc->parentId = 0;
+    		if($op == 'create') {
+    			$pageDoc->bookId = $bookId;
+    			$pageDoc->parentId = 0;
+    			$pageDoc->sort = 0;
+    		}
     		$pageDoc->save();
-    		
-//    		if($op == 'create') {
-//	    		$page = $bookDoc->page;
-//				$page[] = $pageDoc->getId();
-//	    		$bookDoc->page = $page;
-//	    		$bookDoc->save();
-//    		}
     		
     		$this->_helper->redirector->gotoSimple('edit', null, null, array('id' => $bookId));
     	}
@@ -134,9 +121,6 @@ class Admin_BookController extends Zend_Controller_Action
             throw new Class_Exception_AccessDeny('没有权限访问此内容，或者内容id不存在');
         }
         
-        /**
-         * @todo delete attachment as well!!
-         */
         $doc->delete();
 		
         $this->_helper->flashMessenger->addMessage('文章:'.$doc->label.'已删除！');
@@ -181,16 +165,6 @@ class Admin_BookController extends Zend_Controller_Action
     	
     	$this->_helper->json(array('result' => 'success'));
     }
-    
-//	public function deleteAttachmentJsonAction()
-//    {
-//    	$id = $this->getRequest()->getParam('id');
-//    	$co = App_Factory::_m('Article');
-//    	$doc = $co->find($id);
-//    	$doc->delete();
-//    	
-//    	$this->_helper->json(array('result' => 'success'));
-//    }
     
     public function getBookJsonAction()
     {
