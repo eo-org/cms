@@ -43,7 +43,14 @@ $('#save-book-sort').click(function() {
 <script type='text/template' id='bookpage-item-template'>
 	<div class='page-line'>
 		<div class='drag-handle' draggable='true'></div>
-		<div class='page-label'>{{ label }} ({{ link }})</div>
+		<div class='page-label'><a href='/admin/book/edit-page/id/{{ id }}'>{{ label }}</a></div>
+		<div class='page-link'>
+		<% if(link) { %>
+			{{ link }}.shtml
+		<% } else { %>
+			{{ id }}.shtml
+		<% } %>
+		</div>
 		<div class='clear'></div>
 	</div>
 	<ul class='children'>
