@@ -3,15 +3,29 @@ class Front_Search extends Class_Brick_Solid_Abstract
 {
     public function prepare()
     {
+    	$type = $this->_request->getParam('type');
     	$keywords = $this->_request->getParam('keywords');
+    	$rowset = array();
+    	
     	if(!empty($keywords)) {
-    		$table = Class_Base::_('Product');
-			$selector = $table->select()->from($table, array('id', 'title', 'introtext', 'introicon', 'created'))
-				->where('title like  %'.$keywords.'%')
-				->limit(50)
-				->order('id DESC');
-			$rowset = $table->fetchAll($selector);
-			$this->view->rowset = $rowset;
+    		if(is_null($type) || $type == 'product') {
+    			$co = App_Factory::_m('Product');
+    			
+    			$rowset = $co->setFields('title', 'introtext', 'introicon', 'created')
+    				->addFilter('title', new MongoRegex("/^".$value."/"))
+    				->setPage(1)
+    				->setPageSize(50)
+    				->fetchDoc();
+    		} else {
+    			$co = App_Factory::_m('Article');
+    			
+    			$rowset = $co->setFields('title', 'introtext', 'introicon', 'created')
+    				->addFilter('title', new MongoRegex("/^".$value."/"))
+    				->setPage(1)
+    				->setPageSize(50)
+    				->fetchDoc();
+    		}
     	}
+    	$this->view->rowset = $rowset;
     }
 }
