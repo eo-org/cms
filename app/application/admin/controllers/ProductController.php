@@ -69,10 +69,16 @@ class Admin_ProductController extends Zend_Controller_Action
 		$form = new Form_Product_Edit();
 		$form->addElements($attrElements, 'main');
 		$form->populate($productDoc->getData());
+		$attachmentArr = $productDoc->attachment;
 		
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$result = $productDoc->setFromArray($form->getValues())
-				->save(false);
+			$attachmentStr = $this->getRequest()->getParam('attachmentJson');
+			$attachmentArr = Zend_Json::decode($attachmentStr);
+			$productDoc->attachment = $attachmentArr;
+			
+			$productDoc->setFromArray($form->getValues());
+			$result = $productDoc->save();
+			
 			if($result) {
 				$this->_helper->flashMessenger->addMessage('产品已经成功保存');
 				$this->_helper->switchContent->gotoSimple('index');
@@ -80,12 +86,18 @@ class Admin_ProductController extends Zend_Controller_Action
 		}
 		
 		$this->view->form = $form;
+		$this->view->attachmentArr = $attachmentArr;
 		
 		if(empty($id)) {
-			$this->_helper->template->actionMenu(array('save'));
+			$this->_helper->template->actionMenu(array(
+				array('label' => '保存产品', 'callback' => 'save-with-attachment')
+			));
 			$this->_helper->template->head('创建新产品');
 		} else {
-			$this->_helper->template->actionMenu(array('save', 'delete'));
+			$this->_helper->template->actionMenu(array(
+				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
+				'delete'
+			));
 			$this->_helper->template->head('编辑产品');
 		}
 	}

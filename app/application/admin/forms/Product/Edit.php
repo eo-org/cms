@@ -40,7 +40,8 @@ class Form_Product_Edit extends App_Form_Edit
             'filters' => array('StringTrim'),
             'label' => '插入图片',
             'required' => false,
-        	'id' => 'append-image'
+        	'class' => 'icon-selector',
+        	'callback' => 'appendToEditor'
         ));
         $this->addElement('text', 'price', array(
             'label' => '零售价',
@@ -55,7 +56,8 @@ class Form_Product_Edit extends App_Form_Edit
             'label' => '产品图片',
             'required' => false,
             'filters' => array('StringTrim'),
-        	'class' => 'icon-selector'
+        	'class' => 'icon-selector',
+        	'callback' => 'appendToInput'
         ));
         $this->addElement('textarea', 'introtext', array(
             'label' => '产品摘要',

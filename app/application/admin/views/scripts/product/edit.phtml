@@ -1,2 +1,52 @@
 <?php echo $this->form?>
 <div class='clear'></div>
+
+<fieldset class='attachment-form'>
+	<legend>附件</legend>
+	<ul id='attachment-list'>
+		<?php 
+		if(!is_null($this->attachmentArr)) {
+			foreach($this->attachmentArr as $a) {
+		?>
+		<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
+		<?php
+			} 
+		}
+		?>
+	</ul>
+	<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
+</fieldset>
+<div class='clear'></div>
+
+<script type="text/javascript">
+$(document).on({
+	'click': function(e) {
+		LI = $(e.currentTarget);
+		if(confirm('移除附件:' + LI.html() + '？')) {			
+			LI.remove();
+		}
+	}
+}, '#attachment-list li');
+
+var saveWithAttachment = function() {
+	var attachmentListLi = $('#attachment-list').find('li');
+	
+	var attachmentStr = '{';
+	attachmentListLi.each(function(i, li) {
+		attachmentStr += '"' + i +'":{"filename":"'+$(li).html()+'", "filepath":"' + $(li).attr('filepath') + '"},';
+	});
+	if(attachmentStr.length > 1) {
+		attachmentStr = attachmentStr.substring(0, attachmentStr.length - 1);
+	}
+	attachmentStr += '}';
+	
+	var f = $("#lightbox-whitebox .content").find('form:first');
+	var input = $("<input>").attr("type", "hidden").attr("name", "attachmentJson").val(
+		attachmentStr
+	);
+	f.append(input);
+	f.submit();
+	
+	return false;
+};
+</script>
