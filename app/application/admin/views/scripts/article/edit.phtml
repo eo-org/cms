@@ -13,61 +13,54 @@
 <?php } ?>
 
 <?=$this->form?>
-<!-- fieldset class='attachment-form'>
+<div class='clear'></div>
+
+<fieldset class='attachment-form'>
 	<legend>附件</legend>
 	<ul id='attachment-list'>
-		<?foreach($this->attachmentRowset as $row) {?>
-		<li attachmentId='<?=$row->id?>'><?=$row->filename?></li>
-		<?} ?>
+		<?php 
+		if(!is_null($this->attachmentArr)) {
+			foreach($this->attachmentArr as $a) {
+		?>
+		<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
+		<?php
+			} 
+		}
+		?>
 	</ul>
-	<button class="append-attachment" type="button" name="appendAttachment">添加附件</button>
-</fieldset -->
+	<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
+</fieldset>
 <div class='clear'></div>
 
 <script type="text/javascript">
-$('#attachment-list li').click(function() {
-	if(confirm('移除附件？')) {
-		finder.show(true);
-		var LI = $(this);
-		$.ajax({
-			url: "/admin/artical/delete-attachment-json/id/" + $(this).attr('attachmentid'),
-			success: function() {
-				LI.remove();
-				finder.hide();
-			}
-		});
+$(document).on({
+	'click': function(e) {
+		LI = $(e.currentTarget);
+		if(confirm('移除附件:' + LI.html() + '？')) {			
+			LI.remove();
+		}
 	}
-});
-var articalId = '<?=$this->id?>';
-var attachmentFilename = null;
-var attachmentList = $('#attachment-list');
-var attachmentSelector = $(".append-attachment");
+}, '#attachment-list li');
 
-attachmentSelector.click(function() {
-	FINDER.show();
-	$.ajax({
-		url: "/admin/file/get-file-selector/format/html/group/attachment",
-		success: function(HTML) {
-			FINDER.attr('currentGroup', 'attachment');
-			content = FINDER.appendToContent(HTML);
-			content.find('.file').click(function() {
-				var path = $(this).attr('path');
-				insertAttachment($(this).attr('name'));
-				FINDER.hide();
-			});
-		}
+var saveWithAttachment = function() {
+	var attachmentListLi = $('#attachment-list').find('li');
+	
+	var attachmentStr = '{';
+	attachmentListLi.each(function(i, li) {
+		attachmentStr += '"' + i +'":{"filename":"'+$(li).html()+'", "filepath":"' + $(li).attr('filepath') + '"},';
 	});
-});
-var insertAttachment = function(name) {
-	var h = $("<input type='hidden' name='attachment[]' value='" + name + "' />");
-	h.appendTo($('form'));
-	var l = $("<li>" + name + "</li>");
-	l.click(function() {
-		if(confirm('移除附件？')) {
-			l.remove();
-			h.remove();
-		}
-	});
-	l.appendTo(attachmentList);
+	if(attachmentStr.length > 1) {
+		attachmentStr = attachmentStr.substring(0, attachmentStr.length - 1);
+	}
+	attachmentStr += '}';
+	
+	var f = $("#lightbox-whitebox .content").find('form:first');
+	var input = $("<input>").attr("type", "hidden").attr("name", "attachmentJson").val(
+		attachmentStr
+	);
+	f.append(input);
+	f.submit();
+	
+	return false;
 };
 </script>

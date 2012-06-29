@@ -90,7 +90,7 @@ class Admin_ProductController extends Zend_Controller_Action
 		
 		if(empty($id)) {
 			$this->_helper->template->actionMenu(array(
-				array('label' => '保存产品', 'callback' => 'save-with-attachment')
+				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
 			));
 			$this->_helper->template->head('创建新产品');
 		} else {

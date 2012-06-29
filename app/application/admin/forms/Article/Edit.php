@@ -18,7 +18,8 @@ class Form_Article_Edit extends Class_Form_Edit
             'filters' => array('StringTrim'),
             'label' => '插入图片',
             'required' => false,
-        	'id' => 'append-image'
+        	'class' => 'icon-selector',
+        	'callback' => 'appendToEditor'
         ));
         
         $this->addElement('select', 'groupId', array(
@@ -29,7 +30,8 @@ class Form_Article_Edit extends Class_Form_Edit
         	'filters' => array('StringTrim'),
         	'label' => '摘要图片：',
         	'required' => false,
-        	'class' => 'icon-selector'
+        	'class' => 'icon-selector',
+        	'callback' => 'appendToInput'
         ));
         $this->addElement('textarea', 'introtext', array(
             'filters' => array('StringTrim'),

@@ -38,12 +38,12 @@ class Admin_ArticleController extends Zend_Controller_Action
 				'featured' => array(1 => '精选', 0 => '否')
 			),
 			'presetFields' => array('groupId' => $groupId),
-			'url' => '/admin/artical/get-article-json/',
+			'url' => '/admin/article/get-article-json/',
 			'actionId' => 'id',
 			'click' => array(
 				'action' => 'contextMenu',
 				'menuItems' => array(
-					array('编辑', '/admin/artical/edit/id/')
+					array('编辑', '/admin/article/edit/id/')
 				)
 			),
 			'initSelectRun' => 'true',
@@ -84,6 +84,7 @@ class Admin_ArticleController extends Zend_Controller_Action
         }
         
         $form->populate($doc->toArray());
+        $attachmentArr = $doc->attachment;
         //preset groupId from url //why preset groupId ??
 //    	$groupId = $this->getRequest()->getParam('groupId');
 //        if(!empty($groupId)) {
@@ -92,6 +93,9 @@ class Admin_ArticleController extends Zend_Controller_Action
 //        }
         //end preset
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+        	$attachmentStr = $this->getRequest()->getParam('attachmentJson');
+			$attachmentArr = Zend_Json::decode($attachmentStr);
+			$doc->attachment = $attachmentArr;
             $doc->setFromArray($form->getValues());
     		
             if(is_null($id)) {
@@ -101,18 +105,6 @@ class Admin_ArticleController extends Zend_Controller_Action
 	            $doc->createdByAlias = $csa->getUserData('loginName');
             }
             $doc->save();
-            
-//            $attachmentArr = $this->getRequest()->getParam('attachment');
-//            if(!is_null($attachmentArr)) {
-//	            $attachmentTb = new Zend_Db_Table('artical_attachment');
-//	            foreach($attachmentArr as $attachmentName) {
-//	            	$attachmentRow = $attachmentTb->createRow();
-//	            	$attachmentRow->articalId = $row->id;
-//	            	$attachmentRow->filename = $attachmentName;
-//	            	$attachmentRow->filepath = '/file/'.$siteId.'/attachment/'.$attachmentName;
-//	            	$attachmentRow->save();
-//	            }
-//            }
 			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
     	
@@ -125,12 +117,16 @@ class Admin_ArticleController extends Zend_Controller_Action
         }
         
         $this->view->doc = $doc;
-        $this->view->attachmentRowset = $rowset;
         $this->view->id = $id;
+        
         $this->view->form = $form;
+        $this->view->attachmentArr = $attachmentArr;
         
         $this->_helper->template->head('编辑内容:<em>'.$doc->title.'</em>')
-        	->actionMenu(array('save', 'delete'));
+        	->actionMenu(array(
+        		array('label' => '保存文章', 'callback' => '', 'method' => 'saveWithAttachment'),
+        		'delete'
+        	));
     }
     
     public function deleteAction()
