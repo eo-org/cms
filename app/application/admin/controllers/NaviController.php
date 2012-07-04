@@ -4,6 +4,7 @@ class Admin_NaviController extends Zend_Controller_Action
     public function init()
     {
         $this->view->pageTitle = "目录管理";
+        $this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/tree-editor.css');
     }
     
     public function indexAction()
@@ -13,8 +14,7 @@ class Admin_NaviController extends Zend_Controller_Action
         $hashParam = $this->getRequest()->getParam('hashParam');
         
         $labels = array(
-            'name' => '目录组名',
-            'title' => '介绍',
+            'label' => '目录组名',
         	'~contextMenu' => ''
         );
         $partialHTML = $this->view->partial('select-search-header-front.phtml', array(
@@ -39,85 +39,129 @@ class Admin_NaviController extends Zend_Controller_Action
     
     public function createAction()
     {
-//        require APP_PATH.'/admin/forms/Section/Edit.php';
-//        $form = new Form_Edit();
-//        
-//        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-//            $row = Class_Base::_('Category_Section')->createRow($form->getValues());
-//            $row->save();
-//            $this->_helper->switchContent->gotoSimple('index');
-//        }
-//        
-//        $this->view->form = $form;
-//        $this->_helper->template->actionMenu(array('save'));
-		$this->_forward('edit');
+        require APP_PATH.'/admin/forms/Navi/Edit.php';
+        $form = new Navi_Edit();
+        $co = App_Factory::_m('Navi');
+        
+        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+            $doc = $co->create();
+            $doc->setFromArray($form->getValues());
+            $doc->save();
+            $this->_helper->switchContent->gotoSimple('index');
+        }
+        
+        $this->view->form = $form;
+        $this->_helper->template->head('创建新导航组')
+        	->actionMenu(array('save'));
     }
     
     public function editAction()
     {
+    	$id = $this->getRequest()->getParam('id');
+    	
     	$co = App_Factory::_m('Navi');
-    	$doc = $co->fetchOne();
-    	if(is_null($doc)) {
-    		$doc = $co->create();
-    		$doc->label = '主导航';
-    		$doc->navi = array(
-    			array('label' => '首页', 'url' => '/'),
-    			array('label' => '关于公司', 'url' => '/about/us.shtml'),
-    			array('label' => '公司产品', 'url' => '/company/products.shtml'),
-    			array('label' => '分子机构', 'url' => '/branch/a.shtml', 'children' => array(
-    				array('label' => '分子机构A', 'url' => '/branch/a.shtml', 'children' => array(
-    					array('label' => 'A1', 'url' => '/branch/a1.shtml'),
-    					array('label' => 'A2', 'url' => '/branch/a2.shtml'),
-    					array('label' => 'A3', 'url' => '/branch/a3.shtml'),
-    				)),
-    				array('label' => '分子机构B', 'url' => '/branch/b.shtml', 'children' => array(
-    					array('label' => 'B1', 'url' => '/branch/b1.shtml'),
-    					array('label' => 'B2', 'url' => '/branch/b2.shtml'),
-    					array('label' => 'B3', 'url' => '/branch/b3.shtml'),
-    				)),
-    				array('label' => '分子机构C', 'url' => '/branch/c.shtml'),
-    				array('label' => '分子机构D', 'url' => '/branch/d.shtml')
-    			))
-    		);
-    		$doc->save();
+    	$doc = $co->find($id);
+    	
+    	$this->view->naviDoc = $doc;
+	 	$this->_helper->template->head('编辑')
+        	->actionMenu(array(
+        		'create-page' => array('label' => '添加新连接', 'callback' => '/admin/navi/edit-link/navi-id/'.$id),
+        		'delete'
+        	));
+    }
+    
+	public function editLinkAction()
+    {
+    	$id = $this->getRequest()->getParam('id');
+    	$co = App_Factory::_m('Navi_Link');
+    	if(!is_null($id)) {
+    		$itemDoc = $co->find($id);
+    		$naviId = $itemDoc->naviId;
+    		$op = 'edit';
+    	} else {
+    		$itemDoc = $co->create();
+    		$naviId = $this->getRequest()->getParam('navi-id');
+    		$op = 'create';
+    	}
+    	if(is_null($naviId)) {
+    		throw new Exception('navi id missing');
+    	}
+    	$naviDoc = App_Factory::_m('Navi')->setFields(array('label'))
+    		->find($naviId);
+    	
+    	require APP_PATH.'/admin/forms/Navi/Link/Edit.php';
+    	$form = new Form_Navi_Link_Edit();
+    	$form->populate($itemDoc->toArray());
+    	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+    		$itemDoc->setFromArray($form->getValues());
+    		if($op == 'create') {
+    			$itemDoc->naviId = $naviId;
+    			$itemDoc->parentId = 0;
+    			$itemDoc->sort = 0;
+    		}
+    		$itemDoc->save();
+    		
+    		$this->_helper->redirector->gotoSimple('edit', null, null, array('id' => $naviId));
     	}
     	
-    	
-    	
-    	
-    	
-    	
-    	
-//        $id = $this->getRequest()->getParam('id');
-//        
-//        require APP_PATH.'/admin/forms/Section/Edit.php';
-//        $form = new Form_Edit();
-//        $row = Class_Base::_('Category_Section')->find($id)->current();
-//        
-//    	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-//            $row->setFromArray($form->getValues())
-//            	->save();
-//            
-//            $this->_helper->flashMessenger->addMessage('您对目录组的修改已保存！');
-//            $this->_helper->switchContent->gotoSimple('index');
-//        }
-//        
-//        $form->populate($row->toArray());
-//        $this->view->form = $form;
-//        $this->_helper->template->actionMenu(array('save', 'delete'));
-		
+    	$this->view->form = $form;
+    	$this->_helper->template->head('编辑 <em>'.$naviDoc->label.'</em> 章节')
+        	->actionMenu(array(
+        		'save',
+        		'delete-link' => array('label' => '删除链接', 'callback' => '/admin/navi/delete-link/id/'.$id, 'method' => 'link')
+        	));
     }
     
     public function deleteAction()
     {
-//    	$id = $this->getRequest()->getParam('id');
-//        
-//        $row = Class_Base::_('Category_Section')->find($id)->current();
-//        if(!is_null($row)) {
-//        	$row->delete();
-//        }    	
-//        $this->_helper->flashMessenger->addMessage('该目录组已被删除！');
-//        $this->_helper->switchContent->gotoSimple('index');
+    	
+    }
+    
+    public function deleteLinkAction()
+    {
+    	$id = $this->getRequest()->getParam('id');
+    	$co = App_Factory::_m('Navi_Link');
+    	$doc = $co->find($id);
+    	if(is_null($doc)) {
+            throw new Class_Exception_AccessDeny('link not found with given id:'.$id);
+        }
+        
+        $doc->delete();
+		
+        $this->_helper->flashMessenger->addMessage('连接:'.$doc->label.' 已删除！');
+		$this->_helper->switchContent->gotoSimple('edit', 'navi', 'admin', array('id' => $doc->naviId));
+    }
+    
+	public function treeSortAction()
+    {
+    	$treeId = $this->getRequest()->getParam('treeId');
+    	$jsonStr = $this->getRequest()->getParam('sortJsonStr');
+    	$pageArr = Zend_Json::decode($jsonStr);
+    	
+    	$co = App_Factory::_m('Navi_Link');
+    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link'))
+    		->addFilter('naviId', $treeId)
+			->sort('sort', 1)
+			->fetchDoc();
+    	foreach($docs as $doc) {
+    		$pageId = $doc->getId();
+    		$newPageValue = $pageArr[$pageId];
+    		$sort = intval($newPageValue['sort']);
+    		$parentId = $newPageValue['parentId'];
+    		if($doc->sort != $sort || $doc->parentId != $parentId) {
+    			$doc->sort = $sort;
+    			$doc->parentId = $parentId;
+    			$doc->save();
+    		}
+    	}
+    	
+    	$treeDoc = App_Factory::_m('Navi')->find($treeId);
+    	$treeDoc->setLeafs($docs);
+    	$treeIndex = $treeDoc->buildIndex();
+    	$treeDoc->naviIndex = $treeIndex;
+    	$treeDoc->save();
+    	
+    	$this->_helper->json(array('result' => 'success'));
     }
     
     public function getNaviJsonAction()

@@ -1,34 +1,24 @@
-<?php //foreach($this->pageIds as $page) {?>
-<?php foreach(array() as $page) {?>
-<a href='/admin/book/edit-page/id/<?php echo $page?>'><?php echo $this->bookPageDoc[$page]['label']?></a><br />
-<?php }?>
-
-
-<?php //echo $this->book->renderPages()?>
-
 <div class='container-bg'>
 	<ul class='container'>
 		<li class='drop-to-sort'></li>
 	</ul>
 </div>
 
-<div id='save-book-sort'>SAVE SORT</div>
+<div id='save-sort'>SAVE SORT</div>
 
 <script>
-$('#save-book-sort').click(function() {
-	
-	var bookpages = $('.bookpage-item');
-	var pageSortJsonStr = '{';
-	bookpages.each(function(i, page) {
-//		console.log($(page).attr('id') + ' => ' + $(page).attr('parent-id'));
-		pageSortJsonStr += '"' + $(page).attr('id') +'":{"parentId":"'+$(page).attr('parent-id')+'", "sort":' + i + '},';
+$('#save-sort').click(function() {
+	var treeleafs = $('.treeleaf-item');
+	var sortJsonStr = '{';
+	treeleafs.each(function(i, leaf) {
+		sortJsonStr += '"' + $(leaf).attr('id') +'":{"parentId":"'+$(leaf).attr('parent-id')+'", "sort":' + i + '},';
 	});
-	pageSortJsonStr = pageSortJsonStr.substring(0, pageSortJsonStr.length - 1);
-	pageSortJsonStr += '}';
+	sortJsonStr = sortJsonStr.substring(0, sortJsonStr.length - 1);
+	sortJsonStr += '}';
 	
 	$.ajax({
-		url: '/admin/book/page-sort/',
-		data: 'pageSortJsonStr=' + pageSortJsonStr,
+		url: '/admin/book/tree-sort/',
+		data: {treeId: "<?php echo $this->doc->getId()?>", sortJsonStr: sortJsonStr},
 		type: 'post',
 		success: function(json) {
 //			console.log('ok');
@@ -36,22 +26,25 @@ $('#save-book-sort').click(function() {
 	});
 	
 });
+
+//global defines
+var tree = {type: 'book', id: '<?php echo $this->doc->getId()?>'};
 </script>
 
-<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/bookpage" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/treeleaf" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
-<script type='text/template' id='bookpage-item-template'>
-	<div class='page-line'>
+<script type='text/template' id='treeleaf-item-template'>
+	<div class='leaf-line'>
 		<div class='drag-handle' draggable='true'></div>
-		<div class='page-label'><a href='/admin/book/edit-page/id/{{ id }}'>{{ label }}</a></div>
+		<div class='leaf-label'><a href='/admin/book/edit-page/id/{{ id }}'>{{ label }}</a></div>
 
 		<div class='quick-edit'>qe</div>
 
-		<div class='page-link'>
+		<div class='leaf-link'>
 		<% if(link) { %>
-			{{ link }}.shtml
+			{{ link }}
 		<% } else { %>
-			{{ id }}.shtml
+			{{ id }}
 		<% } %>
 		</div>
 		<div class='clear'></div>

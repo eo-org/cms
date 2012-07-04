@@ -1,26 +1,15 @@
 <?php
 class Admin_ArticleController extends Zend_Controller_Action
 {
-	protected $_controls;
-	
-	public function init()
-	{
-		$this->_helper->template->portal(array(
-			array('label' => '内容', 'controllerName' => 'artical', 'href' => '/admin/artical/index'),
-			array('label' => '内容分类', 'controllerName' => 'group', 'href' => '/admin/group/list/type/article'),
-		));
-	}
-	
     public function indexAction()
     {
     	$this->_helper->template->head('内容列表');
     	
     	$groupId = $this->getRequest()->getParam('groupId');
     	
-    	$tb = Class_Base::_('GroupV2');
-    	$select = $tb->select()->where('type = ?', 'article');
-    	$rowset = $tb->fetchAll($select);
-        $groupArr = Class_Func::buildArr($rowset, 'id', 'label', array(0 => '未分类内容'));
+    	$groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
         
         $hashParam = $this->getRequest()->getParam('hashParam');
         $labels = array(
@@ -34,7 +23,7 @@ class Admin_ArticleController extends Zend_Controller_Action
 			'labels' => $labels,
 			'selectFields' => array(
 				'id' => null,
-				'groupId' => $groupArr,
+				'groupId' => $items,
 				'featured' => array(1 => '精选', 0 => '否')
 			),
 			'presetFields' => array('groupId' => $groupId),
@@ -66,9 +55,10 @@ class Admin_ArticleController extends Zend_Controller_Action
         require APP_PATH.'/admin/forms/Article/Edit.php';
         $form = new Form_Article_Edit();
 	
-        $co = App_Factory::_m('Group');
-        $multioptions = $co->getByType('article', true);
-        $form->groupId->setMultioptions($multioptions);
+        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
+        $form->groupId->setMultioptions($items);
         
         $id = $this->getRequest()->getParam('id');
         

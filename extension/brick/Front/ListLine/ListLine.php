@@ -22,7 +22,7 @@ class Front_ListLine extends Class_Brick_Solid_Abstract
 		$groupRow = $clf->getResource();
 		
 		$page = $this->_request->getParam('page');
-		$groupId = $groupRow->id;
+		$groupId = $groupRow->getId();
 		
 		if($groupRow == 'none') {
 			$this->_disableRender = 'no-resource';

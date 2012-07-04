@@ -1,10 +1,11 @@
 {% import "item.tpl" as item %}
+
 {% block header %}{% endblock %}
 {% if displayBrickName %}
 <div class='title'>{{ title }}</div>
 {% endif %}
 
-{% for node in naviDoc.navi %}
+{% for node in naviDoc.naviIndex %}
 	{{ item.list(node) }}
 {% endfor %}
 

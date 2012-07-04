@@ -1,7 +1,7 @@
 {% macro list(node) %}
 {% spaceless %}
     <li>
-    	<a href='{{ node.url }}'>{{ node.label }}</a>
+    	<a href='{{ node.link }}'>{{ node.label }}</a>
     {% if node.children %}
         <ul>
         {% for childNode in node.children %}

@@ -12,41 +12,54 @@ class Front_Breadcrumb extends Class_Brick_Solid_Abstract
 			case 'list':
 				$id = $clf->getCurrentActionName();
 				$trailType = 'article';
+				$groupDoc = App_Factory::_m('Group')->findArticleGroup();
 				break;
 			case 'article':
 				$artical = $clf->getResource();
 				
-				$id = $artical->groupId;
-				$trailType = 'article';
-				$this->view->tailMark = $artical->title;
+				if(is_null($artical) || $artical == 'none') {
+					$id = 1;
+					$trailType = 'article';
+					$this->view->tailMark = 'Article Name';
+				} else {
+					$id = $artical->groupId;
+					$trailType = 'article';
+					$this->view->tailMark = $artical->label;
+				}
+				$groupDoc = App_Factory::_m('Group')->findArticleGroup();
 				break;
 			case 'product-list':
 				$id = $clf->getCurrentActionName();
 				$trailType = 'product';
+				$groupDoc = App_Factory::_m('Group')->findProductGroup();
 				break;
 			case 'product';
 				$product = $clf->getResource();
-				if(is_null($product)) {
+				if(is_null($product) || $product == 'none') {
 					$id = 1;
 					$trailType = 'product';
 					$this->view->tailMark = 'Product Name';
 				} else {
 					$id = $product->groupId;
 					$trailType = 'product';
-					$this->view->tailMark = $product->title;
+					$this->view->tailMark = $product->label;
 				}
+				$groupDoc = App_Factory::_m('Group')->findProductGroup();
 		}
-		
-		
-		
-		
-		$linkController = Class_Link_Controller::factory($trailType);
 		
 		$trailArr = array();
 		if(is_null($id)) {
 			$this->_disableRender = true;
 		} else {
-			$trailArr = $linkController->getTrail($id);
+			$trailArr = $groupDoc->getTrail($id);
+		}
+		switch($trailType) {
+			case 'article':
+				$this->view->urlType = 'list';
+				break;
+			case 'product':
+				$this->view->urlType = 'product-list';
+				break;
 		}
 		$this->view->trailArr = $trailArr;
     }

@@ -1,28 +1,20 @@
 <?php
-class Front_BookNavi extends Class_Brick_Solid_Abstract
+class Front_BookIndex extends Class_Brick_Solid_Abstract
 {
     public function prepare()
     {
-//    	$co = App_Factory::_m('Navi');
-//    	$doc = $co->fetchOne();
-//    	
-//    	$this->view->naviDoc = $doc;
-		
     	$clf = Class_Layout_Front::getInstance();
     	
-    	$bookDoc = $clf->getResource();
-    	$bookPageDoc = App_Factory::_m('Book_Page')->setFields(array('label', 'link'))
-			->addFilter('bookId', $bookDoc->getId())
-			->fetchArr();
-		
-    	$pageIds = $bookDoc->pageIds;
-    	$pageLinks = array();
-    	foreach($pageIds as $pId){
-    		$pageLinks[] = array('id' => $pId,'label' => $bookPageDoc[$pId]['label'], 'link' => $bookPageDoc[$pId]['link']);
+    	$type = $clf->getType();
+    	
+    	if($type != 'book') {
+    		throw new Exception('this extension is only suitable for a book typed layout!');
     	}
     	
-    	$this->view->bookName = $bookDoc->name;
-    	$this->view->pageLinks = $pageLinks;
+    	$bookDoc = $clf->getResource();
+    	
+    	$this->view->bookAlias = $bookDoc->alias;
+    	$this->view->bookIndex = $bookDoc->bookIndex;
     }
     
     public function configParam($form)

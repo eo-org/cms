@@ -6,16 +6,21 @@ class Admin_ProductController extends Zend_Controller_Action
         $labels = array(
         	'name' => '产品编号',
         	'label' => '产品名',
-        	'sku' => 'SKU',
         	'price' => '价格',
+        	'groupId' => '产品分类',
         	'~contextMenu' => ''
         );
+        
+        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'product')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
         
         $hashParam = $this->getRequest()->getParam('hashParam');
         $partialHTML = $this->view->partial('select-search-header-front.phtml', array(
             'labels' => $labels,
             'selectFields' => array(
                 'id' => NULL,
+        		'groupId' => $items,
         		'created' => NULL
             ),
             'url' => '/admin/product/get-product-json/',
@@ -124,7 +129,7 @@ class Admin_ProductController extends Zend_Controller_Action
 		$currentPage = 1;
 		
 		$productCo = new Class_Mongo_Product_Co();
-		$productCo->setFields(array('name', 'label', 'sku', 'price'));
+		$productCo->setFields(array('name', 'label', 'price', 'groupId'));
 		$queryArray = array();
 		
         $result = array();

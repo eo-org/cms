@@ -3,7 +3,8 @@ class Admin_BookController extends Zend_Controller_Action
 {
 	public function init()
 	{
-		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/book-editor.css');
+		$this->view->pageTitle = "手册管理";
+		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/tree-editor.css');
 	}
 	
     public function indexAction()
@@ -54,21 +55,15 @@ class Admin_BookController extends Zend_Controller_Action
     
     public function editAction()
     {
-        $id = $this->getRequest()->getParam('id');
-        
-		$co = App_Factory::_m('Book');
-		$book = $co->find($id);
-		$book->readPages();
-		
-        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	
-        }
-        
-        $this->view->book = $book;
-        $this->_helper->template->head('编辑BOOK:<em>'.$book->title.'</em>')
+    	$id = $this->getRequest()->getParam('id');
+    	
+    	$co = App_Factory::_m('Book');
+		$doc = $co->find($id);
+    	
+    	$this->view->doc = $doc;
+	 	$this->_helper->template->head('编辑BOOK:<em>'.$doc->title.'</em>')
         	->actionMenu(array(
         		'create-page' => array('label' => '添加新书页', 'callback' => '/admin/book/edit-page/book-id/'.$id),
-        		'save',
         		'delete'
         	));
     }
@@ -114,54 +109,37 @@ class Admin_BookController extends Zend_Controller_Action
     
     public function deleteAction()
     {
-    	$id = $this->getRequest()->getParam('id');
-    	$co = App_Factory::_m('Article');
-    	$doc = $co->find($id);
-    	if(is_null($doc)) {
-            throw new Class_Exception_AccessDeny('没有权限访问此内容，或者内容id不存在');
-        }
-        
-        $doc->delete();
-		
-        $this->_helper->flashMessenger->addMessage('文章:'.$doc->label.'已删除！');
-		$this->_helper->switchContent->gotoSimple('index');
+    	
     }
     
-    public function pageSortAction()
+    public function treeSortAction()
     {
-    	$jsonStr = $this->getRequest()->getParam('pageSortJsonStr');
+    	$treeId = $this->getRequest()->getParam('treeId');
+    	$jsonStr = $this->getRequest()->getParam('sortJsonStr');
     	$pageArr = Zend_Json::decode($jsonStr);
     	
     	$co = App_Factory::_m('Book_Page');
-    	$pageDocs = $co->setFields(array('parentId', 'sort', 'level'))
+    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link'))
+    		->addFilter('bookId', $treeId)
 			->sort('sort', 1)
 			->fetchDoc();
-    	foreach($pageDocs as $pageDoc) {
-    		$pageId = $pageDoc->getId();
+    	foreach($docs as $doc) {
+    		$pageId = $doc->getId();
     		$newPageValue = $pageArr[$pageId];
     		$sort = intval($newPageValue['sort']);
     		$parentId = $newPageValue['parentId'];
-    		if($pageDoc->sort != $sort || $pageDoc->parentId != $parentId) {
-    			$pageDoc->sort = $sort;
-    			$pageDoc->parentId = $parentId;
-    			$pageDoc->save();
+    		if($doc->sort != $sort || $doc->parentId != $parentId) {
+    			$doc->sort = $sort;
+    			$doc->parentId = $parentId;
+    			$doc->save();
     		}
     	}
     	
-    	$this->_helper->json(array('result' => 'success'));
-    }
-    
-    public function redoNaviAction()
-    {
-    	$id = $this->getRequest()->getParam('id');
-    	
-		$bookDoc = App_Factory::_m('Book')->find($id);
-    	$bookDoc->readPages();
-    	
-    	$pageIndex = $bookDoc->buildIndex();
-    	
-    	$bookDoc->pageIndex = $pageIndex;
-    	$bookDoc->save();
+    	$treeDoc = App_Factory::_m('Book')->find($treeId);
+    	$treeDoc->setLeafs($docs);
+    	$treeIndex = $treeDoc->buildIndex();
+    	$treeDoc->bookIndex = $treeIndex;
+    	$treeDoc->save();
     	
     	$this->_helper->json(array('result' => 'success'));
     }

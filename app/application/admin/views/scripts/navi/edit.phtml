@@ -1,39 +1,55 @@
-<div class='navi tree' naviId ='1'>
-	<div>add new</div>
-	<div><input type='text'>
+<div class='container-bg'>
+	<ul class='container'>
+		<li class='drop-to-sort'></li>
+	</ul>
 </div>
 
-<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/navi" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+<div id='save-sort'>SAVE SORT</div>
 
-<script type='text/template' id='attribute-editor-template'>
-	标题：<input class='attribute-field' type="text" name="label" value="{{ label }}" />
-	<br />
-<%
-if(type == 'radio' || type == 'select' || type == 'multicheckbox') {
-%>
-	<div>候选项：</div>
-	<ul class='option-container'>
-<%
-	for(idx in options) {
-%>
-		<li class='option-item'>
-			<input class='attribute-field' type='text' name='option' value='{{ options[idx].label }}' />
-			<span class='option-remove op-remove'>-</span>
-		</li>
-<%
-	}
-%>
-	</ul>
-	<div>
-		<span class='option-add op-add'>+</span>
+<script>
+$('#save-sort').click(function() {
+	var treeleafs = $('.treeleaf-item');
+	var sortJsonStr = '{';
+	treeleafs.each(function(i, leaf) {
+		sortJsonStr += '"' + $(leaf).attr('id') +'":{"parentId":"'+$(leaf).attr('parent-id')+'", "sort":' + i + '},';
+	});
+	sortJsonStr = sortJsonStr.substring(0, sortJsonStr.length - 1);
+	sortJsonStr += '}';
+	
+	$.ajax({
+		url: '/admin/navi/tree-sort/',
+		data: {treeId: "<?php echo $this->naviDoc->getId()?>", sortJsonStr: sortJsonStr},
+		type: 'post',
+		success: function(json) {
+//			console.log('ok');
+		}
+	});
+	
+});
+
+//global defines
+var tree = {type: 'navi', id: '<?php echo $this->naviDoc->getId()?>'};
+</script>
+
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/treeleaf" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+<script type='text/template' id='treeleaf-item-template'>
+	<div class='leaf-line'>
+		<div class='drag-handle' draggable='true'></div>
+		<div class='leaf-label'><a href='/admin/navi/edit-link/id/{{ id }}'>{{ label }}</a></div>
+
+		<div class='quick-edit'>qe</div>
+
+		<div class='leaf-link'>
+		<% if(link) { %>
+			{{ link }}
+		<% } else { %>
+			{{ id }}
+		<% } %>
+		</div>
+		<div class='clear'></div>
 	</div>
-<%
-}
-%>
-	提示：<textarea class='attribute-field' name="description">{{ description }}</textarea>
-	className: <input class='attribute-field' type="text" name="className" value="{{ className }}" />
-	<div class='clear'></div>
-
-	<div class='attribute-save'>SAVE</div>
-	<div class='attribute-delete'>DELETE</div>
+	<ul class='children'>
+		<li class='drop-to-sort' parent-id='{{ id }}'></li>
+	</ul>
 </script>

@@ -1,23 +1,6 @@
 <?php
 class Front_News extends Class_Brick_Solid_Abstract
 {
-	protected $_id = null;
-	
-	protected function _prepareGearLinks()
-	{
-		if($this->_id == null) {
-			return parent::_prepareGearLinks();
-		} else {
-			$this->_addGearLink('添加新文章', '/admin/artical/edit/groupId/'.$this->_id);
-		}
-	}
-	
-	public function getCacheId()
-	{
-		$groupId = $this->getParam('groupId');
-		return "news_".$this->_brick->brickId;
-	}
-	
     public function prepare()
     {
         $groupId = $this->getParam('groupId');
@@ -26,73 +9,47 @@ class Front_News extends Class_Brick_Solid_Abstract
     	}
     	if(is_null($groupId)) {
     		$groupId = 0;
-    	} else {
-    		$this->_id = $groupId;
     	}
     	
-		$groupTb = Class_Base::_('Group');
-		$groupRow = $groupTb->find($groupId)->current();
+		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
 		
 		$co = App_Factory::_m('Article');
-//        $selector = $articalTable->select(false)->setIntegrityCheck(false)
-//        	->from($articalTable, array('id', 'groupId', 'title', 'introtext', 'introicon', 'created', 'modified', 'featured'))
-//        	->limit($this->getParam('limit'), 0);
 		$co->setFields(array('id', 'groupId', 'label', 'introtext', 'introicon', 'created', 'modified', 'featured'))
 			->setPagesize($this->getParam('limit'))
 			->setPage(1)
 			->sort('_id', -1);
-//		$featuredOnly = $this->getParam('featuredOnly');
-//		if($featuredOnly == 'y') {
-//			$selector->where('featured = 1');
-//		} else if($featuredOnly == 'top') {
-//			$selector->order('featured DESC');
-//		}
-//		$selector->order('id DESC');
-//		echo $groupId.'<br />';
-    	if(!is_null($groupRow)) {
-			if($groupRow->hasChildren == 1) {
-				$subgroupRowset = $groupTb->fetchAll($groupTb->select(false)
-					->from($groupTb, array('id'))
-					->where('parentId = ?', $groupRow->id)
-				);
-				$subgroupIdArr = Class_Func::buildArr($subgroupRowset, 'id', 'id');
-				$subgroupIdArr[] = $groupId;
-				$co->addFilter('groupId', array('$in' => $subgroupIdArr));
-			} else {
-				$co->addFilter('groupId', $groupRow->id);
-			}
-    	} else {
-    		$this->setParam('header', 'none');
-    	}
-    	
-//    	if($this->getParam('titlePrefix') == 'group') {
-//    		$selector->joinLeft(
-//    			array('g' => 'group'),
-//    			'artical.groupId = g.id',
-//    			array('g.label')
-//    		);
-//    	} else if($this->getParam('titlePrefix') == 'subdomain') {
-//    		$selector->joinLeft(
-//    			array('s' => 'subdomain'),
-//    			'artical.subdomainId = s.id',
-//    			array('s.label', 'subdomainName' => 's.name')
-//    		);
-//    	}
-    	$articalRowset = $co->fetchDoc();
 		
+//    	if(!is_null($groupRow)) {
+//			if($groupRow->hasChildren == 1) {
+//				$subgroupRowset = $groupTb->fetchAll($groupTb->select(false)
+//					->from($groupTb, array('id'))
+//					->where('parentId = ?', $groupRow->id)
+//				);
+//				$subgroupIdArr = Class_Func::buildArr($subgroupRowset, 'id', 'id');
+//				$subgroupIdArr[] = $groupId;
+//				$co->addFilter('groupId', array('$in' => $subgroupIdArr));
+//			} else {
+//				$co->addFilter('groupId', $groupRow->id);
+//			}
+//    	} else {
+//    		$this->setParam('header', 'none');
+//    	}
+
+		$co->addFilter('groupId', $groupId);
+		
+    	$articalRowset = $co->fetchDoc();
+    	
     	$this->view->groupId = $groupId;
-		$this->view->groupRow = $groupRow;
+		$this->view->groupRow = $groupDoc;
 		$this->view->articalRowset = $articalRowset;
     }
     
     public function configParam($form)
     {
-    	$table = new Class_Model_GroupV2_Tb();
-    	$selector = $table->select()->where('type = ?', 'article');
-        $items = $table->fetchSelectOption(
-        	array('auto' => '[自动判断]',  '' => '全部文章', '--------------' => array()),
-        	$selector
-        );
+    	$groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
+    	
         $form->addElement('select', 'param_groupId', array(
             'label' => '文章分类',
             'multiOptions' => $items

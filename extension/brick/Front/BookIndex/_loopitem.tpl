@@ -1,16 +1,16 @@
-{% macro list(node, bookName) %}
+{% macro loop(node, bookAlias) %}
 {% spaceless %}
     <li>
     {% if node.link %}
-    	<a href='/{{bookName}}/{{ node.link }}.shtml'>{{ node.label }}</a>
+    	<a href='/{{bookAlias}}/{{ node.link }}.shtml'>{{ node.label }}</a>
     {% else %}
-    	<a href='/{{bookName}}/{{ node.id }}.shtml'>{{ node.label }}</a>
+    	<a href='/{{bookAlias}}/{{ node.id }}.shtml'>{{ node.label }}</a>
     {% endif %}
     
     {% if node.children %}
         <ul>
         {% for childNode in node.children %}
-            {{ _self.list(childNode, bookName) }}
+            {{ _self.loop(childNode, bookAlias) }}
         {% endfor %}
         </ul>
     {% endif %}

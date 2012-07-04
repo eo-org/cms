@@ -16,20 +16,20 @@ class Front_ProductNews extends Class_Brick_Solid_Abstract
     		$groupId = 0;
     	}
     	
-    	$linkController = Class_Link_Controller::factory('product');
+//    	$linkController = Class_Link_Controller::factory('product');
+//		
+//		$link = $linkController->getLink($groupId);
 		
-		$link = $linkController->getLink($groupId);
-		
-		if(is_null($link)) {
-			$groupId = 0;
-		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
-			$subGroupRow = $link->getChildren();
-			$idArr = array();
-			foreach($subGroupRow as $r) {
-				$idArr[] = $r->getId();
-			}
-			$groupId = $groupId.','.implode($idArr, ',');
-		}
+//		if(is_null($link)) {
+//			$groupId = 0;
+//		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
+//			$subGroupRow = $link->getChildren();
+//			$idArr = array();
+//			foreach($subGroupRow as $r) {
+//				$idArr[] = $r->getId();
+//			}
+//			$groupId = $groupId.','.implode($idArr, ',');
+//		}
 		
 		$productCo = App_Factory::_m('Product');
 		$productCo->addFilter('groupId', $groupId)
@@ -73,12 +73,12 @@ class Front_ProductNews extends Class_Brick_Solid_Abstract
     
     public function configParam(Class_Form_Edit $form)
     {
-    	$table = new Class_Model_GroupV2_Tb();
-        $selector = $table->select()->where('type = ?', 'product');
-        $options = $table->fetchSelectOption(array('auto' => '自动选择', 0 => '全部商品'), $selector);
+    	$groupDoc = App_Factory::_m('Group')->addFilter('type', 'product')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
         $form->addElement('select', 'param_groupId', array(
             'label' => '产品数据源',
-            'multiOptions' => $options
+            'multiOptions' => $items
         ));
         $form->addElement('select', 'param_limit', array(
             'filters' => array('StringTrim'),

@@ -24,21 +24,23 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 	    $page = $this->_request->getParam('page');
 		$groupId = $this->_request->getParam('action');
 		
-		$linkController = Class_Link_Controller::factory('product');
 		
-		$link = $linkController->getLink($groupId);
 		
-		if(is_null($link)) {
-			$groupId = 0;
-		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
-			$subGroupRow = $link->getChildren();
-			$idArr = array();
-			$idArr[] = $groupId;
-			foreach($subGroupRow as $r) {
-				$idArr[] = $r->getId();
-			}
-			$groupId = $idArr;
-		}
+//		$linkController = Class_Link_Controller::factory('product');
+//		
+//		$link = $linkController->getLink($groupId);
+//		
+//		if(is_null($link)) {
+//			$groupId = 0;
+//		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
+//			$subGroupRow = $link->getChildren();
+//			$idArr = array();
+//			$idArr[] = $groupId;
+//			foreach($subGroupRow as $r) {
+//				$idArr[] = $r->getId();
+//			}
+//			$groupId = $idArr;
+//		}
 		
 		$productCo = App_Factory::_m('Product');
 		$productCo->addFilter('groupId', $groupId)

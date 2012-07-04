@@ -15,8 +15,9 @@ class Form_Product_Edit extends App_Form_Edit
             'filters' => array('StringTrim')
         ));
         
-        $clc = Class_Link_Controller::factory('product');
-        $items = $clc->toMultiOptions();
+        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'product')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
 		$this->addElement('select', 'groupId', array(
             'label' => '目录',
             'filters' => array('StringTrim'),
