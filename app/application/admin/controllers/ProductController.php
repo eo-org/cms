@@ -11,8 +11,8 @@ class Admin_ProductController extends Zend_Controller_Action
         	'~contextMenu' => ''
         );
         
-        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'product')
-    		->fetchOne();
+        $groupDoc = App_Factory::_m('Group')->findProductGroup();
+    		
     	$items = $groupDoc->toMultioptions('label');
         
         $hashParam = $this->getRequest()->getParam('hashParam');

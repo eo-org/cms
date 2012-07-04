@@ -7,8 +7,7 @@ class Admin_ArticleController extends Zend_Controller_Action
     	
     	$groupId = $this->getRequest()->getParam('groupId');
     	
-    	$groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
-    		->fetchOne();
+    	$groupDoc = App_Factory::_m('Group')->findArticleGroup();
     	$items = $groupDoc->toMultioptions('label');
         
         $hashParam = $this->getRequest()->getParam('hashParam');
