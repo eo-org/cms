@@ -1,5 +1,5 @@
 <?php
-class Front_ListLine extends Class_Brick_Solid_Abstract
+class Front_ArticleList extends Class_Brick_Solid_Abstract
 {
 	protected $_id = null;
 	

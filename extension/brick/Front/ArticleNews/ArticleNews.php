@@ -1,5 +1,5 @@
 <?php
-class Front_News extends Class_Brick_Solid_Abstract
+class Front_ArticleNews extends Class_Brick_Solid_Abstract
 {
     public function prepare()
     {

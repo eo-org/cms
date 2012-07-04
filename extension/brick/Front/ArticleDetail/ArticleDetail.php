@@ -1,5 +1,5 @@
 <?php
-class Front_Artical extends Class_Brick_Solid_Abstract
+class Front_ArticleDetail extends Class_Brick_Solid_Abstract
 {
 	protected $_id = null;
 	

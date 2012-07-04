@@ -58,7 +58,7 @@ class Admin_BrickController extends Zend_Controller_Action
     	$siteDb = Zend_Registry::get('siteDb');
     	$tb = new Zend_Db_Table(array(
     		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
-    		Zend_Db_Table_Abstract::NAME => 'extension'
+    		Zend_Db_Table_Abstract::NAME => 'extension_v1'
     	));
     	$rowset = $tb->fetchAll($tb->select()->where('deprecated = 0')->order('sort'));
     	
