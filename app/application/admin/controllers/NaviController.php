@@ -65,7 +65,8 @@ class Admin_NaviController extends Zend_Controller_Action
     	$this->view->naviDoc = $doc;
 	 	$this->_helper->template->head('编辑')
         	->actionMenu(array(
-        		'create-page' => array('label' => '添加新连接', 'callback' => '/admin/navi/edit-link/navi-id/'.$id),
+        		'create-link' => array('label' => '添加新连接', 'callback' => '/admin/navi/edit-link/navi-id/'.$id),
+        		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
         		'delete'
         	));
     }

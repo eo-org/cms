@@ -4,10 +4,11 @@
 	</ul>
 </div>
 
-<div id='save-sort'>SAVE SORT</div>
-
 <script>
-$('#save-sort').click(function() {
+saveSort = function() {
+	var prompt = Prompt.getInstance().showLoadingBox();
+	prompt.hideHintBox();
+	
 	var treeleafs = $('.treeleaf-item');
 	var sortJsonStr = '{';
 	treeleafs.each(function(i, leaf) {
@@ -21,11 +22,10 @@ $('#save-sort').click(function() {
 		data: {treeId: "<?php echo $this->doc->type?>", sortJsonStr: sortJsonStr},
 		type: 'post',
 		success: function(json) {
-//			console.log('ok');
+			prompt.hideLoadingBox();
 		}
-	});
-	
-});
+	});	
+};
 
 //global defines
 var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
@@ -37,9 +37,6 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 	<div class='leaf-line'>
 		<div class='drag-handle' draggable='true'></div>
 		<div class='leaf-label'><a href='/admin/group/edit-item/id/{{ id }}'>{{ label }}</a></div>
-
-		<div class='quick-edit'>qe</div>
-
 		<div class='leaf-link'>
 		<% if(link) { %>
 			{{ link }}

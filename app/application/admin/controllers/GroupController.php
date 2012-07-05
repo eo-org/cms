@@ -30,7 +30,9 @@ class Admin_GroupController extends Zend_Controller_Action
     	$this->view->doc = $doc;
 	 	$this->_helper->template->head('编辑')
         	->actionMenu(array(
-        		'edit-item' => array('label' => '添加新分类', 'callback' => '/admin/group/edit-item/type/'.$type)
+        		'create-item' => array('label' => '添加新分类', 'callback' => '/admin/group/edit-item/type/'.$type),
+        		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
+        		'delete'
         	));	
     }
     
@@ -102,8 +104,7 @@ class Admin_GroupController extends Zend_Controller_Action
     		}
     	}
     	
-    	$treeDoc = App_Factory::_m('Group')->addFilter('type', $treeId)
-			->fetchOne();
+    	$treeDoc = App_Factory::_m('Group')->findArticleGroup();
     	$treeDoc->setLeafs($docs);
     	$treeIndex = $treeDoc->buildIndex();
     	$treeDoc->groupIndex = $treeIndex;

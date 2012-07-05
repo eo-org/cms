@@ -64,6 +64,7 @@ class Admin_BookController extends Zend_Controller_Action
 	 	$this->_helper->template->head('编辑BOOK:<em>'.$doc->title.'</em>')
         	->actionMenu(array(
         		'create-page' => array('label' => '添加新书页', 'callback' => '/admin/book/edit-page/book-id/'.$id),
+        		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
         		'delete'
         	));
     }

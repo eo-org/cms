@@ -76,15 +76,26 @@ class Admin_LayoutController extends Zend_Controller_Action
     public function editStageAction()
     {
     	$stageId = $this->getRequest()->getParam('stageId');
-    	$tb = new Zend_Db_Table('layout_stage');
-    	$row = $tb->find($stageId)->current();
+    	$co = App_Factory::_m('Layout');
+    	$doc = $co->addFilter('stage.stageId', $stageId)->fetchOne();
+    	
+    	$stages = $doc->stage;
+    	$tempKey = null;
+    	foreach($stages as $key => $val) {
+    		if($val['stageId'] == $stageId) {
+    			$tempKey = $key;
+    			break;
+    		}
+    	}
     	
     	require_once APP_PATH.'/admin/forms/Layout/EditStage.php';
         $form = new Form_Layout_EditStage();
-        $form->populate($row->toArray());
+        $form->populate($stages[$tempKey]);
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	$row->setFromArray($this->getRequest()->getParams());
-			$row->save();
+        	$stages[$tempKey]['uniqueId'] = $form->getValue('uniqueId');
+			$doc->stage = $stages;
+        	$doc->save();
+        	
             $this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
         
@@ -100,38 +111,11 @@ class Admin_LayoutController extends Zend_Controller_Action
 		$stagesObj = $jsonObj['stages'];
 		
 		$co = App_Factory::_m('Layout');
-//		$docs = $co->addFilter('layoutId', $layoutId)
-//			->fetchDoc();
-			
 		$doc = $co->find($layoutId);
 		if(is_null($doc)) {
 			$doc = $co->create();
 			
 		}
-//		$currentStageIds = array();
-//		
-//		foreach($stagesObj as $obj) {
-//			if($obj['stageId'] == 0) {
-//				$doc = $co->create();
-//				$doc->layoutId = $layoutId;
-//				$doc->type = $obj['type'];
-//				$doc->sort = $obj['sort'];
-//				$doc->save();
-//			} else {
-//				$currentStageIds[] = $obj['stageId'];
-//				foreach($docs as $doc) {
-//					if($doc->id == $obj['stageId'] && $doc->sort != $obj['sort']) {
-//						$doc->sort = $obj['sort'];
-//						$doc->save();
-//					}
-//				}
-//			}
-//		}
-//		foreach($docs as $doc) {
-//			if(!in_array($doc->id, $currentStageIds)) {
-//				$doc->delete();
-//			}
-//		}
 
 		$doc->stage = $stagesObj;
 		$doc->save();

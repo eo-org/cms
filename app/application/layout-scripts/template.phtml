@@ -45,13 +45,13 @@ if($csa->hasPrivilege()) {
 	if(!is_null($rowset)) {
 		foreach($rowset as $row) {
 ?>
-<div<?php echo is_null($row['uniquId']) ? " " : " id='".$row['uniquId']."'"?> class='stage' type='<?php echo $row['type']?>' stage-id='<?php echo $row['stageId']?>'>
+<div<?php echo is_null($row['uniqueId']) ? " " : " id='".$row['uniqueId']."'"?> class='stage' type='<?php echo $row['type']?>' stage-id='<?php echo $row['stageId']?>'>
 <?php
 			$typeArr = explode('-', $row['type']);
 			foreach($typeArr as $key => $spriteType) {
 				$spriteName = $row['stageId'].'-'.$key;
 ?>
-	<div<?php is_null($row['uniquId']) ? " " : " id='".$row['uniquId']."-$key'"?> stage-id='<?php echo $row['stageId']?>' sprite-name='<?php echo $spriteName?>' class='sprite grid-<?php echo $spriteType?>'>
+	<div<?php is_null($row['uniqueId']) ? " " : " id='".$row['uniqueId']."-$key'"?> stage-id='<?php echo $row['stageId']?>' sprite-name='<?php echo $spriteName?>' class='sprite grid-<?php echo $spriteType?>'>
 	<?php if(array_key_exists($spriteName, $HTML_ARR)) { ?>
 	<?php echo $HTML_ARR[$spriteName]?>
 	<?php } ?>
