@@ -39,15 +39,10 @@ class Admin_LayoutController extends Zend_Controller_Action
         	$doc->default = 0;
         	$doc->save();
         	
-//        	$linkRow->save();
 			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
         
         $this->view->form = $form;
-        
-//        $this->view->controls = array(
-//			'ajax-save' => array('callback' => '/admin/layout/create/')
-//        );
         $this->_helper->template->actionMenu(array('save'));
     }
     
@@ -116,62 +111,76 @@ class Admin_LayoutController extends Zend_Controller_Action
 			$doc = $co->create();
 			
 		}
-
+		$oldStage = $doc->stage;
+		$brickCo = App_Factory::_m('Brick');
+		foreach($oldStage as $v) {
+			$deleted = true;
+			foreach($stagesObj as $newValue) {
+				if($v['stageId'] == $newValue['stageId']) {
+					$deleted = false;
+					break;
+				}
+			}
+			if($deleted) {
+				$brickCo->delete(array('stageId' => $v['stageId']));
+			}
+		}
+		
 		$doc->stage = $stagesObj;
 		$doc->save();
-		
 		
 		return $this->_helper->json(array('result' => 'success'));
 	}
     
     public function setPageAction()
     {
-    	$type = $this->getRequest()->getParam('type');
-    	$id = $this->getRequest()->getParam('id');
-        
-        require APP_PATH.'/admin/forms/Layout/SetPage.php';
-        $form = new Form_Layout_SetPage($type);
-        
-        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	
-	        if($type == 'static-artical') {
-	        	$linkRow = Class_Base::_('Artical')->find($id)->current();
-	        } else if($type == 'static-list') {
-	        	$linkRow = Class_Base::_('Group')->find($id)->current();
-	        }
-        	
-        	$linkRow->layoutId = $form->getValue('selectedLayoutId');
-        	$linkRow->save();
-			echo 'success';
-			$this->_helper->viewRenderer->setNoRender(true);
-			exit(0);
-        }
-        
-        $this->view->form = $form;
-        $this->view->id = $id;
-        
-        $this->view->controls = array(
-			'ajax-save' => array('callback' => '/admin/layout/set-page/type/'.$type.'/id/'.$id)
-        );
+//    	$type = $this->getRequest()->getParam('type');
+//    	$id = $this->getRequest()->getParam('id');
+//        
+//        require APP_PATH.'/admin/forms/Layout/SetPage.php';
+//        $form = new Form_Layout_SetPage($type);
+//        
+//        if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+//        	
+//	        if($type == 'static-artical') {
+//	        	$linkRow = Class_Base::_('Artical')->find($id)->current();
+//	        } else if($type == 'static-list') {
+//	        	$linkRow = Class_Base::_('Group')->find($id)->current();
+//	        }
+//        	
+//        	$linkRow->layoutId = $form->getValue('selectedLayoutId');
+//        	$linkRow->save();
+//			echo 'success';
+//			$this->_helper->viewRenderer->setNoRender(true);
+//			exit(0);
+//        }
+//        
+//        $this->view->form = $form;
+//        $this->view->id = $id;
+//        
+//        $this->view->controls = array(
+//			'ajax-save' => array('callback' => '/admin/layout/set-page/type/'.$type.'/id/'.$id)
+//        );
     }
     
     public function deleteAction()
     {
-    	$layoutId = $this->getRequest()->getParam('layoutId');
-    	$layout = Class_Base::_('Layout')->find($layoutId)->current();
-    	if(is_null($layout)) {
-    		throw new Exception('layout not found');
-    	}
-    	$db = Zend_Registry::get('db');
-		$linkTable = Class_Base::_('Layout_Brick');
-		$linkTable->delete($db->quoteInto('layoutId = ?', $layoutId));
-		$layout->delete();
-//    	if($this->getRequest()->getParam('format') == 'html') {
-//			echo 'success';
-//			$this->_helper->viewRenderer->setNoRender(true);
-//		} else {
-//			$this->_helper->redirector->gotoSimple('index');
-//		}
+//    	$layoutId = $this->getRequest()->getParam('layoutId');
+//    	
+//    	$co = App_Factory::_m('Layout');
+//		$doc = $co->find($layoutId);
+//    	if(is_null($doc)) {
+//    		throw new Exception('layout not found');
+//    	}
+////    	$db = Zend_Registry::get('db');
+////		$linkTable = Class_Base::_('Layout_Brick');
+////		$linkTable->delete($db->quoteInto('layoutId = ?', $layoutId));
+////		$layout->delete();
+//
+//    	$co = App_Factory::_m('Brick');
+//    	
+//    	
+//		$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
     }
     
     public function getLayoutJsonAction()

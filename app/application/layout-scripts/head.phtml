@@ -16,13 +16,21 @@ $csa = Class_Session_Admin::getInstance();
 <?php }?>
 <?=$this->headLink() ?>
 
+<?php if($csa->hasPrivilege()) { ?>
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/jub.js"></script>
-<script type="text/javascript" src="<?=Class_Server::extUrl()?>/func.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script>
+<?php } else { ?>
+<script type="text/javascript" src="<?=Class_Server::extUrl()?>/src/jquery.1.7.1.min.js"></script>
+<?php }?>
+
+
+
+<!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script -->
 <?=$this->headScript() ?>
 
 <?php if($csa->hasPrivilege()) { ?>
+<script type="text/javascript" src="<?=Class_Server::extUrl()?>/func.js"></script>
+
 <!-- link 	type="text/css" 		href="<?=Class_Server::libUrl()?>/admin/style/structure.css" media="screen" rel="stylesheet">
 <link	type="text/css"			href="<?=Class_Server::libUrl()?>/admin/style/front.css" media="screen" rel="stylesheet" -->
 <link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/admin/style&f=structure.css,front.css" media="screen" rel="stylesheet">

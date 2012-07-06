@@ -104,7 +104,11 @@ class Admin_GroupController extends Zend_Controller_Action
     		}
     	}
     	
-    	$treeDoc = App_Factory::_m('Group')->findArticleGroup();
+    	if($treeId == 'article') {
+    		$treeDoc = App_Factory::_m('Group')->findArticleGroup();
+    	} else if($treeId == 'product') {
+    		$treeDoc = App_Factory::_m('Group')->findProductGroup();
+    	}
     	$treeDoc->setLeafs($docs);
     	$treeIndex = $treeDoc->buildIndex();
     	$treeDoc->groupIndex = $treeIndex;
