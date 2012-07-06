@@ -26,6 +26,7 @@ class Front_Logo extends Class_Brick_Solid_Abstract
             'filters' => array('StringTrim'),
     		'class' => 'icon-selector',
             'label' => 'logo图片：',
+    		'callback' => 'appendToInput',
             'required' => true
         ));
         $paramArr = array('param_logoPath');
