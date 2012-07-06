@@ -23,6 +23,7 @@ saveSort = function() {
 		type: 'post',
 		success: function(json) {
 			prompt.hideLoadingBox();
+			$('.changed').removeClass('changed');
 		}
 	});	
 };
@@ -34,7 +35,11 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/treeleaf" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
 <script type='text/template' id='treeleaf-item-template'>
+	<% if(parentId == '') {%>
+	<div class='leaf-line changed'>
+	<% } else { %>
 	<div class='leaf-line'>
+	<% } %>
 		<div class='drag-handle' draggable='true'></div>
 		<div class='leaf-label'><a href='/admin/group/edit-item/id/{{ id }}'>{{ label }}</a></div>
 		<div class='leaf-link'>

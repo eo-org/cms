@@ -27,7 +27,8 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 		}
 		
 		$data = $co->setFields(array('label', 'link', 'parentId', 'sort'))
-			->sort('sort', 1)
+			->addSort('sort', 1)
+			->addSort('_id', -1)
 			->fetchAll(true);
         return $this->_helper->json($data);
 	}

@@ -1,9 +1,3 @@
-<div class=''>
-	<ul class=''>
-		<li class='drop-to-sort'></li>
-	</ul>
-</div>
-
 <div class='container-bg'>
 	<ul class='container'>
 		<li class='drop-to-sort'></li>
@@ -29,6 +23,7 @@ saveSort = function() {
 		type: 'post',
 		success: function(json) {
 			prompt.hideLoadingBox();
+			$('.changed').removeClass('changed');
 		}
 	});	
 };
@@ -40,7 +35,11 @@ var tree = {type: 'navi', id: '<?php echo $this->naviDoc->getId()?>'};
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/treeleaf" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
 <script type='text/template' id='treeleaf-item-template'>
+	<% if(parentId == '') {%>
+	<div class='leaf-line changed'>
+	<% } else { %>
 	<div class='leaf-line'>
+	<% } %>
 		<div class='drag-handle' draggable='true'></div>
 		<div class='leaf-label'><a href='/admin/navi/edit-link/id/{{ id }}'>{{ label }}</a></div>
 		<div class='leaf-link'>{{ link }}</div>

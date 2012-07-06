@@ -95,7 +95,7 @@ class Admin_BookController extends Zend_Controller_Action
     		$pageDoc->setFromArray($form->getValues());
     		if($op == 'create') {
     			$pageDoc->bookId = $bookId;
-    			$pageDoc->parentId = 0;
+    			$pageDoc->parentId = '';
     			$pageDoc->sort = 0;
     		}
     		$pageDoc->save();

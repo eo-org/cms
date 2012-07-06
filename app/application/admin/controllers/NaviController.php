@@ -97,7 +97,7 @@ class Admin_NaviController extends Zend_Controller_Action
     		$itemDoc->setFromArray($form->getValues());
     		if($op == 'create') {
     			$itemDoc->naviId = $naviId;
-    			$itemDoc->parentId = 0;
+    			$itemDoc->parentId = '';
     			$itemDoc->sort = 0;
     		}
     		$itemDoc->save();

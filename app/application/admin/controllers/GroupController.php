@@ -63,7 +63,7 @@ class Admin_GroupController extends Zend_Controller_Action
     		$itemDoc->setFromArray($form->getValues());
     		if($op == 'create') {
     			$itemDoc->groupType = $groupType;
-    			$itemDoc->parentId = 0;
+    			$itemDoc->parentId = '';
     			$itemDoc->sort = 0;
     		}
     		$itemDoc->save();
@@ -85,7 +85,7 @@ class Admin_GroupController extends Zend_Controller_Action
     {
 		$treeId = $this->getRequest()->getParam('treeId');
     	$jsonStr = $this->getRequest()->getParam('sortJsonStr');
-    	$pageArr = Zend_Json::decode($jsonStr);
+    	$childArr = Zend_Json::decode($jsonStr);
     	
     	$co = App_Factory::_m('Group_Item');
     	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link'))
@@ -93,10 +93,14 @@ class Admin_GroupController extends Zend_Controller_Action
 			->sort('sort', 1)
 			->fetchDoc();
     	foreach($docs as $doc) {
-    		$pageId = $doc->getId();
-    		$newPageValue = $pageArr[$pageId];
-    		$sort = intval($newPageValue['sort']);
-    		$parentId = $newPageValue['parentId'];
+    		$childId = $doc->getId();
+    		if(isset($childArr[$childId])) {
+    			$newChildValue = $childArr[$childId];
+    		} else {
+    			$newChildValue = array('sort' => 0, 'parentId' => 1);
+    		}
+    		$sort = intval($newChildValue['sort']);
+    		$parentId = $newChildValue['parentId'];
     		if($doc->sort != $sort || $doc->parentId != $parentId) {
     			$doc->sort = $sort;
     			$doc->parentId = $parentId;
