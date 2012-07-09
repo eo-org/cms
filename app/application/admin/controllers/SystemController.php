@@ -44,4 +44,11 @@ class Admin_SystemController extends Zend_Controller_Action
 		$this->_helper->flashMessenger->addMessage('Brick.css文件已更新!');
 		$this->_helper->switchContent->gotoSimple('index');
 	}
+	
+	public function headFileAction()
+	{
+		$docs = App_Factory::_m('HeadFile')->fetchDoc();
+		
+		$this->view->docs = $docs;
+	}
 }

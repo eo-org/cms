@@ -9,41 +9,31 @@ $csa = Class_Session_Admin::getInstance();
 <link href="<?=Class_Server::extUrl()?>/reset.css" media="screen" rel="stylesheet" type="text/css" >
 <link href="<?=Class_Server::libUrl()?>/front/style/sprite.css" media="screen" rel="stylesheet" type="text/css" >
 
-<?php if($csa->getSessionData('localCssMode') == 'active') {?>
-<link uselocal='true' href="http://local.host/<?php echo Class_Server::getSiteFolder()?>/template.css" media="screen" rel="stylesheet" type="text/css">
-<?php } else {?>
-<link href="<?=Class_Server::getImageFolderUrl()?>/template.css" media="screen" rel="stylesheet" type="text/css">
-<?php }?>
-<?=$this->headLink() ?>
-
 <?php if($csa->hasPrivilege()) { ?>
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/jub.js"></script>
 <?php } else { ?>
 <script type="text/javascript" src="<?=Class_Server::extUrl()?>/src/jquery.1.7.1.min.js"></script>
 <?php }?>
 
-
-
 <!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script -->
+<?=$this->headLink() ?>
 <?=$this->headScript() ?>
 
 <?php if($csa->hasPrivilege()) { ?>
-<script type="text/javascript" src="<?=Class_Server::extUrl()?>/func.js"></script>
-
 <!-- link 	type="text/css" 		href="<?=Class_Server::libUrl()?>/admin/style/structure.css" media="screen" rel="stylesheet">
 <link	type="text/css"			href="<?=Class_Server::libUrl()?>/admin/style/front.css" media="screen" rel="stylesheet" -->
 <link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/admin/style&f=structure.css,front.css" media="screen" rel="stylesheet">
 
 <script type="text/javascript"	src="<?=Class_Server::extUrl()?>/ckeditor/ckeditor.js"></script>
 
-<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jquery.ndd.js"></script>
-<!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/front.js"></script>
+<!-- script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jquery.ndd.js"></script>
+<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/front.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/lightbox.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/links.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/icon-selector.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/bootstrap.js"></script -->
-<script type="text/javascript"	src="http://minify.enorange.cn/?b=resource&f=cms/v2/script/front.js,cms/v2/script/lightbox.js,cms/v2/script/links.js,cms/v2/script/bootstrap.js,cms/v2/script/icon-selector.js"></script>
+<script type="text/javascript"	src="http://minify.enorange.cn/?b=resource&f=ext/func.js,ext/jquery.ndd.js,cms/v2/script/front.js,cms/v2/script/lightbox.js,cms/v2/script/links.js,cms/v2/script/bootstrap.js,cms/v2/script/icon-selector.js"></script>
 	
 <script>
 /************************************/
