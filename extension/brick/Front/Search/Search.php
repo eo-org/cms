@@ -11,16 +11,16 @@ class Front_Search extends Class_Brick_Solid_Abstract
     		if(is_null($type) || $type == 'product') {
     			$co = App_Factory::_m('Product');
     			
-    			$rowset = $co->setFields('title', 'introtext', 'introicon', 'created')
-    				->addFilter('title', new MongoRegex("/^".$value."/"))
+    			$rowset = $co->setFields('label', 'introtext', 'introicon', 'created')
+    				->addFilter('label', new MongoRegex("/^".$keywords."/"))
     				->setPage(1)
     				->setPageSize(50)
     				->fetchDoc();
     		} else {
     			$co = App_Factory::_m('Article');
     			
-    			$rowset = $co->setFields('title', 'introtext', 'introicon', 'created')
-    				->addFilter('title', new MongoRegex("/^".$value."/"))
+    			$rowset = $co->setFields('label', 'introtext', 'introicon', 'created')
+    				->addFilter('label', new MongoRegex("/^".$keywords."/"))
     				->setPage(1)
     				->setPageSize(50)
     				->fetchDoc();
