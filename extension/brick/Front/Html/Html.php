@@ -18,7 +18,9 @@ class Front_Html extends Class_Brick_Solid_Abstract
             'filters' => array('StringTrim'),
             'label' => '插入图片',
             'required' => false,
-        	'id' => 'append-image'
+        	'id' => 'append-image',
+        	'callback' => 'appendToEditor',
+        	'class' => 'icon-selector'
         ));
         $paramArr = array('param_content', 'appendImage');
     	$form->setParam($paramArr);
