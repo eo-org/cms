@@ -6,7 +6,6 @@ class Admin_BrickController extends Zend_Controller_Action
     public function indexAction()
     {
         $labels = array(
-        	'label' => '页面',
             'extName' => '模块类型',
             'brickName' => '模块名',
             'cssSuffix' => 'CSS后缀',
@@ -20,7 +19,7 @@ class Admin_BrickController extends Zend_Controller_Action
         		'useTpl' => array(0 => '否', 1 => '是')
 	        ),
             'url' => '/admin/brick/get-brick-json/',
-            'actionId' => 'brickId',
+            'actionId' => 'id',
         	'click' => array(
             	'action' => 'contextMenu',
             	'menuItems' => array(
@@ -296,63 +295,53 @@ class Admin_BrickController extends Zend_Controller_Action
     
     public function getBrickJsonAction()
     {
-        $pageSize = 30;
-        $type = $this->getRequest()->getParam('type');
+        $pageSize = 20;
+        $currentPage = 1;
         
-	    $tb = Class_Base::_('Brick');
-	    $selector = $tb->select(false)->setIntegrityCheck(false)
-	    	->from($tb, array('brickId', 'extName', 'brickName', 'cssSuffix', 'tplName'))
-	    	->joinLeft(array('l' => 'layout'), 'l.id = brick.layoutId', array('l.label'))
-	    	->order('l.id')
-	    	->limitPage(1, $pageSize);
-		if(!is_null($type)) {
-		    $selector->where('type = ?', $type);
-		}
+		$co = App_Factory::_m('Brick');
+		$co->setFields(array('id', 'extName', 'brickName', 'cssSuffix', 'tplName'));
+		$queryArray = array();
 		
         $result = array();
-        
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
                 $field = substr($key, 7);
                 switch($field) {
                 	case 'label':
-                		$selector->where('label like ?', $value.'%');
+                		$co->addFilter('label', new MongoRegex("/^".$value."/"));
                 		break;
                 	case 'extName':
-                        $selector->where('extName like ?', '%'.$value.'%');
+                        $co->addFilter('extName', new MongoRegex("/^".$value."/"));
                         break;
                     case 'className':
-                        $selector->where('className like ?', '%'.$value.'%');
+                        $co->addFilter('className', new MongoRegex("/^".$value."/"));
                         break;
             		case 'brickName':
-            		    $selector->where('brickName like ?', '%'.$value.'%');
-            		    break;
-            		case 'type':
-            		    $selector->where('type = ?', $value);
+            		    $co->addFilter('brickName', new MongoRegex("/^".$value."/"));
             		    break;
             		case 'tplName':
-            			$selector->where('tplName like ?', $value.'%');
+            			$co->addFilter('tplName', new MongoRegex("/^".$value."/"));
             		    break;
             		case 'page':
-            		    $selector->limitPage(intval($value), $pageSize);
+            		    if(intval($value) != 0) {
+            				$currentPage = $value;
+            			}
                         $result['currentPage'] = intval($value);
             		    break;
-            		case 'selectedIds':
-					    if($value != 'all') {
-					        $selector->where('brickId in (?)', explode(',', $value));
-					    }
-					    break;
                 }
             }
         }
-        $rowset = $tb->fetchAll($selector)->toArray();
-        $result['data'] = $rowset;
-        $result['dataSize'] = Class_Func::count($selector);
-        $result['pageSize'] = $pageSize;
+        $co->sort('_id', -1);
         
-        if(empty($result['currentPage'])) {
-        	$result['currentPage'] = 1;
-        }
+        $co->setPage($currentPage)->setPageSize($pageSize);
+		$data = $co->fetchAll(true);
+		$dataSize = $co->count();
+		
+		$result['data'] = $data;
+        $result['dataSize'] = $dataSize;
+        $result['pageSize'] = $pageSize;
+        $result['currentPage'] = $currentPage;
+        
         return $this->_helper->json($result);
     }
 }
