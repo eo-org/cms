@@ -1,6 +1,8 @@
 <?php
 $clf = Class_Layout_Front::getInstance();
 
+$layoutDoc = $clf->getLayoutRow();
+
 $co = App_Factory::_m('Layout');
 $userLayoutDocs = $co->addFilter('default', 0)
 	->fetchDoc();
@@ -45,7 +47,7 @@ $userLayoutDocs = $co->addFilter('default', 0)
 			?>
 		</ul>
 		<ul class='right'>
-			<li><a class='link' href='/admin/layout/edit/id/<?php echo $this->layoutRow->id?>'>编辑页面属性</a></li>
+			<li><a class='link' href='/admin/layout/edit/id/<?php echo $layoutDoc->getId()?>'>编辑页面属性</a></li>
 			<li><a id='enter-normal-mode' href='javascript:void(0);'>退出编辑模式</a></li>
 		</ul>
 	</div>

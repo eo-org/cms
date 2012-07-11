@@ -49,19 +49,19 @@ class Admin_LayoutController extends Zend_Controller_Action
     public function editAction()
     {
         $layoutId = $this->getRequest()->getParam('id');
-        $layoutRow = Class_Base::_('Layout')->find($layoutId)->current();
+        $layoutDoc = App_Factory::_m('Layout')->find($layoutId);
         
         require_once APP_PATH.'/admin/forms/Layout/Edit.php';
         $form = new Form_Layout_Edit();
-        $form->populate($layoutRow->toArray());
+        $form->populate($layoutDoc->toArray());
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	$layoutRow->setFromArray($this->getRequest()->getParams());
-			$layoutRow->save();
+        	$layoutDoc->setFromArray($this->getRequest()->getParams());
+			$layoutDoc->save();
             $this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
         }
         
         $this->view->form = $form;
-        if($layoutRow->default == 1) {
+        if($layoutDoc->default == 1) {
         	$this->_helper->template->actionMenu(array('save'));
         } else {
 			$this->_helper->template->actionMenu(array('save', 'delete'));
