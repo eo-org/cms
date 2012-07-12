@@ -1,1 +1,46 @@
-<?=$this->partialHTML?>
+<ul class="ad-section">
+
+</ul>
+
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/ad-section" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+<script type="text/template" id="ad-section">
+	<div class="adsection-images">
+	<%
+		for(var i = 0;i < preview.length;i++) {
+	%>
+		<div class="adsection-image-{{i}}"><img src={{preview[i]}}></div>
+	<%
+		}
+	%>
+	</div>
+	<div class="adsection-name">{{label}}</div>
+	<div style="clear:both"></div>
+	<div class="adsection-handle">
+		<a href="/admin/ad/id/{{id}}">EDIT</a>
+	</div>
+</script>
+
+<script type='text/template' id='ad-section-editor'>
+	<div class='editor-title'>新建广告组</div>
+	<dl>
+		<dt>名字</dt>
+		<dd><input class='value-field' type='text' name='label' value='' /></dd>
+		<dd class='action-dd button'>SAVE</dd>
+	<dl>
+</script>
+
+<script>
+var createAdSection = function() {
+	var template = _.template($("#ad-section-editor").html());
+	adSection = new AdSection();
+	var aseView = new AdSectionEditorView({
+		model: adSection
+	});
+
+	
+	var prompt = Prompt.getInstance().appendEditorContent(
+		aseView.render().el
+	).showMask();
+}
+</script>
