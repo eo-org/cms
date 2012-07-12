@@ -9,7 +9,9 @@ class Rest_AdSectionController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		
+		$co = App_Factory::_m('Ad_Section');
+		$data = $co->fetchAll(true);
+        return $this->_helper->json($data);
 	}
 	
 	public function getAction()
@@ -22,11 +24,11 @@ class Rest_AdSectionController extends Zend_Rest_Controller
 		$modelString = $this->getRequest()->getParam('model');
 		$jsonArray = Zend_Json::decode($modelString);
 		
-		$doc = App_Factory::_m('AdSection')->create($jsonArray);
+		$doc = App_Factory::_m('Ad_Section')->create($jsonArray);
 		$doc->save();
 		
 		$this->getResponse()->setHeader('result', 'sucess');
-		$this->_helper->json(array('id' => $attributeDoc->getId()));
+		$this->_helper->json(array('id' => $doc->getId()));
 	}
 	
 	public function putAction()

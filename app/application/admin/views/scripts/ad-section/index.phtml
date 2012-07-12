@@ -2,23 +2,28 @@
 
 </ul>
 
+<script>
+var fileUrl = "<?php echo Class_Server::fileUrl()?>";
+</script>
+
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/ad-section" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
 <script type="text/template" id="ad-section">
-	<div class="adsection-images">
+	<div class="images">
 	<%
 		for(var i = 0;i < preview.length;i++) {
 	%>
-		<div class="adsection-image-{{i}}"><img src={{preview[i]}}></div>
+		<img class="i-{{i}}" src="{{fileUrl}}/_thumb/{{preview[i]}}">
 	<%
 		}
 	%>
 	</div>
-	<div class="adsection-name">{{label}}</div>
-	<div style="clear:both"></div>
-	<div class="adsection-handle">
-		<a href="/admin/ad/id/{{id}}">EDIT</a>
+	<div class='label'>{{label}}</div>
+	<div class='bb-action'>
+		<a href="javascript::void(0);">编辑</a>
+		<a href="/admin/ad/index/section-id/{{id}}">添加广告图</a>
 	</div>
+	<div style="clear:both;"></div>
 </script>
 
 <script type='text/template' id='ad-section-editor'>

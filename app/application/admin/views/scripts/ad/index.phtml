@@ -1,1 +1,49 @@
-<?=$this->partialHTML?>
+<ul class="ad">
+	
+</ul>
+
+<script>
+var sectionId = "<?php echo $this->sectionId?>";
+var fileUrl = "<?php echo Class_Server::fileUrl()?>";
+</script>
+
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/ad" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+<script type="text/template" id="ad">
+	<div class="thumb">
+		<img src="{{fileUrl}}/_thumb/{{filename}}">
+	</div>
+	<dl>
+		<dt>连接地址</dt><dd>{{link}}</dd>
+		<dt>标题</dt><dd>{{label}}</dd>
+		<dt>说明</dt><dd>{{description}}</dd>
+	</dl>
+	<div style="clear:both;"></div>
+</script>
+<script type="text/template" id="ad-editor">
+	<div class='editor-title'>新建广告组</div>
+	<dl>
+		<dt>图片路径</dt>
+		<dd><input class='value-field icon-selector' callback='appendToInput' type='text' name='filename' value='' /></dd>
+		<dt>连接地址</dt>
+		<dd><input class='value-field' type='text' name='link' value='' /></dd>
+		<dt>标题</dt>
+		<dd><input class='value-field' type='text' name='label' value='' /></dd>
+		<dt>说明</dt>
+		<dd><textarea class='value-field' name='description'></textarea></dd>
+		<dd class='action-dd button'>SAVE</dd>
+	<dl>
+</script>
+
+<script>
+var createAd = function() {
+	ad = new Ad();
+	var aeView = new AdEditorView({
+		model: ad
+	});
+
+	var prompt = Prompt.getInstance().appendEditorContent(
+		aeView.render().el
+	).showMask();
+}
+</script>
