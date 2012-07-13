@@ -41,11 +41,18 @@ var tree = {type: 'navi', id: '<?php echo $this->naviDoc->getId()?>'};
 	<div class='leaf-line'>
 	<% } %>
 		<div class='drag-handle' draggable='true'></div>
-		<div class='leaf-label'><a href='/admin/navi/edit-link/id/{{ id }}'>{{ label }}</a></div>
+		<div class='leaf-label'><a href='javascript:void(0)'>{{ label }}</a></div>
 		<div class='leaf-link'>{{ link }}</div>
 		<div class='clear'></div>
 	</div>
 	<ul class='children'>
 		<li class='drop-to-sort' parent-id='{{ id }}'></li>
 	</ul>
+</script>
+<script type='text/template' id='treeleaf-edititem-template'>
+	<div class='label-el'><span>链接名：</span><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
+	<div class='link-el'><span>链接地址：</span><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
+	<div class='css-el'><span>CSS Name:</span><input class='edit-value' name='css' type='text' value='{{ css }}'></div>
+	<a class='edit-save' href='javascript:void(0)'>保存</a>
+	<a class='edit-delete' href='javascript:void(0)'>删除</a>
 </script>
