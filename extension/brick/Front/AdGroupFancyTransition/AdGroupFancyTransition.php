@@ -1,28 +1,41 @@
 <?php
 class Front_AdGroupFancyTransition extends Class_Brick_Solid_Abstract
 {
-    public function prepare()
+	protected $_effectFiles = array(
+    		'ad/fancy-transition.plugin.js'
+    	);
+	
+	public function prepare()
     {
-    	$groupId = $this->getParam('groupId');
-    	
+    	$sectionId = $this->getParam('sectionId');
+    	    	
     	$co = App_Factory::_m('Ad');
-    	$rowset = $co->addFilter('groupId', $groupId)
+    	$rowset = $co->addFilter('sectionId', $sectionId)
     		->fetchDoc();
+    	
         $this->view->rowset = $rowset;
     }
     
-    public function configParam(Class_Form_Edit $form)
+    public function configParam($form)
     {
-    	$tb = Class_Base::_('GroupV2');
-    	$selector = $tb->select();
-    	$rowset = $tb->fetchAll($selector->where('type = ?', 'ad'));
-    	$rowsetArr = Class_Func::buildArr($rowset, 'id', 'label');
+    	$co = App_Factory::_m('Ad_Section');
+    	$options = $co->fetchArr('label');
     	
-        $form->addElement('text', 'param_groupId', array(
+        $form->addElement('select', 'param_sectionId', array(
             'filters' => array('StringTrim'),
             'label' => '广告组：',
             'required' => true,
-        	'class' => 'ad-group-selector'
+        	'multiOptions' => $options
+        ));
+        $form->addElement('select', 'param_showLabel', array(
+            'label' => '显示广告名：',
+            'required' => true,
+        	'multiOptions' => array('n' => '不显示', 'y' => '显示')
+        ));
+        $form->addElement('select', 'param_showDescription', array(
+            'label' => '显示广告介绍：',
+            'required' => true,
+        	'multiOptions' => array('n' => '不显示', 'y' => '显示')
         ));
         $form->addElement('text', 'param_width', array(
             'filters' => array('StringTrim'),
@@ -47,13 +60,8 @@ class Front_AdGroupFancyTransition extends Class_Brick_Solid_Abstract
         	),
             'required' => true
         ));
-        $form->addElement('select', 'param_showLinks', array(
-            'filters' => array('StringTrim'),
-            'label' => '显示连接：',
-        	'multiOptions' => array('y' => '显示', 'n' => '不显示'),
-            'required' => true
-        ));
-    	$paramArr = array('param_groupId', 'param_width', 'param_height', 'param_delay', 'param_showLinks');
+		
+    	$paramArr = array('param_sectionId', 'param_showLabel', 'param_showDescription', 'param_width', 'param_height', 'param_delay');
     	$form->setParam($paramArr);
     	return $form;
     }
