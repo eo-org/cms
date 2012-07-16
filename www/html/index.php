@@ -11,7 +11,7 @@ define("LOCAL_CHARSET", getenv('LOCAL_CHARSET') ? getenv('LOCAL_CHARSET') : 'UTF
 
 $libPath = BASE_PATH.'/include';
 $commonLibPath = BASE_PATH.'/libraries/common';
-$cmsLibPath = BASE_PATH.'/libraries/cms';
+$cmsLibPath = BASE_PATH.'/library-service-cms/v1';
 set_include_path($libPath.PATH_SEPARATOR.$commonLibPath.PATH_SEPARATOR.$cmsLibPath);
 
 //set db adaptors and other configs
@@ -20,7 +20,7 @@ require_once $libPath.'/Zend/Registry.php';
 require_once $libPath.'/Zend/Db/Table.php';
 require_once $libPath.'/Zend/Debug.php';
 require_once $libPath.'/Zend/Config/Ini.php';
-require_once $cmsLibPath.'/Class/Server.php';
+require_once $commonLibPath.'/App/Server.php';
 $config = new Zend_Config_Ini(BASE_PATH.'/configs/cms/db.ini');
 
 $siteDb = new Zend_Db_Adapter_Pdo_Mysql(array(
