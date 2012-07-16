@@ -14,27 +14,11 @@ class Front_ArticleNews extends Class_Brick_Solid_Abstract
 		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
 		
 		$co = App_Factory::_m('Article');
-		$co->setFields(array('id', 'groupId', 'label', 'introtext', 'introicon', 'created', 'modified', 'featured'))
+		$co->setFields(array('groupId', 'label', 'introtext', 'introicon', 'created', 'modified', 'featured'))
 			->setPagesize($this->getParam('limit'))
 			->setPage(1)
 			->sort('_id', -1);
 		
-//    	if(!is_null($groupRow)) {
-//			if($groupRow->hasChildren == 1) {
-//				$subgroupRowset = $groupTb->fetchAll($groupTb->select(false)
-//					->from($groupTb, array('id'))
-//					->where('parentId = ?', $groupRow->id)
-//				);
-//				$subgroupIdArr = Class_Func::buildArr($subgroupRowset, 'id', 'id');
-//				$subgroupIdArr[] = $groupId;
-//				$co->addFilter('groupId', array('$in' => $subgroupIdArr));
-//			} else {
-//				$co->addFilter('groupId', $groupRow->id);
-//			}
-//    	} else {
-//    		$this->setParam('header', 'none');
-//    	}
-
 		$co->addFilter('groupId', $groupId);
 		
     	$articalRowset = $co->fetchDoc();
