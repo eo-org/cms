@@ -8,11 +8,7 @@ class Front_AdGroup extends Class_Brick_Solid_Abstract
     	$co = App_Factory::_m('Ad');
     	$rowset = $co->addFilter('sectionId', $sectionId)
     		->fetchDoc();
-//    	
-//    	$numPerSlide = $this->getParam('numPerSlide');
-//    	$numPerSlide = empty($numPerSlide) ? 1 : $numPerSlide;
-//    	$numPage = ceil($rowset->count()/$numPerSlide);
-//    	$this->view->numPage = $numPage;
+    	
         $this->view->rowset = $rowset;
     }
     

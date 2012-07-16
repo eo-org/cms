@@ -22,27 +22,15 @@ class Front_ArticleList extends Class_Brick_Solid_Abstract
 		$groupRow = $clf->getResource();
 		
 		$page = $this->_request->getParam('page');
-		$groupId = $groupRow->getId();
 		
 		if($groupRow == 'none') {
 			$this->_disableRender = 'no-resource';
 		} else {
 			$this->_id = $groupId;
-			
-//			$groupRow = Class_Tree_Solid_Group::findBranchById($groupRow->id);
-//			
-//			if($groupRow->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
-//				$subGroupRow = $groupRow->getChildren();
-//				$idArr = array();
-//				foreach($subGroupRow as $r) {
-//					$idArr[] = $r->getId();
-//				}
-//				$groupId = $groupId.','.implode($idArr, ',');
-//			}
+			$groupId = $groupRow->getId();
 			
 			$co = App_Factory::_m('Article');
 			$co->setFields(array('id', 'label', 'introtext', 'introicon', 'created'))
-//				->addFilter('groupId', array('$in' => $groupId))
 				->addFilter('groupId', $groupId)
 				->setPage($page)
 				->setPageSize($pageSize)
