@@ -53,18 +53,40 @@ class Admin_BrickController extends Zend_Controller_Action
     	$layoutId = $this->getRequest()->getParam('layoutId');
     	$stageId = $this->getRequest()->getParam('stageId');
     	$spriteName = $this->getRequest()->getParam('spriteName');
+    	$groupName = $this->getRequest()->getParam('groupName');
     	
-    	$siteDb = Zend_Registry::get('siteDb');
-    	$tb = new Zend_Db_Table(array(
-    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
-    		Zend_Db_Table_Abstract::NAME => 'extension_v1'
-    	));
-    	$rowset = $tb->fetchAll($tb->select()->where('deprecated = 0')->order('sort'));
-    	
-    	$this->view->layoutId = $layoutId;
-    	$this->view->stageId = $stageId;
-    	$this->view->spriteName = $spriteName;
-    	$this->view->rowset = $rowset;
+    	if(empty($groupName)) {
+    		
+    		$siteDb = Zend_Registry::get('siteDb');
+	    	$tb = new Zend_Db_Table(array(
+	    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
+	    		Zend_Db_Table_Abstract::NAME => 'extension_group'
+	    	));
+	    	$rowset = $tb->fetchAll();
+    		
+    		$this->view->layoutId = $layoutId;
+	    	$this->view->stageId = $stageId;
+	    	$this->view->spriteName = $spriteName;
+	    	$this->view->rowset = $rowset;
+    		$this->render('group-selector');
+    	} else {
+    		$siteDb = Zend_Registry::get('siteDb');
+	    	$tb = new Zend_Db_Table(array(
+	    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
+	    		Zend_Db_Table_Abstract::NAME => 'extension_v1'
+	    	));
+	    	$rowset = $tb->fetchAll($tb->select()
+	    		->where('deprecated = 0')
+	    		->where('groupName = ?', $groupName)
+	    		->order('sort'));
+	    	
+	    	$this->view->layoutId = $layoutId;
+	    	$this->view->stageId = $stageId;
+	    	$this->view->spriteName = $spriteName;
+	    	$this->view->rowset = $rowset;
+	    	
+	    	$this->render('create');
+    	}
     }
     
     public function editAction()
@@ -80,7 +102,7 @@ class Admin_BrickController extends Zend_Controller_Action
 	    		$this->_helper->redirector()->gotoSimple('index');
 	    	}
     	}
-//    	$brickTb = Class_Base::_('Brick');
+    	
     	$co = App_Factory::_m('Brick');
     	if($status == 'edit') {
     		$brick = $co->find($brickId);
@@ -97,12 +119,6 @@ class Admin_BrickController extends Zend_Controller_Action
     	$form = $solidBrick->configParam($form);
     	
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-    		
-    		
-//    		Zend_Debug::dump($this->getRequest()->getParams());
-//    		die();
-    		
-    		
     		$brick->setFromArray($form->getValues());
     		if($form->getValue('stageId') == '0') {
     			$brick->layoutId = 0;
@@ -118,20 +134,8 @@ class Admin_BrickController extends Zend_Controller_Action
     		
     		$brick->params = $paramArr;
     		$brick->active = 1;
-//    		$db = Zend_Registry::get('db');
-//    		$db->beginTransaction();
-//		    try {
-//		    	if($brick->sort == "") {
-//		    		$brick->sort = NULL;
-//		    	}
-				$brick->save();
-		    	$brickId = $brick->brickId;
-//                $db->commit();
-//            } catch(Exception $e) {
-//		        $db->rollBack();
-//		        throw $e;
-//            }
-
+			$brick->save();
+		    $brickId = $brick->brickId;
             $this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
     	}
     	
