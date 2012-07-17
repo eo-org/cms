@@ -8,10 +8,7 @@
 			<img src='{{row.filename|outputImage}}' />
 		</a>
 		{% if showLabel == 'y' %}
-		<a href='{{row.url}}'>{{ row.label }}</a>
-		{% endif %}
-		{% if showDescription == 'y' %}
-		<span>{{ row.description }}</span>
+		<a href='{{row.link}}'>{{ row.label }}</a>
 		{% endif %}
 	{% endblock %}
 	</li>

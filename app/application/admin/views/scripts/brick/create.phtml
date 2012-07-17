@@ -1,14 +1,7 @@
-<?php
-	foreach($this->rowset as $row) {
-	echo "<a class='brick-selector-row link' href='/admin/brick/edit/extName/$row->name/layoutId/$this->layoutId/stageId/$this->stageId/spriteName/$this->spriteName/'>";
-?>
-		<div class='icon extension-icon <?php echo $row->name ?>'></div>
-		<div class='detail'>
-			<div class='ext-name'><?php echo $row->name ?></div>
-			<?php echo $row->label?><br /><br />
-			<?php echo $row->desc?>
-		</div>
-<?php
-	echo "</a>";
-	}
-?>
+<div class='extension-group'>
+<?php foreach($this->rowset as $row) {?>
+	<a href='#/admin/brick/list-group/layoutId/<?php echo $this->layoutId?>/stageId/<?php echo $this->stageId?>/spriteName/<?php echo $this->spriteName?>/groupName/<?php echo $row->name?>'>
+		<?php echo $row->label?>
+	</a>
+<?php }?>
+</div>

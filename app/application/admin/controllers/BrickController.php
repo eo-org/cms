@@ -53,40 +53,53 @@ class Admin_BrickController extends Zend_Controller_Action
     	$layoutId = $this->getRequest()->getParam('layoutId');
     	$stageId = $this->getRequest()->getParam('stageId');
     	$spriteName = $this->getRequest()->getParam('spriteName');
+    	
+    	if(empty($layoutId) || empty($stageId) || empty($spriteName)) {
+    		throw new Exception('url error');
+    	}
+    	
+		$siteDb = Zend_Registry::get('siteDb');
+		$tb = new Zend_Db_Table(array(
+			Zend_Db_Table_Abstract::ADAPTER => $siteDb,
+			Zend_Db_Table_Abstract::NAME => 'extension_group'
+		));
+		$rowset = $tb->fetchAll();
+	    	
+		$this->view->layoutId = $layoutId;
+		$this->view->stageId = $stageId;
+		$this->view->spriteName = $spriteName;
+		$this->view->rowset = $rowset;
+		
+		$this->_helper->template->head('选择模块类型');
+    }
+    
+    public function listGroupAction()
+    {
+    	$layoutId = $this->getRequest()->getParam('layoutId');
+    	$stageId = $this->getRequest()->getParam('stageId');
+    	$spriteName = $this->getRequest()->getParam('spriteName');
     	$groupName = $this->getRequest()->getParam('groupName');
     	
-    	if(empty($groupName)) {
-    		
-    		$siteDb = Zend_Registry::get('siteDb');
-	    	$tb = new Zend_Db_Table(array(
-	    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
-	    		Zend_Db_Table_Abstract::NAME => 'extension_group'
-	    	));
-	    	$rowset = $tb->fetchAll();
-    		
-    		$this->view->layoutId = $layoutId;
-	    	$this->view->stageId = $stageId;
-	    	$this->view->spriteName = $spriteName;
-	    	$this->view->rowset = $rowset;
-    		$this->render('group-selector');
-    	} else {
-    		$siteDb = Zend_Registry::get('siteDb');
-	    	$tb = new Zend_Db_Table(array(
-	    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
-	    		Zend_Db_Table_Abstract::NAME => 'extension_v1'
-	    	));
-	    	$rowset = $tb->fetchAll($tb->select()
-	    		->where('deprecated = 0')
-	    		->where('groupName = ?', $groupName)
-	    		->order('sort'));
-	    	
-	    	$this->view->layoutId = $layoutId;
-	    	$this->view->stageId = $stageId;
-	    	$this->view->spriteName = $spriteName;
-	    	$this->view->rowset = $rowset;
-	    	
-	    	$this->render('create');
+    	if(empty($layoutId) || empty($stageId) || empty($spriteName) || empty($groupName)) {
+    		throw new Exception('url error');
     	}
+	    
+	    $siteDb = Zend_Registry::get('siteDb');
+    	$tb = new Zend_Db_Table(array(
+    		Zend_Db_Table_Abstract::ADAPTER => $siteDb,
+    		Zend_Db_Table_Abstract::NAME => 'extension_v1'
+    	));
+    	$rowset = $tb->fetchAll($tb->select()
+    		->where('deprecated = 0')
+    		->where('groupName = ?', $groupName)
+    		->order('sort'));
+    	
+    	$this->view->layoutId = $layoutId;
+    	$this->view->stageId = $stageId;
+    	$this->view->spriteName = $spriteName;
+    	$this->view->rowset = $rowset;
+	    
+	    $this->_helper->template->head($groupName);
     }
     
     public function editAction()
