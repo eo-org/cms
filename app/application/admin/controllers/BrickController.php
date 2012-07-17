@@ -54,7 +54,7 @@ class Admin_BrickController extends Zend_Controller_Action
     	$stageId = $this->getRequest()->getParam('stageId');
     	$spriteName = $this->getRequest()->getParam('spriteName');
     	
-    	if(empty($layoutId) || empty($stageId) || empty($spriteName)) {
+    	if(empty($layoutId) || is_null($stageId) || empty($spriteName)) {
     		throw new Exception('url error');
     	}
     	
@@ -80,7 +80,7 @@ class Admin_BrickController extends Zend_Controller_Action
     	$spriteName = $this->getRequest()->getParam('spriteName');
     	$groupName = $this->getRequest()->getParam('groupName');
     	
-    	if(empty($layoutId) || empty($stageId) || empty($spriteName) || empty($groupName)) {
+    	if(empty($layoutId) || is_null($stageId) || empty($spriteName) || empty($groupName)) {
     		throw new Exception('url error');
     	}
 	    

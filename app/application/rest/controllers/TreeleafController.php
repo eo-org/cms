@@ -35,9 +35,6 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 	
 	public function getAction()
 	{
-//		if() {
-//			
-//		}
 		$co = App_Factory::_m('Book_Page');
 		$data = $co->setFields(array('label', 'link', 'parentId', 'sort'))
 			->sort('sort', 1)
@@ -47,26 +44,63 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 	
 	public function postAction()
 	{
-		$modelString = $this->getRequest()->getParam('model');
-		$jsonArray = Zend_Json::decode($modelString);
+		$treeType = $this->getRequest()->getHeader('Tree_Type');
+		$treeId = $this->getRequest()->getHeader('Tree_Id');
+		switch($treeType) {
+			case 'navi':
+				$co = App_Factory::_m('Navi_Link');
+				$doc = $co->create();
+				$doc->naviId = $treeId;
+				break;
+			case 'book':
+				$co = App_Factory::_m('Book_Page');
+				$doc = $co->create();
+				$doc->bookId = $treeId;
+				break;
+			case 'group':
+				$co = App_Factory::_m('Group_Item');
+				$doc = $co->create();
+				$doc->groupType = $treeId;
+				break;
+		}
 		
-		$attributeDoc = App_Factory::_m('Book_Page')->create($jsonArray);
-		$attributeDoc->save();
+		$data = file_get_contents('php://input');
+		$jsonArray = Zend_Json::decode($data);
+		
+		$doc->setFromArray($jsonArray);
+		$doc->save();
 		
 		$this->getResponse()->setHeader('result', 'sucess');
-		$this->_helper->json(array('id' => $attributeDoc->getId()));
+		$this->_helper->json(array('id' => $doc->getId()));
 	}
 	
 	public function putAction()
 	{
-		$modelString = $this->getRequest()->getParam('model');
-		$jsonArray = Zend_Json::decode($modelString);
+		$id = $this->getRequest()->getParam('id');
 		
-		$attributeDoc = App_Factory::_m('Book_Page')->find($jsonArray['id']);
-		$attributeDoc->setFromArray($jsonArray);
+		$treeType = $this->getRequest()->getHeader('Tree_Type');
+		$treeId = $this->getRequest()->getHeader('Tree_Id');
+		switch($treeType) {
+			case 'navi':
+				$co = App_Factory::_m('Navi_Link');
+				break;
+			case 'book':
+				$co = App_Factory::_m('Book_Page');
+				break;
+			case 'group':
+				$co = App_Factory::_m('Group_Item');
+				break;
+		}
 		
-		$attributeDoc->save();
+		$data = file_get_contents('php://input');
+		$jsonArray = Zend_Json::decode($data);
+		
+		$doc = $co->find($id);
+		$doc->setFromArray($jsonArray);
+		$doc->save();
+		
 		$this->getResponse()->setHeader('result', 'sucess');
+		$this->_helper->json(array('id' => $id));
 	}
 	
 	public function deleteAction()
