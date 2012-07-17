@@ -79,7 +79,6 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 		$id = $this->getRequest()->getParam('id');
 		
 		$treeType = $this->getRequest()->getHeader('Tree_Type');
-		$treeId = $this->getRequest()->getHeader('Tree_Id');
 		switch($treeType) {
 			case 'navi':
 				$co = App_Factory::_m('Navi_Link');
@@ -106,8 +105,21 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 	public function deleteAction()
 	{
 		$id = $this->getRequest()->getParam('id');
-		$attributeDoc = App_Factory::_m('Book_Page')->find($id);
-		$attributeDoc->delete();
+		
+		$treeType = $this->getRequest()->getHeader('Tree_Type');
+		switch($treeType) {
+			case 'navi':
+				$co = App_Factory::_m('Navi_Link');
+				break;
+			case 'book':
+				$co = App_Factory::_m('Book_Page');
+				break;
+			case 'group':
+				$co = App_Factory::_m('Group_Item');
+				break;
+		}
+		$doc = $co->find($id);
+		$doc->delete();
 		$this->getResponse()->setHeader('result', 'sucess');
 	}
 }
