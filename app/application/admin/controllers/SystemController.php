@@ -49,6 +49,9 @@ class Admin_SystemController extends Zend_Controller_Action
 	{
 		$docs = App_Factory::_m('HeadFile')->fetchDoc();
 		
+		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/headfile.css');
+
+		
 		$this->view->docs = $docs;
 	}
 }

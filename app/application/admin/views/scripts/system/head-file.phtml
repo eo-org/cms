@@ -1,5 +1,34 @@
+<div class='create-file'>添加文件</div>
 <ul class='head-file'>
-<?php foreach($this->docs as $doc) {?>
-	<li><?php echo $doc->filename?> : <?php echo $doc->type?></li>
-<?php }?>
+
 </ul>
+
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/headfile" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+<script type='text/template' id='headfile-item-template'>
+	<div class='head-file'>
+		<div class='head-filename'><a href='javascript:void(0)' class='edit-all' id='{{ id }}'>{{ filename }}</a></div>
+		<div class='head-filetype'>{{ type }}</div>
+		<div class='clear'></div>
+	</div>
+</script>
+
+<script type='text/template' id='headfile-edititem-template'>
+	<div class='filename-el'><span>文件名：</span><input class='edit-value' name='label' type='text' value='{{ filename }}'></div>
+	<div class='filetype-el'><span>文件类型：</span><select><option value='js' <% if(type =="js"){ %> selected='selected'<%}%>>js</option><%=type%><option value='css' <% if(type == "css"){ alert(1);%>selected='selected'<%}%>>css</option></select></div>
+	<a class='edit-save' href='javascript:void(0)'>保存</a>
+	<a class='edit-delete' href='javascript:void(0)'>删除</a>
+</script>
+
+<script>
+var createFile = function(){
+	var LinkModel = new Headfile();
+	var createFile = new Headfileedit({
+		model:LinkModel
+	});
+	createFile.render().el;
+}
+$('.create-file').click(function(){
+	createFile();
+});
+</script>
