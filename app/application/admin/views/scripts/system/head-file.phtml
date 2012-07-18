@@ -1,5 +1,5 @@
-<div class='create-file'>添加文件</div>
-<ul class='head-file'>
+<div class='create-file button'><a href='javascript:void(0)'>添加文件</a></div>
+<ul class='head-files'>
 
 </ul>
 
@@ -7,15 +7,23 @@
 
 <script type='text/template' id='headfile-item-template'>
 	<div class='head-file'>
-		<div class='head-filename'><a href='javascript:void(0)' class='edit-all' id='{{ id }}'>{{ filename }}</a></div>
+		<div class='head-filename'>
+			<a class='action-edit' href='javascript:void(0)'></a>
+			<a href='javascript:void(0)' class='edit-all' id='{{ id }}'>{{ filename }}</a>
+		</div>
 		<div class='head-filetype'>{{ type }}</div>
 		<div class='clear'></div>
 	</div>
 </script>
 
 <script type='text/template' id='headfile-edititem-template'>
-	<div class='filename-el'><span>文件名：</span><input class='edit-value' name='label' type='text' value='{{ filename }}'></div>
-	<div class='filetype-el'><span>文件类型：</span><select><option value='js' <% if(type =="js"){ %> selected='selected'<%}%>>js</option><%=type%><option value='css' <% if(type == "css"){ alert(1);%>selected='selected'<%}%>>css</option></select></div>
+	<div class='filename-el'><span>文件名：</span><input class='edit-value' name='filename' type='text' value='{{ filename }}'></div>
+	<div class='filetype-el'><span>文件类型：</span>
+		<select class='edit-value' name='type'>
+			<option value='js' <%if(type == 'js'){%>selected='selected'<%}%>>js</option>
+			<option value='css' <%if(type == 'css'){%>selected='selected'<%}%>>css</option>
+		</select>
+	</div>
 	<a class='edit-save' href='javascript:void(0)'>保存</a>
 	<a class='edit-delete' href='javascript:void(0)'>删除</a>
 </script>
