@@ -15,60 +15,26 @@ class Front_ProductNews extends Class_Brick_Solid_Abstract
     	if(is_null($groupId)) {
     		$groupId = 0;
     	}
-    	
-//    	$linkController = Class_Link_Controller::factory('product');
-//		
-//		$link = $linkController->getLink($groupId);
-		
-//		if(is_null($link)) {
-//			$groupId = 0;
-//		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
-//			$subGroupRow = $link->getChildren();
-//			$idArr = array();
-//			foreach($subGroupRow as $r) {
-//				$idArr[] = $r->getId();
-//			}
-//			$groupId = $groupId.','.implode($idArr, ',');
-//		}
+    	$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
+    	$title = "";
+    	if(!is_null($groupDoc)) {
+    		$title = $groupDoc->label;
+    	}
 		
 		$productCo = App_Factory::_m('Product');
 		$productCo->addFilter('groupId', $groupId)
 			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price'));
-		
-//    	if(!is_null($groupRow)) {
-//			if($groupRow->hasChildren == 1) {
-//				$subgroupRowset = $groupTb->fetchAll($groupTb->select(false)
-//					->from($groupTb, array('id'))
-//					->where('parentId = ?', $groupRow->id)
-//				);
-//				$subgroupIdArr = Class_Func::buildArr($subgroupRowset, 'id', 'id');
-//				$selector->where('groupId in ('.implode(',', $subgroupIdArr).')');
-//			} else {
-//				$selector->where('groupId = ?', $groupRow->id);
-//			}
-//    	} else if($groupId == 0) {
-//    	
-//    	} else {
-//    		$this->setParam('header', 'none');
-//    	}
-    	
-//    	if($this->getParam('titlePrefix') == 'group') {
-//    		$selector->joinLeft(
-//    			array('g' => 'group'),
-//    			'product.groupId = g.id',
-//    			array('g.label')
-//    		);
-//    	}
-//    	$productRowset = $productTable->fetchAll($selector);
 		
 		$rowset = $productCo->fetchAll(true);
 			
     	$numPerSlide = $this->getParam('numPerSlide');
     	$numPerSlide = empty($numPerSlide) ? 1 : $numPerSlide;
     	$numPage = ceil(count($rowset)/$numPerSlide);
+    	
 		$this->view->numPage = $numPage;
     	$this->view->groupId = $groupId;
 		$this->view->rowset = $rowset;
+		$this->view->title = $title;
     }
     
     public function configParam(Class_Form_Edit $form)

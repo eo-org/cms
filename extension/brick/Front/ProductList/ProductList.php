@@ -16,57 +16,56 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		
 		return 'product_listline_'.$groupId.'_'.$page;
 	}
-	
+
 	public function prepare()
 	{
 		$pageSize = 20;
-		
-	    $page = $this->_request->getParam('page');
+		 
+		$page = $this->_request->getParam('page');
 		$groupId = $this->_request->getParam('action');
-		
-		
-		
-//		$linkController = Class_Link_Controller::factory('product');
-//		
-//		$link = $linkController->getLink($groupId);
-//		
-//		if(is_null($link)) {
-//			$groupId = 0;
-//		} else if($link->hasChildren() && $this->getParam('showSubgroupContent') == 'y') {
-//			$subGroupRow = $link->getChildren();
-//			$idArr = array();
-//			$idArr[] = $groupId;
-//			foreach($subGroupRow as $r) {
-//				$idArr[] = $r->getId();
-//			}
-//			$groupId = $idArr;
-//		}
-		
-		$productCo = App_Factory::_m('Product');
-		$productCo->addFilter('groupId', $groupId)
-			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price'));
+		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
+		 
+		$co = App_Factory::_m('Product');
+		$co->addFilter('groupId', $groupId)
+		->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price'));
 		switch($this->getParam('defaultSort')) {
 			case 'sw':
-				$productCo->sort('weight', 1);
+				$co->sort('weight', 1);
 				break;
 			case 'sc':
 				break;
 			case 'sn':
-				$productCo->sort('name', 1);
+				$co->sort('name', 1);
 				break;
 		}
-			
-        
-		$rowset = $productCo->fetchAll(true);
-		
-		if(is_null($link)) {
+
+		if($this->getParam('paginatorLanguage') == 'en') {
+			Zend_View_Helper_PaginationControl::setDefaultViewPartial(
+                        'pagination-control.en.phtml' 
+                        );
+		} else {
+			Zend_View_Helper_PaginationControl::setDefaultViewPartial(
+                        'pagination-control.phtml' 
+                        );
+		}
+		Zend_Paginator::setDefaultScrollingStyle('Sliding');
+		 
+		$dataSize = $co->count();
+		$paginator = new Zend_Paginator(new Zend_Paginator_Adapter_Null($dataSize));
+		$paginator->setCurrentPageNumber($page)
+		->setItemCountPerPage($pageSize);
+		 
+		$rowset = $co->fetchAll(true);
+		 
+		if(is_null($groupDoc)) {
 			$this->view->title = '产品列表';
 		} else {
-			$this->view->title = $link->label;
+			$this->view->title = $groupDoc->label;
 		}
 		$this->view->rowset = $rowset;
-//		$this->view->paginator = $paginator;
+		$this->view->paginator = $paginator;
 	}
+	
 	
 	public function configParam(Class_Form_Edit $form)
     {
