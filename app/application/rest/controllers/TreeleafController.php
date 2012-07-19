@@ -118,8 +118,17 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 				$co = App_Factory::_m('Group_Item');
 				break;
 		}
-		$doc = $co->find($id);
-		$doc->delete();
-		$this->getResponse()->setHeader('result', 'sucess');
+		
+		$childDoc = $co->addFilter('parentId', $id)
+			->fetchOne();
+		if(is_null($childDoc)) {
+			$doc = $co->find($id);
+			$doc->delete();
+			$this->getResponse()->setHeader('result', 'sucess');
+		} else {
+			$this->getResponse()->setHeader('result', 'fail');
+			echo "不能删除非空的节点！";
+		}
+		
 	}
 }

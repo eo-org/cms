@@ -149,9 +149,9 @@ class Admin_NaviController extends Zend_Controller_Action
     		$newPageValue = $pageArr[$pageId];
     		$sort = intval($newPageValue['sort']);
     		$parentId = $newPageValue['parentId'];
-    		if($doc->sort != $sort || $doc->parentId != $parentId) {
+    		if($doc->sort != $sort || $doc->parentId !== $parentId) {
     			$doc->sort = $sort;
-    			$doc->parentId = $parentId;
+    			$doc->parentId = (string)$parentId;
     			$doc->save();
     		}
     	}
