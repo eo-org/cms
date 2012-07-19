@@ -12,7 +12,10 @@ class Front_ArticleNews extends Class_Brick_Solid_Abstract
     	}
     	
 		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
-		
+		$title = "";
+		if(!is_null($groupDoc)) {
+			$title = $groupDoc->label;
+		}
 		$co = App_Factory::_m('Article');
 		$co->setFields(array('groupId', 'label', 'introtext', 'introicon', 'created', 'modified', 'featured'))
 			->setPagesize($this->getParam('limit'))
@@ -26,6 +29,7 @@ class Front_ArticleNews extends Class_Brick_Solid_Abstract
     	$this->view->groupId = $groupId;
 		$this->view->groupRow = $groupDoc;
 		$this->view->articalRowset = $articalRowset;
+		$this->view->title = $title;
     }
     
     public function configParam($form)

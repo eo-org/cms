@@ -1,4 +1,9 @@
 {% block header %}{% endblock %}
+
+{% if displayBrickName %}
+<div class='title'>{{ title }}</div>
+{% endif %}
+
 {% block morelink %}<div class='more'><a href='/list-{{ groupId }}/page1.shtml'>MORE</a></div>{% endblock %}
 <div class='clear'></div>
 
