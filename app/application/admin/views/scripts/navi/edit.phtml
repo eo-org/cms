@@ -51,11 +51,17 @@ var tree = {type: 'navi', id: '<?php echo $this->naviDoc->getId()?>'};
 	</ul>
 </script>
 <script type='text/template' id='treeleaf-editor'>
-	<div class='label-el'><span>链接名：</span><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
-	<div class='link-el'><span>链接地址：</span><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
-	<div class='css-el'><span>CSS Name:</span><input class='edit-value' name='css' type='text' value='{{ css }}'></div>
-	<a class='edit-save button' href='javascript:void(0)'>保存</a>
-	<a class='edit-delete button' href='javascript:void(0)'>删除</a>
+	<div class='editor-title'>新建/修改链接</div>
+	<div class='editor-contenr'>
+		<div class='label-el'>链接名：</div>
+		<div><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
+		<div class='link-el'>链接地址：</div>
+		<div><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
+		<div class='css-el'>CSS Name：</div>
+		<div><input class='edit-value' name='css' type='text' value='{{ css }}'></div>
+		<a class='edit-save button' href='javascript:void(0)'>保存</a>
+		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
+	</div>
 </script>
 
 <script>
