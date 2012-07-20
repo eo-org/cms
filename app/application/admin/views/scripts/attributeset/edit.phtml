@@ -34,10 +34,14 @@
 	
 	<div class='clear'></div>
 </div>
+<script>
+var attributeset = {id: '<?php echo $this->id?>'};
+</script>
 
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attributeset" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
 <script type='text/template' id='attribute-editor-template'>
+	CODE：<input class='attribute-field' type="text" name="code" value="{{ code }}" /> (系统内部使用，创建之后不能修改)
 	标题：<input class='attribute-field' type="text" name="label" value="{{ label }}" />
 	<br />
 <%

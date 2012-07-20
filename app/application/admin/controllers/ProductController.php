@@ -41,7 +41,7 @@ class Admin_ProductController extends Zend_Controller_Action
 	
 	public function createAction()
 	{
-		$attributesetCo = new Class_Mongo_Attributeset_Co();
+		$attributesetCo = App_Factory::_am('Attributeset');
 		
 		$attrDocSet = $attributesetCo->setFields(array('label'))
 			->addFilter('type', 'product')
@@ -57,7 +57,6 @@ class Admin_ProductController extends Zend_Controller_Action
 		$attributesetId = $this->getRequest()->getParam('attributeset-id');
 		
 		$productCo = App_Factory::_m('Product');
-		$attributesetCo = App_Factory::_m('Attributeset');
 		
 		if(empty($id)) {
 			$productDoc = $productCo->create();
@@ -66,14 +65,18 @@ class Admin_ProductController extends Zend_Controller_Action
 			$productDoc = $productCo->find($id);
 		}
 		
-		$attributesetId = $productDoc->attributesetId;
-		$attributesetDoc = $attributesetCo->find($attributesetId);
-		$attrElements = $attributesetDoc->getZfElements();
+		$attributesetDoc = $productDoc->getAttributesetDoc();
+		
+		if(!is_null($attributesetDoc)) {
+			$attrElements = $attributesetDoc->getZfElements();
+		} else {
+			$attrElements = array();
+		}
 		
 		require APP_PATH."/admin/forms/Product/Edit.php";
 		$form = new Form_Product_Edit();
 		$form->addElements($attrElements, 'main');
-		$form->populate($productDoc->getData());
+		$form->populate($productDoc->toArray());
 		$attachmentArr = $productDoc->attachment;
 		
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {

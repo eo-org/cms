@@ -27,7 +27,8 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		 
 		$co = App_Factory::_m('Product');
 		$co->addFilter('groupId', $groupId)
-		->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price'));
+			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'));
+		
 		switch($this->getParam('defaultSort')) {
 			case 'sw':
 				$co->sort('weight', 1);
@@ -55,8 +56,8 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		$paginator->setCurrentPageNumber($page)
 		->setItemCountPerPage($pageSize);
 		 
-		$rowset = $co->fetchAll(true);
-		 
+		$rowset = $co->fetchDoc();
+		
 		if(is_null($groupDoc)) {
 			$this->view->title = '产品列表';
 		} else {

@@ -9,8 +9,11 @@ class Rest_AttributeController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		$co = App_Factory::_am('Attribute');
-		$data = $co->fetchAll(true);
+		$attributesetId = $this->getRequest()->getHeader('Attributeset_Id');
+	
+		$co = App_Factory::_am('Attribute')->addFilter('attributesetId', $attributesetId);
+		
+		$data = $co->fetchArr(false);
         return $this->_helper->json($data);
 	}
 	
@@ -21,10 +24,13 @@ class Rest_AttributeController extends Zend_Rest_Controller
 	
 	public function postAction()
 	{
-		$modelString = $this->getRequest()->getParam('model');
-		$jsonArray = Zend_Json::decode($modelString);
+		$attributesetId = $this->getRequest()->getHeader('Attributeset_Id');
+		
+		$data = file_get_contents('php://input');
+		$jsonArray = Zend_Json::decode($data);
 		
 		$attributeDoc = App_Factory::_am('Attribute')->create($jsonArray);
+		$attributeDoc->attributesetId = $attributesetId;
 		$attributeDoc->save();
 		
 		$this->getResponse()->setHeader('result', 'sucess');
@@ -33,21 +39,15 @@ class Rest_AttributeController extends Zend_Rest_Controller
 	
 	public function putAction()
 	{
-		$modelString = $this->getRequest()->getParam('model');
-		$jsonArray = Zend_Json::decode($modelString);
+		$id = $this->getRequest()->getParam('id');
 		
-		$attributeDoc = App_Factory::_am('Attribute')->find($jsonArray['id']);
+		$data = file_get_contents('php://input');
+		$jsonArray = Zend_Json::decode($data);
 		
-//		Zend_Debug::dump($attributeDoc);
-		
-		Zend_Debug::dump($jsonArray);
-		
+		$attributeDoc = App_Factory::_am('Attribute')->find($id);
 		$attributeDoc->setFromArray($jsonArray);
-		
-		
-		Zend_Debug::dump($attributeDoc);
-		
 		$attributeDoc->save();
+		
 		$this->getResponse()->setHeader('result', 'sucess');
 	}
 	

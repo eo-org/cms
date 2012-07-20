@@ -76,23 +76,14 @@ class Admin_AttributesetController extends Zend_Controller_Action
         	throw new Exception('attributeset not found');
         }
         
-        $this->view->elementList = array();
-		$this->view->entityId = $id;
+		$this->view->id = $id;
         $this->_helper->template->head('编辑')
         	->actionMenu(array('save', 'delete'));
     }
     
     public function deleteAction()
     {
-    	$id = $this->getRequest()->getParam('id');
-    	$table = Class_Base::_('Artical');
-    	$row = $table->fetchRow(array($table->getAdapter()->quoteInto('id = ?', $id)));
-    	if(is_null($row)) {
-            throw new Class_Exception_AccessDeny('没有权限访问此内容，或者内容id不存在');
-        }
-        
-        $row->delete();
-		$this->_helper->switchContent->gotoSimple('index');
+    	
     }
     
 	public function getAttributesetJsonAction()
