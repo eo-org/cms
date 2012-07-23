@@ -3,6 +3,7 @@
 		<li class='drop-to-sort'></li>
 	</ul>
 </div>
+<div><a herf='javascript:void(0)' class='create-link'>添加新链接</a></div>
 
 <script>
 saveSort = function() {
@@ -41,7 +42,7 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 	<div class='leaf-line'>
 	<% } %>
 		<div class='drag-handle' draggable='true'></div>
-		<div class='leaf-label'><a href='/admin/group/edit-item/id/{{ id }}'>{{ label }}</a></div>
+		<div class='leaf-label'><a href='javascript:void(0)' class='edit' id='{{ id }}'>{{ label }}</a></div>
 		<div class='leaf-link'>
 		<% if(link) { %>
 			{{ link }}
@@ -55,3 +56,30 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 		<li class='drop-to-sort' parent-id='{{ id }}'></li>
 	</ul>
 </script>
+
+<script type='text/template' id='treeleaf-editor'>
+	<div class='editor-title'>新建/修改链接</div>
+	<div class='editor-contenr'>
+		<div class='label-el'>链接名：</div>
+		<div><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
+		<div class='link-el'>链接地址：</div>
+		<div><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
+		<div class='css-el'>CSS Name：</div>
+		<div><input class='edit-value' name='css' type='text' value='{{ css }}'></div>
+		<a class='edit-save button' href='javascript:void(0)'>保存</a>
+		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
+	</div>
+</script>
+
+<script>
+var createLinks = function(){
+	var LinkModels = new Treeleaf();
+	var createLinks = new TreeleafEditorView({
+		model:LinkModels
+	});
+	createLinks.render();
+}
+$('.create-link').click(function(){
+	createLinks();
+});
+</script>	
