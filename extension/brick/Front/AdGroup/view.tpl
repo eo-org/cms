@@ -1,4 +1,7 @@
 {% block header %}{% endblock %}
+{% if showTitle == 'y' %}
+	<div class='title'>{{ title }}</div>
+{% endif %}
 <ul>
 {% block rowset %}
 {% for row in rowset %}

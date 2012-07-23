@@ -18,7 +18,16 @@ $effectJsPath = $cbc->getJsPath();
 <?php }?>
 
 <?php if(!empty($effectJsPath)) {?>
+	<?php if(getenv('SERVER_TYPE') != 'local') {?>
 <script type="text/javascript"	src="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectJsPath?>"></script>
+	<?php } else { ?>
+		<?php
+		$jsList = $cbc->getJsList();
+		foreach($jsList as $js) {
+		?>
+<script type="text/javascript" src="<?=Class_Server::libUrl()?>/script/script/effect/<?php echo $js?>"></script>		
+		<?php } ?>
+	<?php } ?>
 <?php }?>
 <!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
 <script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script -->

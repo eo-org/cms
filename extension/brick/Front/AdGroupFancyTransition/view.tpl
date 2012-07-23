@@ -1,3 +1,6 @@
+{% if showTitle == 'y' %}
+	<div class='title'>{{ title }}</div>
+{% endif %}
 <div id='fancy-transition' data='{
 	"width":"{{ width }}",
 	"height":"{{ height }}",
