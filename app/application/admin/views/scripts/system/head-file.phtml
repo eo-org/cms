@@ -21,13 +21,6 @@
 	<div class='editor-contenr'>
 		<div class='filename-el'>文件名：</div>
 		<div><input class='edit-value' name='filename' type='text' value='{{ filename }}'></div>
-		<div class='filetype-el'>文件类型：</div>
-		<div>
-			<select class='edit-value' name='type'>
-				<option value='js' <%if(type == 'js'){%>selected='selected'<%}%>>js</option>
-				<option value='css' <%if(type == 'css'){%>selected='selected'<%}%>>css</option>
-			</select>
-		</div>
 		<a class='edit-save button' href='javascript:void(0)'>保存</a>
 		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
 	</div>
