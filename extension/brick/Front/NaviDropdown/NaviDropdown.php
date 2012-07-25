@@ -2,7 +2,7 @@
 class Front_NaviDropdown extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-    	'ad/navidropdown.plugin.js'
+    	'position/navidropdown.plugin.js'
     );
 	
     public function prepare()
