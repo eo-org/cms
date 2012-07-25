@@ -27,7 +27,9 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		 
 		$co = App_Factory::_m('Product');
 		$co->addFilter('groupId', $groupId)
-			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'));
+			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'))
+			->setPage($page)
+			->setPageSize($pageSize);
 		
 		switch($this->getParam('defaultSort')) {
 			case 'sw':
