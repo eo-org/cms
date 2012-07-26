@@ -14,23 +14,27 @@ var fileUrl = "<?php echo Class_Server::fileUrl()?>";
 		<img src="{{fileUrl}}/_thumb/{{filename}}">
 	</div>
 	<dl>
-		<dt>连接地址</dt><dd>{{link}}</dd>
-		<dt>标题</dt><dd>{{label}}</dd>
-		<dt>说明</dt><dd>{{description}}</dd>
+		<dt>连接地址</dt><dd>:{{link}}</dd>
+		<dt>标题</dt><dd>:{{label}}</dd>
+		<dt>说明</dt><dd>:{{description}}</dd>
+		<dt><a herf='javascript:void(0)' class='ad-edit'>修改</a></dt>
+		<dt><a herf='javascript:void(0)' class='ad-delete'>删除</a></dt>
 	</dl>
 	<div style="clear:both;"></div>
 </script>
 <script type="text/template" id="ad-editor">
 	<div class='editor-title'>新建广告组</div>
 	<dl>
+<%if(id == null){%>
 		<dt>图片路径</dt>
 		<dd><input class='value-field icon-selector' callback='appendToInput' type='text' name='filename' value='' /></dd>
+<%}%>	
 		<dt>连接地址</dt>
-		<dd><input class='value-field' type='text' name='link' value='' /></dd>
+		<dd><input class='value-field' type='text' name='link' value='{{link}}' /></dd>
 		<dt>标题</dt>
-		<dd><input class='value-field' type='text' name='label' value='' /></dd>
+		<dd><input class='value-field' type='text' name='label' value='{{label}}' /></dd>
 		<dt>说明</dt>
-		<dd><textarea class='value-field' name='description'></textarea></dd>
+		<dd><textarea class='value-field' name='description'>{{description}}</textarea></dd>
 		<dd class='action-dd button'>SAVE</dd>
 	<dl>
 </script>

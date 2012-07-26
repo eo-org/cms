@@ -20,18 +20,23 @@ var fileUrl = "<?php echo Class_Server::fileUrl()?>";
 	</div>
 	<div class='label'>{{label}}</div>
 	<div class='bb-action'>
-		<a href="javascript::void(0);">编辑</a>
+		<a href="javascript:void(0);" class="action-edit">编辑</a>
 		<a href="/admin/ad/index/section-id/{{id}}">添加广告图</a>
 	</div>
 	<div style="clear:both;"></div>
 </script>
 
 <script type='text/template' id='ad-section-editor'>
-	<div class='editor-title'>新建广告组</div>
+	<div class='editor-title'>新建/修改广告组</div>
 	<dl>
 		<dt>名字</dt>
-		<dd><input class='value-field' type='text' name='label' value='' /></dd>
+		<dd><input class='value-field' type='text' name='label' value='{{label}}' /></dd>
 		<dd class='action-dd button'>SAVE</dd>
+	<%
+		if(id != null){
+	%>
+		<dd class='action-ss button'>delete</dd>
+	<% } %>
 	<dl>
 </script>
 

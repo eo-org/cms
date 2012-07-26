@@ -36,7 +36,7 @@ class Rest_HeadFileController extends Zend_Rest_Controller
 		$doc->save();
 		
 		
-		$this->getResponse()->setHeader('result', 'sucess');
+		$this->getResponse()->setHeader('result', 'success');
 		$this->_helper->json(array('id' => $doc->getId()));		
 	}
 	
@@ -52,7 +52,7 @@ class Rest_HeadFileController extends Zend_Rest_Controller
 		$doc->setFromArray($jsonArray);
 		$doc->save();
 		
-		$this->getResponse()->setHeader('result','sucess');
+		$this->getResponse()->setHeader('result','success');
 		$this->_helper->json(array('id' => $id));
 	}
 	
@@ -62,6 +62,6 @@ class Rest_HeadFileController extends Zend_Rest_Controller
 		$co = App_Factory::_m('HeadFile');
 		$doc = $co->find($id);
 		$doc->delete();
-		$this->getResponse()->setHeader('result','sucess');
+		$this->getResponse()->setHeader('result','success');
 	}		
 }

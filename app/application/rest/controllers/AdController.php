@@ -49,11 +49,26 @@ class Rest_AdController extends Zend_Rest_Controller
 	
 	public function putAction()
 	{
+		$id = $this->getRequest()->getParam('id');
 		
+		$modelString = $this->getRequest()->getParam('model');
+		$jsonArray = Zend_Json::decode($modelString);
+		
+		$co = App_Factory::_m('Ad');
+		$doc = $co->find($id);
+		$doc->setFromArray($jsonArray);
+		$doc->save();
+		
+		$this->getResponse()->setHeader('result','success');
+		$this->_helper->json(array('id' => $id));		
 	}
 	
 	public function deleteAction()
 	{
-		
+		$id = $this->getRequest()->getParam('id');
+		$co = App_Factory::_m('Ad');
+		$doc = $co->find($id);
+		$doc->delete();
+		$this->getResponse()->setHeader('result','success');
 	}
 }
