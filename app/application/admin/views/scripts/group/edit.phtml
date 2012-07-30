@@ -3,8 +3,6 @@
 		<li class='drop-to-sort'></li>
 	</ul>
 </div>
-<div><a herf='javascript:void(0)' class='create-link'>添加新链接</a></div>
-
 <script>
 saveSort = function() {
 	var prompt = Prompt.getInstance().showLoadingBox();
@@ -58,11 +56,11 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 </script>
 
 <script type='text/template' id='treeleaf-editor'>
-	<div class='editor-title'>新建/修改链接</div>
+	<div class='editor-title'>新建/修改分组</div>
 	<div class='editor-contenr'>
-		<div class='label-el'>链接名：</div>
+		<div class='label-el'>分组名：</div>
 		<div><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
-		<div class='link-el'>链接地址：</div>
+		<div class='link-el'>分组地址：</div>
 		<div><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
 		<div class='css-el'>CSS Name：</div>
 		<div><input class='edit-value' name='css' type='text' value='{{ css }}'></div>

@@ -112,6 +112,9 @@ class Admin_LayoutController extends Zend_Controller_Action
 			
 		}
 		$oldStage = $doc->stage;
+		if(is_null($oldStage)) {
+			$oldStage = array();
+		}
 		$brickCo = App_Factory::_m('Brick');
 		foreach($oldStage as $v) {
 			$deleted = true;

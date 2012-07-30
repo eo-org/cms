@@ -140,7 +140,7 @@ class Admin_NaviController extends Zend_Controller_Action
     	$pageArr = Zend_Json::decode($jsonStr);
     	
     	$co = App_Factory::_m('Navi_Link');
-    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link'))
+    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link', 'className'))
     		->addFilter('naviId', $treeId)
 			->sort('sort', 1)
 			->fetchDoc();
@@ -159,6 +159,7 @@ class Admin_NaviController extends Zend_Controller_Action
     	$treeDoc = App_Factory::_m('Navi')->find($treeId);
     	$treeDoc->setLeafs($docs);
     	$treeIndex = $treeDoc->buildIndex();
+    	
     	$treeDoc->naviIndex = $treeIndex;
     	$treeDoc->save();
     	

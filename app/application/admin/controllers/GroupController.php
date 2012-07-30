@@ -30,7 +30,7 @@ class Admin_GroupController extends Zend_Controller_Action
     	$this->view->doc = $doc;
 	 	$this->_helper->template->head('编辑')
         	->actionMenu(array(
-        		'create-item' => array('label' => '添加新分类', 'callback' => '/admin/group/edit-item/type/'.$type),
+        		'create-item' => array('label' => '添加新分类', 'callback' => '', 'method' => 'createLinks'),
         		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
         		'delete'
         	));	

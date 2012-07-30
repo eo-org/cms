@@ -14,20 +14,22 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 		switch($treeType) {
 			case 'navi':
 				$co = App_Factory::_m('Navi_Link')
-					->addFilter('naviId', $treeId);
+					->addFilter('naviId', $treeId)
+					->setFields(array('label', 'link', 'parentId', 'className', 'sort'));
 				break;
 			case 'book':
 				$co = App_Factory::_m('Book_Page')
-					->addFilter('bookId', $treeId);
+					->addFilter('bookId', $treeId)
+					->setFields(array('label', 'link', 'parentId', 'sort'));
 				break;
 			case 'group':
 				$co = App_Factory::_m('Group_Item')
-					->addFilter('groupType', $treeId);
+					->addFilter('groupType', $treeId)
+					->setFields(array('label', 'link', 'parentId', 'sort'));
 				break;
 		}
 		
-		$data = $co->setFields(array('label', 'link', 'parentId', 'sort'))
-			->addSort('sort', 1)
+		$data = $co->addSort('sort', 1)
 			->addSort('_id', -1)
 			->fetchAll(true);
         return $this->_helper->json($data);
