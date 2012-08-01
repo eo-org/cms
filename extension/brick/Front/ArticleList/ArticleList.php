@@ -26,7 +26,6 @@ class Front_ArticleList extends Class_Brick_Solid_Abstract
 		if($groupRow == 'none') {
 			$this->_disableRender = 'no-resource';
 		} else {
-			$this->_id = $groupId;
 			$groupId = $groupRow->getId();
 			
 			$co = App_Factory::_m('Article');
