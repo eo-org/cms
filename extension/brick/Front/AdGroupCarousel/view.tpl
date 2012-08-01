@@ -28,9 +28,9 @@
 						<a href='javascript:void(0);'>
 							<img src='{{ row.image|outputImage }}'/>
 						</a>
-<div class="alternatecontent">
-			{{ row.description }} 
-			</div>
+						<div class="alternatecontent">
+							{{ row.description }} 
+						</div>
 					</li>
 					{% endfor %}
 				</ul>
