@@ -26,6 +26,11 @@
 	<button callback='insertImage' class="icon-selector" type="button" name="">添加图片</button>
 </fieldset>
 <div class='clear'></div>
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/product-image" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+<script type='text/template' id='product-add-template'>
+	<div class='product-image'><img src='http://storage.aliyun.com/public-misc/{{ filepath }}'></div>
+	<div class='product-name'>{{ filename }}</div>
+</script>
 <script type="text/javascript">
 $(document).on({
 	'click': function(e) {
@@ -35,6 +40,16 @@ $(document).on({
 		}
 	}
 }, '#attachment-list li');
+
+$(document).on({
+	'click': function(e) {
+		LIcurrent = $(e.currentTarget);
+		LI = $(e.currentTarget).find('.product-name');
+		if(confirm('移除附件:' + LI.html() + '？')) {			
+			LIcurrent.remove();
+		}
+	}
+}, '#product-list li');
 
 var saveWithAttachment = function() {
 	var attachmentListLi = $('#attachment-list').find('li');
