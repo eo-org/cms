@@ -27,28 +27,6 @@ class Front_AdGroupRotate extends Class_Brick_Solid_Abstract
             'required' => true,
         	'multiOptions' => $options
         ));
-        $form->addElement('select', 'param_showLabel', array(
-            'label' => '显示广告名：',
-            'required' => true,
-        	'multiOptions' => array('n' => '不显示', 'y' => '显示')
-        ));
-        $form->addElement('select', 'param_showDescription', array(
-            'label' => '显示广告介绍：',
-            'required' => true,
-        	'multiOptions' => array('n' => '不显示', 'y' => '显示')
-        ));
-        $form->addElement('text', 'param_width', array(
-            'filters' => array('StringTrim'),
-        	'validators' => array('Alnum'),
-            'label' => '宽度：',
-            'required' => true
-        ));
-        $form->addElement('text', 'param_height', array(
-            'filters' => array('StringTrim'),
-        	'validators' => array('Alnum'),
-            'label' => '高度：',
-            'required' => true
-        ));
         $form->addElement('select', 'param_delay', array(
             'filters' => array('StringTrim'),
             'label' => '切换时间：',
@@ -61,7 +39,7 @@ class Front_AdGroupRotate extends Class_Brick_Solid_Abstract
             'required' => true
         ));
 		
-    	$paramArr = array('param_sectionId', 'param_showLabel', 'param_showDescription', 'param_width', 'param_height', 'param_delay');
+    	$paramArr = array('param_sectionId', 'param_delay');
     	$form->setParam($paramArr);
     	return $form;
     }

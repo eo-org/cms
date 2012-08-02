@@ -1,18 +1,11 @@
 {% block header %}{% endblock %}
-<div class='image-group-slide' data='{
-	"itemWidth":"{{ width }}",
-	"height":"{{ height }}",
-	"delay": "{{ delay }}",
-	"numPerSlide": "{{ numPerSlide }}",
-	"margin": "{{ margin }}",
-	"numSwitching":"{{ numSwitching }}"
-}'>
+<div class='image-group-rotateimage' data='{"delay": "{{ delay }}"}'>
  	<div class='rotateimage' style='z-index:-1'>
 		<div class='bigimage'>
 			{% for row in rowset %}
-			<div style='width: {{ width }}px; height: {{ height }}px; position: absolute'>
+			<div style='position: absolute'>
 				<a href='{{ row.url }}'>
-						<img src='{{ row.image|outputImage }}'/>
+						<img src='{{ row.filename|outputImage }}'/>
 					</a>
 			</div>
 			{% endfor%}
