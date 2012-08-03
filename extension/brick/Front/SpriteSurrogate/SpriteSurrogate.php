@@ -1,6 +1,10 @@
 <?php
 class Front_SpriteSurrogate extends Class_Brick_Solid_Abstract
 {
+	protected $_effectFiles = array(
+		'sprite-surrogate/default.plugin.js'
+	);
+	
     public function prepare()
     {
     	$cbc = Class_Brick_Controller::getInstance();
