@@ -2,8 +2,8 @@
 <div class='search-result'>
 	<ul>
 	{% for row in rowset %}
-		{% block row %}
 		{% if type == 'product' %}
+		{% block productRow %}
 	    <li class='item-{{loop.index}}'>
 	    	<a class='introicon' href='/product-{{ row.id }}.shtml' title='{{ row.label }}' target='_blank'>
 				<img src='{{ row.introicon|outputImage }}' />
@@ -15,13 +15,18 @@
 	    	价格：{{ row.price }}
 	    	</div>
 	    </li>
+	    {% endblock %}
 	    {% else %}
+	    {% block articleRow %}
 	    <li class='item-{{loop.index}}'>
 	    	<a class='label' href='/article-{{ row.id }}.shtml' title='{{ row.label }}' target='_blank'>{{ row.label }}</a>
 	    </li>
-	    {% endif %}
 	    {% endblock %}
+	    {% endif %}
 	{% endfor %}
 	</ul>
 </div>
+
+{{ paginator|raw }}
+
 {% block footerer %}{% endblock %}

@@ -1,0 +1,36 @@
+<?php
+	$type = $_GET['type'];
+	$keywords = $_GET['keywords'];
+?>
+
+<?if ($this->pageCount) { ?>
+<div class="pagination-control">
+	<?php
+	$clf = Class_Layout_Front::getInstance();
+	$layoutRow = $clf->getLayoutRow();
+	?>
+	<!-- Previous page link -->
+	<?if (isset($this->previous)) { ?>
+		<a href="/<?php echo $layoutRow->controllerName.'/?keywords='.$keywords.'&type='.$type.'&page='.$this->previous ?>">&lt;</a> |
+	<?} else { ?>
+		<span class="disabled">&lt;&lt;</span> |
+	<?} ?>
+	
+	<!-- Numbered page links -->
+	<?foreach ($this->pagesInRange as $page) { ?>
+		<?if ($page != $this->current) { ?>
+		<a href="/<?php echo $layoutRow->controllerName.'/?keywords='.$keywords.'&type='.$type.'&page='.$page ?>"><?=$page; ?></a> |
+		<?} else { ?>
+		<?=$page?> |
+		<?} ?>
+	<?} ?>
+	
+	<!-- Next page link -->
+	<?if (isset($this->next)) { ?>
+		<a href="/<?php echo $layoutRow->controllerName.'/?keywords='.$keywords.'&type='.$type.'&page='.$this->next ?>">&gt;</a>
+	<?} else { ?>
+		<span class="disabled">&gt;&gt;</span>
+	<?} ?>
+
+</div>
+<?} ?>
