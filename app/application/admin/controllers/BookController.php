@@ -13,7 +13,8 @@ class Admin_BookController extends Zend_Controller_Action
 
         $hashParam = $this->getRequest()->getParam('hashParam');
         $labels = array(
-			'label' => '书目名',
+			'label' => '手册名',
+        	'alias' => '手册别名',
 			'~contextMenu' => ''
 		);
 		$partialHTML = $this->view->partial('select-search-header-front.phtml', array(
@@ -41,8 +42,7 @@ class Admin_BookController extends Zend_Controller_Action
     	$form = new Form_Book_Create();
     	$co = App_Factory::_m('Book');
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-    		$doc = $co->create();
-    		$doc->label = $form->getValue('label');
+    		$doc = $co->create($form->getValues());
     		$doc->save();
     		$this->_helper->redirector->gotoSimple('edit', null, null, array(
     			'id' => $doc->getId()
@@ -151,7 +151,7 @@ class Admin_BookController extends Zend_Controller_Action
 		$currentPage = 1;
 		
 		$co = App_Factory::_m('Book');
-		$co->setFields(array('id', 'label'));
+		$co->setFields(array('id', 'label', 'alias'));
 		$queryArray = array();
 		
         $result = array();
