@@ -56,18 +56,6 @@ class Front_ProductNewsMarquee extends Class_Brick_Solid_Abstract
         	'multiOptions' => array(1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5', 6 => '6', 7 => '7', 8 => '8', 9 => '9', 10 => '10', 12 => '12', 15 => '15'),
             'required' => true
         ));
-        $form->addElement('text', 'param_width', array(
-            'filters' => array('StringTrim'),
-        	'validators' => array('Alnum'),
-            'label' => '宽度：',
-            'required' => true
-        ));
-        $form->addElement('text', 'param_height', array(
-            'filters' => array('StringTrim'),
-        	'validators' => array('Alnum'),
-            'label' => '高度：',
-            'required' => true
-        ));
 		$form->addElement('select', 'param_direction', array(
             'filters' => array('StringTrim'),
             'label' => '滚动方向：',
@@ -88,13 +76,8 @@ class Front_ProductNewsMarquee extends Class_Brick_Solid_Abstract
         	),
             'required' => true
         ));
-        $form->addElement('select', 'param_numPerSlide', array(
-            'label' => '单页产品数量：',
-            'required' => true,
-        	'multiOptions' => array(1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5', 6 => '6', 8 => '8')
-        ));
         
-        $paramArr = array('param_groupId', 'param_limit', 'param_width', 'param_height', 'param_direction', 'param_delay', 'param_numPerSlide');
+        $paramArr = array('param_groupId', 'param_limit',  'param_direction', 'param_delay');
         $form->setParam($paramArr);
         return $form;
     }

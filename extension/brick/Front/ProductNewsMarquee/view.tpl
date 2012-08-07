@@ -3,11 +3,8 @@
 <div class='title'></div>
 
 <div class='image-group-marquee' data='{
-	"itemWidth":"{{ width }}",
-	"height":"{{ height }}",
 	"delay": "{{ delay }}",
-	"direction": "{{ direction }}",
-	"numPerSlide": "{{ numPerSlide }}"
+	"direction": "{{ direction }}"
 }'>
 	<div class="leftroll" id="rollborder">
 		<ul>
