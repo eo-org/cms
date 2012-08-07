@@ -19,8 +19,11 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 
 	public function prepare()
 	{
-		$pageSize = 20;
-		 
+		$pageSize = $this->getParam('pageSize');
+		if(empty($pageSize)) {
+			$pageSize = 20;
+		}
+		
 		$page = $this->_request->getParam('page');
 		$groupId = $this->_request->getParam('action');
 		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
@@ -93,7 +96,23 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
             'required' => true
         ));
         
-    	$paramArr = array('param_showSubgroupContent', 'param_defaultSort');
+        $form->addElement('select', 'param_pageSize', array(
+            'filters' => array('StringTrim'),
+            'label' => '单页产品数量：',
+        	'multiOptions' => array(
+        		5 => 5,
+        		6 => 6,
+        		7 => 7,
+        		8 => 8,
+        		9 => 9,
+        		10 => 10,
+        		15 => 15,
+        		20 => 20
+       		),
+            'required' => true
+        ));
+        
+    	$paramArr = array('param_showSubgroupContent', 'param_defaultSort', 'param_pageSize');
     	$form->setParam($paramArr);
     	return $form;
     }

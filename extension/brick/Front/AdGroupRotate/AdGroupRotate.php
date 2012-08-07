@@ -2,8 +2,8 @@
 class Front_AdGroupRotate extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-    		'ad/rotate.plugin.js'
-    	);
+		'ad/rotate.plugin.js'
+	);
 	
 	public function prepare()
     {
