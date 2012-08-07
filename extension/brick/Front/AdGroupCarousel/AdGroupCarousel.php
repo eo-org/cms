@@ -3,7 +3,7 @@ class Front_AdGroupCarousel extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
     		'ad/carousel.plugin.js'
-    	);
+    );
 	
 	public function prepare()
     {
