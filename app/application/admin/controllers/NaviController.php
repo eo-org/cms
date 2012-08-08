@@ -15,6 +15,7 @@ class Admin_NaviController extends Zend_Controller_Action
         
         $labels = array(
             'label' => '目录组名',
+        	'description' => '详情',
         	'~contextMenu' => ''
         );
         $partialHTML = $this->view->partial('select-search-header-front.phtml', array(
@@ -139,6 +140,7 @@ class Admin_NaviController extends Zend_Controller_Action
     	$jsonStr = $this->getRequest()->getParam('sortJsonStr');
     	$pageArr = Zend_Json::decode($jsonStr);
     	
+    	$descStr = "";
     	$co = App_Factory::_m('Navi_Link');
     	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link', 'className'))
     		->addFilter('naviId', $treeId)
@@ -154,6 +156,7 @@ class Admin_NaviController extends Zend_Controller_Action
     			$doc->parentId = (string)$parentId;
     			$doc->save();
     		}
+    		$descStr.= $doc->label.', ';
     	}
     	
     	$treeDoc = App_Factory::_m('Navi')->find($treeId);
@@ -161,6 +164,11 @@ class Admin_NaviController extends Zend_Controller_Action
     	$treeIndex = $treeDoc->buildIndex();
     	
     	$treeDoc->naviIndex = $treeIndex;
+    	if(strlen($descStr) > 50) {
+    		$treeDoc->description = substr($descStr, 0, 50).' ... ';
+    	} else {
+    		$treeDoc->description = substr($descStr, 0, -2);
+    	}
     	$treeDoc->save();
     	
     	$this->_helper->json(array('result' => 'success'));
@@ -172,7 +180,7 @@ class Admin_NaviController extends Zend_Controller_Action
 		$currentPage = 1;
 		
 		$co = App_Factory::_m('Navi');
-		$co->setFields(array('id', 'label'));
+		$co->setFields(array('id', 'label', 'description'));
 		$queryArray = array();
 		
         $result = array();
