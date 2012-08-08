@@ -8,10 +8,14 @@ class Front_ArticleGroupIndex extends Class_Brick_Solid_Abstract
 		
 		$groupItemId = null;
 		$resource = $clf->getResource();
-		if($layoutType == 'article') {
-			$groupItemId = $resource->groupId;
-		} else if($layoutType == 'list') {
-			$groupItemId = $resource->getId();
+		if($resource == 'none') {
+			$groupItemId = 0;
+		} else {
+			if($layoutType == 'article') {
+				$groupItemId = $resource->groupId;
+			} else if($layoutType == 'list') {
+				$groupItemId = $resource->getId();
+			}
 		}
 		
 		$groupDoc = $groupDoc = App_Factory::_m('Group')->findArticleGroup();
