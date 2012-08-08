@@ -3,16 +3,6 @@ class Form_Layout_Create extends Class_Form_Edit
 {
 	public function init()
 	{
-		$this->addElement('text', 'label', array(
-			'filters' => array('StringTrim'),
-			'label' => '标题[中文]：',
-			'required' => true
-		));
-		$this->addElement('text', 'controllerName', array(
-			'filters' => array('StringTrim'),
-			'label' => '布局名[a-z]：',
-			'required' => true
-		));
 		$this->addElement('select', 'type', array(
 			'filters' => array('StringTrim'),
 			'label' => '布局类型：',
@@ -26,6 +16,16 @@ class Form_Layout_Create extends Class_Form_Edit
 			),
 			'required' => true
 		));
-		$this->_main = array('label', 'controllerName', 'type');
+		$this->addElement('text', 'label', array(
+			'filters' => array('StringTrim'),
+			'label' => '标题[中文]：',
+			'required' => true
+		));
+		$this->addElement('text', 'controllerName', array(
+			'filters' => array('StringTrim'),
+			'label' => '布局名[a-z]：',
+			'required' => true
+		));
+		$this->_main = array('type', 'label', 'controllerName');
 	}
 }

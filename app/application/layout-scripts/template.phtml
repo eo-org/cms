@@ -20,7 +20,7 @@ if($csa->hasPrivilege()) {
 }
 ?>
 
-<?php if($layoutFront->isDisplayHead() == 1) {?>
+<?php if($layoutFront->hideHead() != 1) {?>
 <div id='body_head'>
 	<div class='sprite body_head' sprite-name="body_head" stage-id="0">
 		<?php echo array_key_exists('body_head', $HTML_ARR) ? $HTML_ARR['body_head'] : "" ?>
@@ -59,11 +59,14 @@ if($csa->hasPrivilege()) {
 ?>
 </div>
 
+<?php if($layoutFront->hideTail() != 1) {?>
 <div id='body_tail'>
 	<div class='sprite body_tail' sprite-name="body_tail" stage-id="0">
 		<?php echo array_key_exists('body_tail', $HTML_ARR) ? $HTML_ARR['body_tail'] : "" ?>
 	</div>
 </div>
+<?php }?>
+
 <?php if($csa->hasPrivilege()) { ?>
 <div id="lightbox-blackbox"></div>
 <div id="lightbox-whitebox">
