@@ -164,8 +164,8 @@ class Admin_NaviController extends Zend_Controller_Action
     	$treeIndex = $treeDoc->buildIndex();
     	
     	$treeDoc->naviIndex = $treeIndex;
-    	if(strlen($descStr) > 50) {
-    		$treeDoc->description = substr($descStr, 0, 50).' ... ';
+    	if(strlen($descStr) > 80) {
+    		$treeDoc->description = substr($descStr, 0, 80).' ... ';
     	} else {
     		$treeDoc->description = substr($descStr, 0, -2);
     	}
