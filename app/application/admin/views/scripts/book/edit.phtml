@@ -43,6 +43,11 @@ var tree = {type: 'book', id: '<?php echo $this->doc->getId()?>'};
 	<% } %>
 		<div class='drag-handle' draggable='true'></div>
 		<div class='leaf-label'><a href='javascript:void(0)' class='edit' id='{{ id }}'>{{ label }}</a></div>
+		
+		<div class='leaf-page-edit'>
+			<a class='mini-icon-bg mini-icon-edit' href='/admin/book/edit-page/id/{{ id }}'></a>
+		</div>
+		
 		<div class='leaf-link'>
 		<% if(link) { %>
 			{{ link }}
@@ -50,6 +55,7 @@ var tree = {type: 'book', id: '<?php echo $this->doc->getId()?>'};
 			{{ id }}
 		<% } %>
 		</div>
+
 		<div class='clear'></div>
 	</div>
 	<ul class='children'>
