@@ -164,10 +164,10 @@ class Admin_NaviController extends Zend_Controller_Action
     	$treeIndex = $treeDoc->buildIndex();
     	
     	$treeDoc->naviIndex = $treeIndex;
-    	if(strlen($descStr) > 80) {
-    		$treeDoc->description = substr($descStr, 0, 80).' ... ';
+    	if(strlen($descStr) > 45) {
+    		$treeDoc->description = mb_substr($descStr, 0, 45, 'utf-8').' ... ';
     	} else {
-    		$treeDoc->description = substr($descStr, 0, -2);
+    		$treeDoc->description = mb_substr($descStr, 0, -2, 'utf-8');
     	}
     	$treeDoc->save();
     	
