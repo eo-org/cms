@@ -13,8 +13,7 @@ class Form_Layout_Edit extends Class_Form_Edit
 				'product-list' => '产品列表',
 				'book' => '手册',
 				'frontpage' => '综合页面'
-			),
-			'disabled' => 'disabled'
+			)
 		));
 		
 		$this->addElement('text', 'label', array(
