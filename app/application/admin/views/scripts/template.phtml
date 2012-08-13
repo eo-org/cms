@@ -4,11 +4,11 @@ $csa = Class_Session_Admin::getInstance();
 $controllerName = $request->getControllerName();
 
 $naviArr = array(
-	array('title' => '目录导航', 'url' =>'/admin/navi/'),
+	array('title' => '目录导航', 'url' => '/admin/navi/'),
 	array('title' => '内容管理', 'url' => '/admin/article/'),
 	array('title' => '手册管理', 'url' => '/admin/book/'),
 	array('title' => '产品管理', 'url' => '/admin/product/'),
-	array('title' => '广告管理', 'url' =>'/admin/ad-section/'),
+	array('title' => '广告管理', 'url' => '/admin/ad-section/'),
 	array('title' => '用户管理', 'url' => '/admin/user/'),
 	array('title' => '系统管理', 'url' => '/admin/system/'),
 	array('title' => '模块管理', 'url' => '/admin/brick/'),
@@ -30,15 +30,6 @@ $naviArr = array(
 if($request->getParam('bricks') != 'disabled') {
 	if($csa->isLogin()) {
 		echo $this->extension('Navi', $naviArr);
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 }
 ?>
