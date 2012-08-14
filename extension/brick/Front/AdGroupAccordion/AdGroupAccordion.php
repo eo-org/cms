@@ -2,8 +2,8 @@
 class Front_AdGroupAccordion extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-		'ad/accordion/accordion.plugin.js',
-		'ad/accordion/accordion.plugin.css'
+		'ad/accordion/plugin.js',
+		'ad/accordion/plugin.css'
 	);
 	
 	public function prepare()

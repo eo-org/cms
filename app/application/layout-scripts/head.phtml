@@ -3,6 +3,7 @@
 $csa = Class_Session_Admin::getInstance();
 $cbc = Class_Brick_Controller::getInstance();
 $effectJsPath = $cbc->getJsPath();
+$effectCssPath = $cbc->getCssPath();
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <?=$this->headMeta() ?>
@@ -20,13 +21,22 @@ $effectJsPath = $cbc->getJsPath();
 <?php if(!empty($effectJsPath)) {?>
 	<?php if(getenv('SERVER_TYPE') != 'local') {?>
 <script type="text/javascript"	src="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectJsPath?>"></script>
+<link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectJsPath?>" media="screen" rel="stylesheet">
 	<?php } else { ?>
 		<?php
 		$jsList = $cbc->getJsList();
 		foreach($jsList as $js) {
 		?>
 <script type="text/javascript" src="<?=Class_Server::libUrl()?>/front/script/effect/<?php echo $js?>"></script>		
-		<?php } ?>
+		<?php
+		}
+		$cssList = $cbc->getCssList();
+		foreach($cssList as $css) {
+		?>
+<link type="text/css" href="<?=Class_Server::libUrl()?>/front/script/effect/<?php echo $css?>" media="screen" rel="stylesheet">
+		<?php
+		}
+		?>
 	<?php } ?>
 <?php }?>
 <!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>

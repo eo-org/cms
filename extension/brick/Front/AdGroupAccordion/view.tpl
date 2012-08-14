@@ -3,13 +3,13 @@
 	<dl class="slidedeck">
 		{% for row in rowset %}
 			{% block row %}
-				<dt>{{row.title}}</dt>
-				<dd><img src='{{ row.filename}}'/></dd>
+				<dt>{{ row.label }}</dt>
+				<dd><img src='{{ row.filename|outputImage }}'/></dd>
 			{% endblock %}
 		{% endfor %} 
 	</dl>
+</div>
 <script type="text/javascript">
 	$('.slidedeck').slidedeck();
 </script>
-</div>
 {% block footer %}{% endblock %}
