@@ -4,17 +4,17 @@ $csa = Class_Session_Admin::getInstance();
 $controllerName = $request->getControllerName();
 
 $naviArr = array(
-	array('title' => '目录导航', 'url' => '/admin/navi/'),
-	array('title' => '内容管理', 'url' => '/admin/article/'),
-	array('title' => '手册管理', 'url' => '/admin/book/'),
-	array('title' => '产品管理', 'url' => '/admin/product/'),
-	array('title' => '广告管理', 'url' => '/admin/ad-section/'),
-	array('title' => '用户管理', 'url' => '/admin/user/'),
-	array('title' => '系统管理', 'url' => '/admin/system/'),
-	array('title' => '模块管理', 'url' => '/admin/brick/'),
-	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.$csa->getOrgCode().'/admin/'),
-	array('title' => '问卷管理', 'url' => 'http://forum.enorange.cn/'.$csa->getOrgCode().'/admin/'),
-	array('title' => '留言管理', 'url' => 'http://form.enorange.cn/'.$csa->getOrgCode().'/admin/')
+	array('title' => '目录导航', 'url' => '/admin/navi/',			'tooltip' => '增加，减少，修改导航栏目，也可进行修改导航栏目链接。例如：主导航，页脚导航等等。'),
+	array('title' => '内容管理', 'url' => '/admin/article/',		'tooltip' => '编辑新闻类动态增加的文章。例如：行业新闻，新闻资讯等等。'),
+	array('title' => '手册管理', 'url' => '/admin/book/',			'tooltip' => '编辑网站中常规的静态栏目内容，例如：关于公司，联系我们，公司简介，公司理念，公司团队，各种使用手册等等网站内容的修改。'),
+	array('title' => '产品管理', 'url' => '/admin/product/',		'tooltip' => '编辑公司产品的详细内容，如产品规格，型号，产品详细描述，产品价格等等。'),
+	array('title' => '广告管理', 'url' => '/admin/ad-section/',	'tooltip' => '编辑网站内的各种静态或动画效果的广告图片，广告组，例如：首页顶部广告组，内页广告图等等。'),
+	array('title' => '用户管理', 'url' => '/admin/user/', 		'tooltip' => '管理网站注册的用户信息，例如：会员的注册登记管理。'),
+	array('title' => '系统管理', 'url' => '/admin/system/',		'tooltip' => '编辑网站的基本信息如:"keywords, page title"，管理系统文件，CSS&JS文件等等。'),
+	array('title' => '模块管理', 'url' => '/admin/brick/',		'tooltip' => '可编辑查看到网站前台所有在显示的模块。模块管理操作一般在前台页面进行编辑'),
+	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.$csa->getOrgCode().'/admin/',	'tooltip' => '管理网站内所有图片和文档，例如：logo，广告里面的图片，文章中的附件等等。'),
+	array('title' => '问卷管理', 'url' => 'http://forum.enorange.cn/'.$csa->getOrgCode().'/admin/',	'tooltip' => '编辑查看网站用户的一些留言，例如：在线订购等。'),
+	array('title' => '留言管理', 'url' => 'http://form.enorange.cn/'.$csa->getOrgCode().'/admin/',	'tooltip' => '编辑查看网站用户的对网站问卷调查的答复，留言，例如：在线调查等等。')
 );	
 
 ?>
