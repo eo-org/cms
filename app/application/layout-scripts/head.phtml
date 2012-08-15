@@ -21,7 +21,7 @@ $effectCssPath = $cbc->getCssPath();
 <?php if(!empty($effectJsPath)) {?>
 	<?php if(getenv('SERVER_TYPE') != 'local') {?>
 <script type="text/javascript"	src="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectJsPath?>"></script>
-<link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectJsPath?>" media="screen" rel="stylesheet">
+<link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/front/script/effect&f=<?php echo $effectCssPath?>" media="screen" rel="stylesheet">
 	<?php } else { ?>
 		<?php
 		$jsList = $cbc->getJsList();
