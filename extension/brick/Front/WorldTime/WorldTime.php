@@ -2,7 +2,7 @@
 class Front_WorldTime extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-		'other/WorldTime.js',
+		'other/worldtime.plugin.js',
 	);
 	
 	public function prepare()
@@ -22,6 +22,8 @@ class Front_WorldTime extends Class_Brick_Solid_Abstract
 			'multiOptions' => array('beijing'=>'北京','london'=>'伦敦','newyork'=>'纽约','paris'=>'巴黎','berlin'=>'柏林','seoul'=>'首尔','tokyo'=>'东京')
 		));
 		
+		$paramArr = array('param_country');
+		$form->setParam($paramArr);
     	return $form;
     }
 }
