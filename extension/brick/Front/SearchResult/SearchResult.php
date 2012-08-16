@@ -47,7 +47,5 @@ class Front_SearchResult extends Class_Brick_Solid_Abstract
     	
     	$this->view->rowset = $rowset;
     	$this->view->type = $type;
-    	
-    	$this->view->query = "?keywords=123&type=".$type."&page=";
     }
 }
