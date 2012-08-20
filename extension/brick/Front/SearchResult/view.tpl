@@ -1,6 +1,11 @@
 {% block header %}{% endblock %}
 <div class='search-result'>
-	<ul>
+	{% if type == 'product' %}
+	<ul class='product'>
+	{% else %}
+	<ul class='article'>
+	{% endif %}
+	
 	{% for row in rowset %}
 		{% if type == 'product' %}
 		{% block productRow %}

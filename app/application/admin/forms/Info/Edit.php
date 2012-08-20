@@ -3,6 +3,15 @@ class Form_Info_Edit extends Class_Form_Edit
 {
     public function init()
     {
+    	$this->addElement('select', 'language', array(
+            'filters' => array('StringTrim'),
+            'label' => '网站前台主要语言：',
+    		'multiOptions' => array(
+    			'zh_CN' => '中文_简体',
+    			'en_US' => 'English_US'
+    		),
+            'required' => true
+        ));
         $this->addElement('textarea', 'pageTitle', array(
             'filters' => array('StringTrim'),
             'label' => '网站标题：',
@@ -18,7 +27,7 @@ class Form_Info_Edit extends Class_Form_Edit
             'label' => 'Description：',
             'required' => false
         ));
-        $this->_main = array('pageTitle');
+        $this->_main = array('language', 'pageTitle');
         $this->_optional = array('metakey', 'metadesc');
     }
 }

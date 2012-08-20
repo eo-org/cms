@@ -25,7 +25,8 @@ class Admin_BookController extends Zend_Controller_Action
 			'click' => array(
 				'action' => 'contextMenu',
 				'menuItems' => array(
-					array('编辑', '/admin/book/edit/id/')
+					array('编辑', '/admin/book/edit/id/'),
+					array('编辑手册内页', '/admin/book/edit-page-index/id/')
 				)
 			),
 			'initSelectRun' => 'true',
@@ -57,11 +58,32 @@ class Admin_BookController extends Zend_Controller_Action
     {
     	$id = $this->getRequest()->getParam('id');
     	
+    	require APP_PATH.'/admin/forms/Book/Create.php';
+    	$form = new Form_Book_Create();
+    	$co = App_Factory::_m('Book');
+    	$doc = $co->find($id);
+    	$form->populate($doc->toArray());
+    	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+    		$doc = $doc->setFromArray($form->getValues());
+    		$doc->save();
+    		$this->_helper->redirector->gotoSimple('index');
+    	}
+    	$this->view->form = $form;
+    	
+    	$this->view->doc = $doc;
+	 	$this->_helper->template->head('编辑手册:<em>'.$doc->title.'</em>')
+        	->actionMenu(array('save', 'delete'));
+    }
+    
+    public function editPageIndexAction()
+    {
+    	$id = $this->getRequest()->getParam('id');
+    	
     	$co = App_Factory::_m('Book');
 		$doc = $co->find($id);
     	
     	$this->view->doc = $doc;
-	 	$this->_helper->template->head('编辑BOOK:<em>'.$doc->title.'</em>')
+	 	$this->_helper->template->head('编辑手册内页:<em>'.$doc->title.'</em>')
         	->actionMenu(array(
         		'create-page' => array('label' => '添加新书页', 'callback' => '/admin/book/edit-page/book-id/'.$id),
         		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
@@ -100,7 +122,7 @@ class Admin_BookController extends Zend_Controller_Action
     		}
     		$pageDoc->save();
     		
-    		$this->_helper->redirector->gotoSimple('edit', null, null, array('id' => $bookId));
+    		$this->_helper->redirector->gotoSimple('edit-page-index', null, null, array('id' => $bookId));
     	}
     	
     	$this->view->form = $form;

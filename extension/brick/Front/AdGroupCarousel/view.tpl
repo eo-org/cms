@@ -12,7 +12,7 @@
 			{% for row in rowset %}
 			<div style='width: {{ width }}px; height: {{ height }}px; position: absolute'>
 				<a href='/welcome.shtml'>
-						<img src='{{ row.image|outputImage }}'/>
+						<img src='{{ row.filename|outputImage }}'/>
 				</a>
 			</div>
 			{% endfor%}
@@ -26,7 +26,7 @@
 					{% for row in rowset %}
 					<li style='float: left;'>
 						<a href='javascript:void(0);'>
-							<img src='{{ row.image|outputImage }}'/>
+							<img src='{{ row.filename|outputImage }}'/>
 						</a>
 						<div class="alternatecontent">
 							{{ row.description }} 

@@ -18,7 +18,8 @@ class Form_Book_Page_Edit extends Class_Form_Edit
             'filters' => array('StringTrim'),
             'label' => '插入图片',
             'required' => false,
-        	'id' => 'append-image'
+        	'class' => 'icon-selector',
+        	'callback' => 'appendToEditor'
         ));
         
         $this->addElement('text', 'link', array(
