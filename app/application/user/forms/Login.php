@@ -3,10 +3,12 @@ class Form_Login extends Zend_Form
 {
     public function init()
     {
+    	$tanslator = Zend_Registry::get('Zend_Translate');
+    	
         $this->addElement('text', 'loginName', array(
     		'filters' => array('StringTrim', 'StringToLower'),
         	'required' => true,
-        	'label' => '邮箱'
+        	'label' => $tanslator->translate('email')
         ));
         $validatorEmail = new Class_Validate_EmailSimple();
         $this->loginName->addValidators(array($validatorEmail));
@@ -14,12 +16,12 @@ class Form_Login extends Zend_Form
         $this->addElement('password', 'password', array(
         	'filters' => array('StringTrim'),
         	'required' => true,
-        	'label' => '密码'
+        	'label' => $tanslator->translate('password')
         ));
     
         $this->addElement('submit', 'login', array(
-            'label' => '',
-            'value' => '确认'
+        	'label' => '',
+            'value' => $tanslator->translate('confirm')
         ));
     
         $this->setDecorators(array(

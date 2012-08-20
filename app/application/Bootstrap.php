@@ -57,12 +57,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view = new Zend_View();
 		$view->headTitle()->setSeparator('_');
 		
+		Zend_Registry::set('Locale', 'zh_CN');
 		$co = App_Factory::_m('Info');
 		$doc = $co->fetchOne();
 		if(!is_null($doc)) {
 			$view->headTitle($doc->pageTitle);
 			$view->headMeta()->appendName('keywords', $doc->metakey);
 			$view->headMeta()->appendName('description', $doc->metadesc);
+			if(!is_null($doc->language)) {
+				Zend_Registry::set('Locale', $doc->language);
+			}
 		}
     }
     

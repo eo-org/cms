@@ -1,12 +1,12 @@
 <div class='login'>
-	<div class='title'>用户登陆</div>
+	<div class='title'><?php echo $this->translate('user login')?></div>
 	<div class='content'>
 		<?php echo $this->loginForm ?>
 		<div class='forgot-password'>
-			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'forgot-password'),'default',true) ?>">忘记密码</a>
+			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'forgot-password'),'default',true) ?>"><?php echo $this->translate('forget password')?></a>
 		</div>
 		<div class='register-new'>
-			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'register'),'default',true) ?>">注册新用户</a>
+			<a href="<?=$this->url(array('module'=>'user','controller'=>'index','action'=>'register'),'default',true) ?>"><?php echo $this->translate('sign up')?></a>
 		</div>
 	</div>
 </div>
