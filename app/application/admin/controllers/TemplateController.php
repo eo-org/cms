@@ -8,9 +8,9 @@ class Admin_TemplateController extends Zend_Controller_Action
 	
 	public function useAction()
 	{
-		$templateId = $this->getRequest()->getParam('id');
-		
-		$service = Class_Api_Oss_Instance::getInstance();
+//		$templateId = $this->getRequest()->getParam('id');
+//		
+//		$service = Class_Api_Oss_Instance::getInstance();
 		
 //		$resp = $service->listObject('public-misc', array(
 //			'delimiter' => '/',
