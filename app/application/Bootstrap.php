@@ -20,6 +20,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		$siteId = Class_Server::getSiteId();
 		$mongoDb = new App_Mongo_Db_Adapter('cms_'.$siteId, Class_Server::getMongoServer());
+		
+		$db = $mongoDb->getConnection();
+		
+		Zend_Registry::set('db', $db);
+		
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 	
