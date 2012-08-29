@@ -39,25 +39,14 @@ $effectCssPath = $cbc->getCssPath();
 		?>
 	<?php } ?>
 <?php }?>
-<!-- script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/front-effect.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/front/script/impact.js"></script -->
+
 <?=$this->headLink() ?>
 <?=$this->headScript() ?>
 
 <?php if($csa->hasPrivilege()) { ?>
-<!-- link 	type="text/css" 		href="<?=Class_Server::libUrl()?>/admin/style/structure.css" media="screen" rel="stylesheet">
-<link	type="text/css"			href="<?=Class_Server::libUrl()?>/admin/style/front.css" media="screen" rel="stylesheet" -->
 <link	type="text/css"			href="http://minify.enorange.cn/?b=resource/cms/v2/admin/style&f=structure.css,front.css" media="screen" rel="stylesheet">
 <script type="text/javascript"	src="<?=Class_Server::extUrl()?>/ckeditor/ckeditor.js"></script>
-
-<!-- script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jquery.ndd.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/front.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/lightbox.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/links.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/icon-selector.js"></script>
-<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/bootstrap.js"></script -->
 <script type="text/javascript"	src="http://minify.enorange.cn/?b=resource&f=ext/func.js,ext/jquery.ndd.js,cms/v2/script/front.js,cms/v2/script/lightbox.js,cms/v2/script/links.js,cms/v2/script/bootstrap.js,cms/v2/script/icon-selector.js"></script>
-	
 <script>
 /************************************/
 /*Declear Global Javascript Items****/

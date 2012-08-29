@@ -110,6 +110,7 @@ class Admin_TemplateController extends Zend_Controller_Action
 	
 	public function importAction()
 	{
+		$resetDb = $this->getRequest()->getParam('reset-db');
 		$resourceSiteId = $this->getRequest()->getParam('site-id');
 		
 		$ch = curl_init("http://account.enorange.cn/rest/remote-site/".$resourceSiteId);
@@ -121,49 +122,46 @@ class Admin_TemplateController extends Zend_Controller_Action
 		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
 		if($returnedObj->result == 'fail') {
 			die($returnedObj->errMsg);
+		} else {
+			$returnedObj = $returnedObj->data;
 		}
-		die($returnedObj);
-		$siteFolder = $returnedObj->orgCode;
-		if(isset($returnedObj->siteFolder)) {
-			$siteFolder = $returnedObj->siteFolder;
-		}
+		
 		$orgCode = $returnedObj->orgCode;
+		$siteFolder = $returnedObj->siteFolder;
+		
 		$destSiteFolder = Class_Server::getSiteFolder();
-		$fromhost = $returnedObj->serverFullName;
+		$fromhost = $returnedObj->subdomainName;
 		$fromdb = 'cms_'.$returnedObj->remoteId;
 		
-		
-		
-		
-		$adapter = Zend_Registry::get('mongoAdapter');
-		
-		$targetDbName = $adapter->getDbName();
-		
-		$mongo = Zend_Registry::get('mongo');
-		$connection = $mongo->selectDb('admin');
-		
-		$username = 'templateAdmin';
-		$password = 'timeToBuildtempLate';
-		
-		
-		$n = $connection->command(array(
-			'copydbgetnonce' => 1,
-			'fromhost' => $fromhost
-		));
-		
-		$saltedHash = md5($n['nonce'].$username.md5($username.":mongo:".$password));
-		
-		
-		$result = $connection->command(array(
-			'copydb' => 1,
-			'fromhost' => $fromhost,
-			'fromdb' => $fromdb,
-			'todb' => $targetDbName,
-			"username" => $username,
-		    "nonce" => $n["nonce"],
-		    "key" => $saltedHash
-		));
-		
+		if($resetDb == 1) {
+			$adapter = Zend_Registry::get('mongoAdapter');
+			
+			$targetDbName = $adapter->getDbName();
+			$db = $adapter->getDb();
+			$db->drop();			
+			$mongo = Zend_Registry::get('mongo');
+			
+			$connection = $mongo->selectDb('admin');
+			
+			$username = 'templateAdmin';
+			$password = 'timeToBuildtempLate';
+			
+			$n = $connection->command(array(
+				'copydbgetnonce' => 1,
+				'fromhost' => $fromhost
+			));
+			
+			$saltedHash = md5($n['nonce'].$username.md5($username.":mongo:".$password));
+			$result = $connection->command(array(
+				'copydb' => 1,
+				'fromhost' => $fromhost,
+				'fromdb' => $fromdb,
+				'todb' => $targetDbName,
+				"username" => $username,
+			    "nonce" => $n["nonce"],
+			    "key" => $saltedHash
+			));
+		}
 		if($destSiteFolder != $siteFolder) {
 			$fileServerMongo = new Mongo('mongodb://craftgavin:whothirstformagic?@58.51.194.8', array('persist' => 'x'));
 			$db = $fileServerMongo->selectDb('service-file');
@@ -183,7 +181,7 @@ class Admin_TemplateController extends Zend_Controller_Action
 				}
 			}
 		}
-		die();
+		die('ok');
 	}
 	
 	public function useAction()
