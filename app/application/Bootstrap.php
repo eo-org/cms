@@ -19,13 +19,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Class_Server::setLibVersion('v2');
 		
 		$siteId = Class_Server::getSiteId();
-		$mongoDb = new App_Mongo_Db_Adapter('cms_'.$siteId, Class_Server::getMongoServer());
+		$mongoAdapter = new App_Mongo_Db_Adapter('cms_'.$siteId, Class_Server::getMongoServer());
+		App_Mongo_Db_Collection::setDefaultAdapter($mongoAdapter);
 		
-		$db = $mongoDb->getConnection();
+		$mongo = $mongoAdapter->getMongo();
+		Zend_Registry::set('mongo', $mongo);
 		
-		Zend_Registry::set('db', $db);
 		
-		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
+		Zend_Registry::set('mongoAdapter', $mongoAdapter);
+		
 	}
 	
     protected function _initController()

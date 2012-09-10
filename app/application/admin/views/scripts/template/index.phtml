@@ -1,0 +1,33 @@
+<div class='datalist'>
+	<div class='datalist-head'>
+		<div class='search-row'>
+			<input class='q-index' q-index='label' type='text' name='' value='' />
+			<div class='query-invoker' class='button'>Search</div>
+		</div>
+	</div>
+	<div class='datalist-body'>
+	</div>
+	<div class='datalist-foot'>
+		<div id='datalist-paginator'>
+		</div>
+	</div>
+</div>
+
+<script>
+	window.restUrl = 'http://account.eo.test/rest/remote-template';
+</script>
+
+<script type='text/template' id='data-row'>
+<div>
+	<img src='<?Class_Server::getSiteFolder()?>' />
+	{{data.siteFolder}}
+	{{data.id}}
+	{{data.label}}
+
+	<a href='/admin/template/import/site-id/{{data.id}}/reset-db/1'>使用模版（重置所有数据）</a>
+	<a href='/admin/template/import/site-id/{{data.id}}'>使用模版（保留现有数据）</a>
+</div>
+</script>
+
+
+<script data-main="<?=Class_Server::extUrl()?>/app/data" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>

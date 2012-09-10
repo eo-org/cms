@@ -45,7 +45,7 @@ class Admin_BookController extends Zend_Controller_Action
     	if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
     		$doc = $co->create($form->getValues());
     		$doc->save();
-    		$this->_helper->redirector->gotoSimple('edit', null, null, array(
+    		$this->_helper->redirector->gotoSimple('edit-page-index', null, null, array(
     			'id' => $doc->getId()
     		));
     	}

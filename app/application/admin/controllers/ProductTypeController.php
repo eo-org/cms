@@ -39,7 +39,7 @@ class Admin_ProductTypeController extends Zend_Controller_Action
 	public function editAction()
 	{
 		$id = $this->getRequest()->getParam('id');
-		$attributesetCo = App_Factory::_m('Attributeset');
+		$attributesetCo = App_Factory::_am('Attributeset');
 		if(empty($id)) {
 			$doc = $attributesetCo->create();
 		} else {
@@ -82,7 +82,7 @@ class Admin_ProductTypeController extends Zend_Controller_Action
 		$pageSize = 20;
 		$currentPage = 1;
 		
-        $attributesetCo = App_Factory::_m('Attributeset');
+        $attributesetCo = App_Factory::_am('Attributeset');
 		$queryArray = array();
 		
         $result = array();
