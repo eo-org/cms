@@ -1,30 +1,45 @@
-<?php echo $this->form?>
+<div class='group-all'>
+	<div class='overlap'></div>
+	<div class='group-handle'>
+		<ul class='group'>
+			<li class='ground'>基本信息</li>
+			<li class='ground'>图片和附件</li>
+		</ul>
+	</div>
+</div>
 <div class='clear'></div>
-
-<fieldset class='attachment-form'>
-	<legend>附件</legend>
-	<ul id='attachment-list'>
-		<?php 
-		if(!is_null($this->attachmentArr)) {
-			foreach($this->attachmentArr as $a) {
-		?>
-		<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
-		<?php
-			} 
-		}
-		?>
+<div class='grouplist'>
+	<ul class='group-list'>
+		<li><?php echo $this->form;?></li>
 	</ul>
-	<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
-</fieldset>
-<div class='clear'></div>
-
-<fieldset class='product-form'>
-	<legend>图片</legend>
-	<ul id='product-list'>
-		
+	<ul class='group-list'>
+		<li>
+			<fieldset class='attachment-form'>
+				<ul id='attachment-list'>
+					<?php 
+					if(!is_null($this->attachmentArr)) {
+						foreach($this->attachmentArr as $a) {
+					?>
+					<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
+					<?php
+						} 
+					}
+					?>
+				</ul>
+				<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
+			</fieldset>
+		</li>
+		<li class='clear'> </li>
+		<li>
+			<fieldset class='product-form'>
+				<ul id='product-list'>
+					
+				</ul>
+				<button callback='insertImage' class="icon-selector" type="button" name="">添加图片</button>
+			</fieldset>
+		</li>
 	</ul>
-	<button callback='insertImage' class="icon-selector" type="button" name="">添加图片</button>
-</fieldset>
+</div>
 <div class='clear'></div>
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/product-image" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 <script type='text/template' id='product-add-template'>
