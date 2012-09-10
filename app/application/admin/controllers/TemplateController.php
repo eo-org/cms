@@ -54,13 +54,13 @@ class Admin_TemplateController extends Zend_Controller_Action
 	public function importAction()
 	{
 		$resetDb = $this->getRequest()->getParam('reset-db');
-		$resourceSiteId = $this->getRequest()->getParam('site-id');
+		$fromSiteId = $this->getRequest()->getParam('site-id');
 		
 		/****************************/
 		/*COPY MONGO DATABASE*/
 		/****************************/
 		//---->get origin site info through curl
-		$ch = curl_init("http://account.enorange.cn/rest/remote-site/".$resourceSiteId);
+		$ch = curl_init("http://account.enorange.cn/rest/remote-site/".$fromSiteId);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -72,8 +72,8 @@ class Admin_TemplateController extends Zend_Controller_Action
 			$returnedObj = $returnedObj->data;
 		}
 		$orgCode = $returnedObj->orgCode;
-		$siteFolder = $returnedObj->siteId;
-		$destSiteFolder = Class_Server::getSiteFolder();
+//		$siteFolder = $returnedObj->siteId;
+		$toSiteId = Class_Server::getSiteFolder();
 		curl_close($ch);
 		
 		//---->reset database by copydb command
@@ -110,6 +110,37 @@ class Admin_TemplateController extends Zend_Controller_Action
 		/****************************/
 		/*DUP ALI FILES & FILE SERVER DATA*/
 		/****************************/
+		$time = time();
+		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
+		$sig = md5($fromSiteId.$time.$toSiteId.$fileServerKey);
+		
+//		echo $sig;
+		
+		$ch = curl_init("http://file.eo.test/".$fromSiteId."/default/copy/to-site/id/".$toSiteId);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'X-Sig: '.$sig,
+			'X-Time: '.$time
+		));
+		
+		$returnedStr = curl_exec($ch);
+		
+		
+		die('ok');
+		
+		
+//		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
+		
+//		Zend_Debug::dump($returnedStr);
+		
+		
+		
+		
+		
+		
+		
 		/*
 		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
 		$time = time();
@@ -149,7 +180,7 @@ class Admin_TemplateController extends Zend_Controller_Action
 			
 			
 			
-		die('ok');
+		
 	}
 	
 	public function testAction()
