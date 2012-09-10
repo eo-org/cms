@@ -116,7 +116,7 @@ class Admin_TemplateController extends Zend_Controller_Action
 		
 //		echo $sig;
 		
-		$ch = curl_init("http://file.eo.test/".$fromSiteId."/default/copy/to-site/id/".$toSiteId);
+		$ch = curl_init("http://file.enorange.cn/".$fromSiteId."/default/copy/to-site/id/".$toSiteId);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -126,7 +126,7 @@ class Admin_TemplateController extends Zend_Controller_Action
 		));
 		
 		$returnedStr = curl_exec($ch);
-		
+		Zend_Debug::dump($returnedStr);
 		
 		die('ok');
 		
@@ -185,28 +185,28 @@ class Admin_TemplateController extends Zend_Controller_Action
 	
 	public function testAction()
 	{
-		$resourceSiteId = '502a00446d5461593a000001';
-		$toSiteId = '111-test';
-		
-		$time = time();
-		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
-		$sig = md5($resourceSiteId.$time.$toSiteId.$fileServerKey);
-		
-		echo $sig;
-		
-		$ch = curl_init("http://file.eo.test/".$resourceSiteId."/default/copy/to-site/id/".$toSiteId);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'X-Sig: '.$sig,
-			'X-Time: '.$time
-		));
-		
-		$returnedStr = curl_exec($ch);
-//		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
-		
-		Zend_Debug::dump($returnedStr);
-		die();
+//		$resourceSiteId = '502a00446d5461593a000001';
+//		$toSiteId = '111-test';
+//		
+//		$time = time();
+//		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
+//		$sig = md5($resourceSiteId.$time.$toSiteId.$fileServerKey);
+//		
+//		echo $sig;
+//		
+//		$ch = curl_init("http://file.eo.test/".$resourceSiteId."/default/copy/to-site/id/".$toSiteId);
+//		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+//		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//		curl_setopt($ch, CURLOPT_HEADER, 0);
+//		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+//			'X-Sig: '.$sig,
+//			'X-Time: '.$time
+//		));
+//		
+//		$returnedStr = curl_exec($ch);
+////		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
+//		
+//		Zend_Debug::dump($returnedStr);
+//		die();
 	}
 }
