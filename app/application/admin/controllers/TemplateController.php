@@ -20,14 +20,9 @@ class Admin_TemplateController extends Zend_Controller_Action
 		
 		foreach($users as $user) {
 			$hasUser = true;
-			Zend_Debug::dump($user);
-			
-//			$user->delete();
-			echo "ok<br />";
 		}
 		
 		if(!$hasUser) {
-		
 			$username = 'templateAdmin';
 			$password = 'timeToBuildtempLate';
 			$collection->insert(array(
@@ -114,8 +109,6 @@ class Admin_TemplateController extends Zend_Controller_Action
 		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
 		$sig = md5($fromSiteId.$time.$toSiteId.$fileServerKey);
 		
-//		echo $sig;
-		
 		$ch = curl_init("http://file.enorange.cn/".$fromSiteId."/default/copy/to-site/id/".$toSiteId);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -124,63 +117,8 @@ class Admin_TemplateController extends Zend_Controller_Action
 			'X-Sig: '.$sig,
 			'X-Time: '.$time
 		));
-		
 		$returnedStr = curl_exec($ch);
-		Zend_Debug::dump($returnedStr);
-		
 		die('ok');
-		
-		
-//		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
-		
-//		Zend_Debug::dump($returnedStr);
-		
-		
-		
-		
-		
-		
-		
-		/*
-		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
-		$time = time();
-		$ch = curl_init("http://file.eo.test/".$resourceSiteId."/default/copy/to-site/id/".$siteFolder);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-Sig: asdfded'));
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-Time: '.$time));
-		
-		$returnedStr = curl_exec($ch);
-		$returnedObj = Zend_Json::decode($returnedStr, Zend_Json::TYPE_OBJECT);
-		*/
-		
-		
-//			$fileServerMongo = new Mongo('mongodb://craftgavin:whothirstformagic?@58.51.194.8', array('persist' => 'x'));
-//			$db = $fileServerMongo->selectDb('service-file');
-//			$collection = $db->file;
-//			$cursor = $collection->find(array('orgCode' => $siteFolder));
-//			
-//			$service = Class_Api_Oss_Instance::getInstance();
-//			foreach($cursor as $key => $value) {
-//				$prefix = $value['orgCode'];
-//				$urlname = $value['urlname'];
-//				
-//				$fromObj = $prefix.'/'.$urlname;
-//				$resp = $service->copyObject($fromObj, $destSiteFolder.'/'.$urlname);
-//				if($value['isImage']) {
-//					$thumbObj = $prefix.'/_thumb/'.$urlname;
-//					$resp = $service->copyObject($thumbObj, $destSiteFolder.'/_thumb/'.$urlname);
-//				}
-//			}
-			
-			
-			
-			
-			
-			
-			
-		
 	}
 	
 	public function testAction()
