@@ -25,7 +25,7 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 			case 'group':
 				$co = App_Factory::_m('Group_Item')
 					->addFilter('groupType', $treeId)
-					->setFields(array('label', 'link', 'parentId', 'sort'));
+					->setFields(array('label', 'alias', 'parentId', 'className', 'sort'));
 				break;
 		}
 		

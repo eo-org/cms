@@ -1,12 +1,11 @@
 {% macro loop(node, currentGroupItemId, isRoot) %}
 {% spaceless %}
 	{% if currentGroupItemId == node.id %}
-    <li {{isRoot == 1 ? "class='root selected'" : "class='selected'"}}>
-    	<a {{isRoot == 1 ? "class='root selected'" : "class='selected'"}} href='{{ node|url("product-list") }}'>{{ node.label }}</a>
+    <li class='selected {{node.className}}'>
     {% else %}
-    <li {{isRoot == 1 ? "class='root'" : ''}}>
-    	<a {{isRoot == 1 ? "class='root'" : ''}} href='{{ node|url("product-list") }}'>{{ node.label }}</a>
+    <li class='{{node.className}}'>
     {% endif %}
+    	<a href='{{ node|url("product-list") }}'>{{ node.label }}</a>
     {% if node.children %}
         <ul>
         {% for childNode in node.children %}

@@ -25,11 +25,14 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		}
 		
 		$page = $this->_request->getParam('page');
-		$groupId = $this->_request->getParam('action');
-		$groupDoc = App_Factory::_m('Group_Item')->find($groupId);
-		 
+		$clf = Class_Layout_Front::getInstance();
+		$layoutType = $clf->getType();
+		
+		$groupItemId = null;
+		$groupDoc = $clf->getResource();
+		
 		$co = App_Factory::_m('Product');
-		$co->addFilter('groupId', $groupId)
+		$co->addFilter('groupId', $groupDoc->getId())
 			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'))
 			->setPage($page)
 			->setPageSize($pageSize);

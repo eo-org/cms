@@ -88,7 +88,7 @@ class Admin_GroupController extends Zend_Controller_Action
     	$childArr = Zend_Json::decode($jsonStr);
     	
     	$co = App_Factory::_m('Group_Item');
-    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link'))
+    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'alias', 'className'))
     		->addFilter('groupType', $treeId)
 			->sort('sort', 1)
 			->fetchDoc();

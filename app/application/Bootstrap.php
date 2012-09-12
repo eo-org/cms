@@ -25,7 +25,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$mongo = $mongoAdapter->getMongo();
 		Zend_Registry::set('mongo', $mongo);
 		
-		
 		Zend_Registry::set('mongoAdapter', $mongoAdapter);
 		
 	}
