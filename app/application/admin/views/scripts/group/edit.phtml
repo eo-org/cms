@@ -42,8 +42,8 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 		<div class='drag-handle' draggable='true'></div>
 		<div class='leaf-label'><a href='javascript:void(0)' class='edit' id='{{ id }}'>{{ label }}</a></div>
 		<div class='leaf-link'>
-		<% if(link) { %>
-			{{ link }}
+		<% if(alias) { %>
+			{{ alias }}
 		<% } else { %>
 			{{ id }}
 		<% } %>
@@ -60,10 +60,10 @@ var tree = {type: 'group', id: '<?php echo $this->doc->type?>'};
 	<div class='editor-contenr'>
 		<div class='label-el'>分组名：</div>
 		<div><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
-		<div class='link-el'>分组地址：</div>
-		<div><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
-		<!-- div class='css-el'>CSS Name：</div>
-		<div><input class='edit-value' name='className' type='text' value='{{ className }}'></div -->
+		<div class='link-el'>分组地址(别名)：</div>
+		<div><input class='edit-value' name='alias' type='text' value='{{ alias }}'></div>
+		<div class='css-el'>Class Name：</div>
+		<div><input class='edit-value' name='className' type='text' value='{{ className }}'></div>
 		<a class='edit-save button' href='javascript:void(0)'>保存</a>
 		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
 	</div>

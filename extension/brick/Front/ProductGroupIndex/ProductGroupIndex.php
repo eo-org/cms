@@ -14,7 +14,7 @@ class Front_ProductGroupIndex extends Class_Brick_Solid_Abstract
 			$groupItemId = $resource->getId();
 		}
 		
-		$groupDoc = $groupDoc = App_Factory::_m('Group')->findProductGroup();
+		$groupDoc = App_Factory::_m('Group')->findProductGroup();
 		if($this->getParam('level') == 'auto') {
 			$branchIndex = $groupDoc->getLevelOneTree($groupItemId);
 			$branchIndexArr = array($branchIndex);
