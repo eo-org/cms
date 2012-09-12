@@ -18,7 +18,7 @@ class Front_ArticleGroupIndex extends Class_Brick_Solid_Abstract
 			}
 		}
 		
-		$groupDoc = $groupDoc = App_Factory::_m('Group')->findArticleGroup();
+		$groupDoc = App_Factory::_m('Group')->findArticleGroup();
 		if($this->getParam('level') == 'auto') {
 			$branchIndex = $groupDoc->getLevelOneTree($groupItemId);
 			$branchIndexArr = array($branchIndex);
