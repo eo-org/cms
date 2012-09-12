@@ -26,7 +26,6 @@ class Front_ProductList extends Class_Brick_Solid_Abstract
 		
 		$page = $this->_request->getParam('page');
 		$clf = Class_Layout_Front::getInstance();
-		$layoutType = $clf->getType();
 		
 		$groupItemId = null;
 		$groupDoc = $clf->getResource();
