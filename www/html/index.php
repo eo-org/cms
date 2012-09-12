@@ -20,7 +20,7 @@ require_once $libPath.'/Zend/Registry.php';
 require_once $libPath.'/Zend/Db/Table.php';
 require_once $libPath.'/Zend/Debug.php';
 require_once $libPath.'/Zend/Config/Ini.php';
-require_once $commonLibPath.'/App/Server.php';
+require_once $cmsLibPath.'/Class/Server.php';
 $config = new Zend_Config_Ini(BASE_PATH.'/configs/cms/db.ini');
 
 $siteDb = new Zend_Db_Adapter_Pdo_Mysql(array(
@@ -48,7 +48,7 @@ define('CACHE_PATH', $config->path->misc);
 define('TEMPLATE_PATH', $config->path->template);
 
 Class_Server::setConfigPath(BASE_PATH.'/configs/cms/server.ini');
-Class_Server::config(APP_ENV, 'v1', 1, '4f729d24017d1a1927431710', 'cms.eo.test');
+Class_Server::config(APP_ENV, 'v1', 1, '4f7455866d5461b00b000000', '504d8523dcc9f3b7af0c76e2');
 
 require_once $libPath."/Zend/Application.php";
 $application = new Zend_Application(APP_ENV, BASE_PATH.'/configs/cms/application.ini');
