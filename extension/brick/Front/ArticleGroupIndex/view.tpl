@@ -2,7 +2,7 @@
 
 {% block header %}{% endblock %}
 {% if displayBrickName %}
-<div class='title'>{{ title }}</div>
+<div class='brick-name'>{{ brickName }}</div>
 {% endif %}
 <ul class='root-level'>
 	{% for node in branchIndexArr %}

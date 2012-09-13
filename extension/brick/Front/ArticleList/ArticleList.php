@@ -18,15 +18,17 @@ class Front_ArticleList extends Class_Brick_Solid_Abstract
 		if(empty($pageSize)) {
 			$pageSize = 20;
 		}
-		$clf = Class_Layout_Front::getInstance();
-		$groupRow = $clf->getResource();
 		
 		$page = $this->_request->getParam('page');
+		$clf = Class_Layout_Front::getInstance();
 		
-		if($groupRow == 'none') {
+		$groupItemId = null;
+		$groupDoc = $clf->getResource();
+		
+		if($groupDoc == 'none' || $groupDoc == null) {
 			$this->_disableRender = 'no-resource';
 		} else {
-			$groupId = $groupRow->getId();
+			$groupId = $groupDoc->getId();
 			
 			$co = App_Factory::_m('Article');
 			$co->setFields(array('id', 'label', 'introtext', 'introicon', 'created'))
@@ -53,7 +55,7 @@ class Front_ArticleList extends Class_Brick_Solid_Abstract
 	        
 			$data = $co->fetchDoc();
 			$this->view->displayBrickName = $this->_brick->displayBrickName;
-			$this->view->title = $groupRow->label;
+			$this->view->title = $groupDoc->label;
 			$this->view->rowset = $data;
 			$this->view->paginator = $paginator;
 		}
