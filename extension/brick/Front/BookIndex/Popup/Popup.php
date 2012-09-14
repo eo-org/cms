@@ -1,9 +1,8 @@
 <?php
-class Front_BookIndex_Draw extends Class_Brick_Solid_Abstract
+class Front_BookIndex_Popup extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-    	'navi/draw/plugin.js',
-		'navi/draw/plugin.css'
+    	'navi/popup/plugin.js'
     );
 	
     public function prepare()
@@ -39,21 +38,6 @@ class Front_BookIndex_Draw extends Class_Brick_Solid_Abstract
 //            'required' => true
 //        ));
 //
-		$form->addElement('text', 'param_naviWidth', array(
-            'filters' => array('StringTrim'),
-			'validators' => array('Alnum'),
-			'label' => '背景图宽度：',
-            'required' => true
-        ));
-		
-		$form->addElement('text', 'param_naviMargin', array(
-            'filters' => array('StringTrim'),
-			'validators' => array('Alnum'),
-			'label' => '图片右间距：',
-            'required' => true
-        ));
-    	$paramArr = array('param_naviWidth', 'param_naviMargin');
-    	$form->setParam($paramArr);
     	return $form;
     }
 }

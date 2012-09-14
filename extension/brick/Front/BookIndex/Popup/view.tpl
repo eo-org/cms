@@ -2,11 +2,11 @@
 
 {% block header %}{% endblock %}
 {% if displayBrickName %}
-<div class='title'>{{ title }}</div>
+<div class='brick-name'>{{ brickName }}</div>
 {% endif %}
 <ul class='navi-popup'>
-{% for node in naviDoc.naviIndex %}
-	{{ item.loop(node) }}
+{% for node in bookIndex %}
+	{{ item.loop(node, bookAlias) }}
 {% endfor %}
 </ul>
 <div class='clear'></div>
