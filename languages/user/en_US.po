@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cms-user\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-19 14:48+0800\n"
-"PO-Revision-Date: 2012-08-20 11:23+0800\n"
+"POT-Creation-Date: 2012-09-17 16:30+0800\n"
+"PO-Revision-Date: 2012-09-17 16:34+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -11,31 +11,180 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: translate\n"
-"X-Poedit-Basepath: /Users/gavin/Sites/cms/app/application/user\n"
+"X-Poedit-Basepath: /Users/gavin/Sites/cms/app/application/\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: forms\n"
-"X-Poedit-SearchPath-1: views\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: forms/Login.php:11
+#: admin/controllers/_CategoryController.php:11
+#: admin/controllers/_CategoryController.php:38
+#: admin/controllers/_CategoryController.php:78
+#: admin/controllers/_CategoryController.php:94
+#: admin/controllers/_CategoryController.php:118
+#: admin/controllers/_CategoryController.php:154
+msgid "Category"
+msgstr ""
+
+#: admin/controllers/_CategorySectionController.php:47
+#: admin/controllers/_CategorySectionController.php:62
+#: admin/controllers/_CategorySectionController.php:81
+#: admin/controllers/_CategorySectionController.php:93
+msgid "Category_Section"
+msgstr ""
+
+#: admin/controllers/_GroupController.php:42
+#: admin/controllers/_GroupController.php:223
+msgid "GroupV2"
+msgstr ""
+
+#: admin/controllers/_GroupController.php:80
+#: admin/controllers/_GroupController.php:102
+#: admin/controllers/_GroupController.php:135
+#: admin/controllers/_GroupController.php:177
+#: admin/controllers/_GroupController.php:247
+#: admin/controllers/_GroupController.php:279
+msgid "Group"
+msgstr ""
+
+#: admin/controllers/_LayoutPositionController.php:37
+#: admin/controllers/_LayoutPositionController.php:80
+#: admin/controllers/_LayoutPositionController.php:240
+#: admin/forms/Layout/Position/Edit.php:36
+msgid "Layout_Position"
+msgstr ""
+
+#: admin/controllers/AccountController.php:14
+#: admin/controllers/AdminController.php:51
+#: admin/controllers/AdminController.php:67
+#: admin/controllers/AdminController.php:97
+#: admin/controllers/AdminController.php:113
+#: admin/controllers/AdminController.php:137
+#: admin/controllers/AdminController.php:152
+#: admin/controllers/IndexController.php:15
+msgid "Admin"
+msgstr ""
+
+#: admin/controllers/AclController.php:41
+#: admin/controllers/AclController.php:116
+#: admin/controllers/AdminController.php:41
+#: admin/controllers/AdminController.php:72
+msgid "Admin_Group"
+msgstr ""
+
+#: admin/controllers/BrickController.php:262
+msgid "Brick"
+msgstr ""
+
+#: admin/controllers/CommentController.php:79
+msgid "Comment"
+msgstr ""
+
+#: admin/controllers/CustomerController.php:34
+#: user/controllers/IndexController.php:208
+#: user/controllers/PasswordController.php:93
+msgid "Customer"
+msgstr ""
+
+#: admin/controllers/ExtensionController.php:7
+msgid "Extension"
+msgstr ""
+
+#: admin/controllers/FileController.php:47
+#: admin/controllers/FileController.php:73
+#: admin/controllers/FileController.php:123
+#: admin/controllers/FileController.php:194
+#: admin/controllers/FileController.php:233
+#: admin/controllers/FileController.php:260
+msgid "File"
+msgstr ""
+
+#: admin/controllers/LayoutController.php:193
+#: admin/forms/Layout/SetPage.php:14
+msgid "Layout"
+msgstr ""
+
+#: admin/controllers/MessageController.php:63
+#: admin/controllers/MessageController.php:80
+#: admin/controllers/MessageController.php:84
+#: admin/controllers/MessageController.php:121
+msgid "Message"
+msgstr ""
+
+#: admin/controllers/MessagePatternController.php:41
+#: admin/controllers/MessagePatternController.php:63
+#: admin/controllers/MessagePatternController.php:96
+#: admin/controllers/MessagePatternController.php:164
+msgid "Eav_Attributeset"
+msgstr ""
+
+#: admin/controllers/MessagePatternController.php:113
+#: admin/controllers/MessagePatternController.php:126
+#: admin/controllers/MessagePatternController.php:153
+msgid "Eav_Attribute"
+msgstr ""
+
+#: admin/controllers/SubdomainController.php:41
+#: admin/controllers/SubdomainController.php:68
+msgid "Subdomain"
+msgstr ""
+
+#: admin/forms/Client/Create.php:36
+msgid "Eo_Template"
+msgstr ""
+
+#: admin/forms/Order/Address.php:36 user/controllers/IndexController.php:197
+msgid "Address"
+msgstr ""
+
+#: user/controllers/IndexController.php:119
+msgid "product"
+msgstr ""
+
+#: user/controllers/IndexController.php:141
+#: user/controllers/IndexController.php:179
+msgid "favorite"
+msgstr ""
+
+#: user/controllers/IndexController.php:215
+msgid "Customer_Decorator_Lottery"
+msgstr ""
+
+#: user/forms/Login.php:11
 msgid "email"
 msgstr "Email"
 
-#: forms/Login.php:19
+#: user/forms/Login.php:19
 msgid "password"
 msgstr "Password"
 
-#: forms/Login.php:24
+#: user/forms/Login.php:24
 msgid "confirm"
 msgstr "Confirm"
 
-#: views/scripts/index/login.phtml:2
+#: default/views/scripts/pagination-control.phtml:12
+#: default/views/scripts/pagination-control.phtml:35
+msgid "pre page"
+msgstr "Previous"
+
+#: default/views/scripts/pagination-control.phtml:14
+msgid "first page"
+msgstr "First"
+
+#: default/views/scripts/pagination-control.phtml:28
+msgid "next page"
+msgstr "Next"
+
+#: default/views/scripts/pagination-control.phtml:30
+msgid "last page"
+msgstr "Last"
+
+#: user/views/scripts/index/login.phtml:2
 msgid "user login"
 msgstr "User Login"
 
-#: views/scripts/index/login.phtml:6
+#: user/views/scripts/index/login.phtml:6
 msgid "forget password"
 msgstr "Forget Password"
 
-#: views/scripts/index/login.phtml:9
+#: user/views/scripts/index/login.phtml:9
 msgid "sign up"
 msgstr "Sign Up"
