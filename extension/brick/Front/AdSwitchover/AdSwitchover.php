@@ -47,9 +47,11 @@ class Front_AdSwitchover extends Class_Brick_Solid_Abstract
             'label' => '切换时间：',
         	'multiOptions' => array(
         		'4000' => '4秒',
-        		'3000' => '3秒',
         		'2000' => '2秒',
+				'5000' => '5秒',
         		'6000' => '6秒',
+        		'8000' => '8秒',
+				'10000' = '10秒'
         	),
             'required' => true
         ));

@@ -2,7 +2,8 @@
 class Front_BookIndex_Popup extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-    	'navi/popup/plugin.js'
+    	'navi/popup/plugin.js',
+		'navi/popup/plugin.css'
     );
 	
     public function prepare()

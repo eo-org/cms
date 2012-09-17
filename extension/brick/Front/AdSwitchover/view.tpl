@@ -1,11 +1,7 @@
 {% block header %}{% endblock %}
 <div class='image-group-slide' data='{
-	"itemWidth":"{{ width }}",
-	"height":"{{ height }}",
-	"delay": "{{ delay }}",
-	"numPerSlide": "{{ numPerSlide }}",
-	"margin": "{{ margin }}",
-	"numSwitching":"{{ numSwitching }}"
+	"showauto"："{{ showAuto }}"，
+	"delay": "{{ delay }}"
 }'>
     <div class='imageroll'>
 		<div class='bigimage'>
