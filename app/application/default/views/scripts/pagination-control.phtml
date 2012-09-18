@@ -1,15 +1,17 @@
 <?if ($this->pageCount) { ?>
 <div class="pagination-control">
 	<?php
+	$tanslator = Zend_Registry::get('Zend_Translate');
+	
 	$clf = Class_Layout_Front::getInstance();
 	$layoutRow = $clf->getLayoutRow();
 	if($layoutRow->default == 1) {
 	?>
 		<!-- Previous page link -->
 		<?if (isset($this->previous)) { ?>
-			<a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lt; 上一页</a> |
+			<a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lt; <?php echo $tanslator->translate('pre page')?></a> |
 		<?} else { ?>
-			<span class="disabled">&lt; 首页</span> |
+			<span class="disabled">&lt; <?php echo $tanslator->translate('first page')?></span> |
 		<?} ?>
 		
 		<!-- Numbered page links -->
@@ -23,14 +25,14 @@
 		
 		<!-- Next page link -->
 		<?if (isset($this->next)) { ?>
-		<a href="<?php echo $this->url(array('page' => $this->next)); ?>">下一页 &gt;</a>
+		<a href="<?php echo $this->url(array('page' => $this->next)); ?>"><?php echo $tanslator->translate('next page')?> &gt;</a>
 		<?} else { ?>
-		<span class="disabled">尾页 &gt;</span>
+		<span class="disabled"><?php echo $tanslator->translate('last page')?> &gt;</span>
 		<?} ?>
 	<?php } else {?>
 		<!-- Previous page link -->
 		<?if (isset($this->previous)) { ?>
-			<a href="/<?php echo $layoutRow->controllerName.'/page'.$this->previous ?>.shtml">&lt; 上一页</a> |
+			<a href="/<?php echo $layoutRow->controllerName.'/page'.$this->previous ?>.shtml">&lt; <?php echo $tanslator->translate('pre page')?></a> |
 		<?} else { ?>
 			<span class="disabled">&lt; 首页</span> |
 		<?} ?>
