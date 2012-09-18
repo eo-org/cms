@@ -1,20 +1,20 @@
 <?php
-class Form_Product_Edit extends App_Form_Edit
+class Form_Product_Edit extends App_Form_Tab
 {
     public function init()
     {
     	$this->addElement('text', 'label', array(
             'label' => '产品名',
+    		'description' => '产品的中文名或英文名，方便客户的记忆和购买',
             'required' => true,
             'filters' => array('StringTrim')
         ));
-    	
         $this->addElement('text', 'name', array(
             'label' => '产品型号',
-            'required' => false,
+        	'description' => '产品的唯一编码，方便工作人员进行对应的查找',
+            'required' => true,
             'filters' => array('StringTrim')
         ));
-        
         $groupDoc = App_Factory::_m('Group')->addFilter('type', 'product')
     		->fetchOne();
     	$items = $groupDoc->toMultioptions('label');
@@ -23,7 +23,6 @@ class Form_Product_Edit extends App_Form_Edit
             'filters' => array('StringTrim'),
             'multiOptions' => $items
         ));
-        
         $this->addElement('text', 'sku', array(
             'label' => '产品库存代码',
             'required' => false,
@@ -53,27 +52,12 @@ class Form_Product_Edit extends App_Form_Edit
             )
         ));
         
-        $this->addElement('text', 'introicon', array(
-            'label' => '产品图片',
-            'required' => false,
-            'filters' => array('StringTrim'),
-        	'class' => 'icon-selector',
-        	'callback' => 'appendToInput'
-        ));
         $this->addElement('textarea', 'introtext', array(
             'label' => '产品摘要',
             'required' => false,
             'filters' => array('StringTrim'),
         	'style' => 'width: 280px; height: 80px;'
         ));
-        $this->addElement('text', 'origPrice', array(
-            'label' => '原价(不填或0表示没有)',
-            'filters' => array('StringTrim'),
-            'validators' => array(
-                array('float')
-            )
-        ));
-        
         $this->addElement('text', 'weight', array(
             'label' => '权重',
             'filters' => array('StringTrim'),
@@ -81,19 +65,16 @@ class Form_Product_Edit extends App_Form_Edit
         		array('int'),
         		array('between', false, array('min' => -10000, 'max' => 10000))
         	),
-        	'description' => '数字越小排序越靠前',
+        	'description' => '-10000 ~ 10000, 数字越小排序越靠前',
         	'value' => 1,
         	'required' => false
         ));
         
-		$this->addElement('select', 'showWhere', array(
-            'label' => '显示',
-            'filters' => array('StringTrim'),
-            'multiOptions' => array(0=>'不显示',1 => '只显示在产品列表', 2 => '只显示在搜索页', 3 => '同时显示')
-        ));
-        
-        $this->_main = array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price');
-        $this->_optional = array('introicon', 'introtext', 'origPrice');
-        $this->_param = array('weight', 'showWhere');
+//        $this->_main = array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price');
+//        $this->_optional = array('introtext', 'weight');
+		$this->setTabs(array(
+			'main' => array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price'),
+			'optional' => array('introtext', 'weight')
+		));
     }
 }

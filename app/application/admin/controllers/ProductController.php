@@ -75,37 +75,37 @@ class Admin_ProductController extends Zend_Controller_Action
 		
 		require APP_PATH."/admin/forms/Product/Edit.php";
 		$form = new Form_Product_Edit();
-		$form->addElements($attrElements, 'main');
+		$form->addElements($attrElements);
 		$form->populate($productDoc->toArray());
-		$attachmentArr = $productDoc->attachment;
 		
-		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$attachmentStr = $this->getRequest()->getParam('attachmentJson');
-			$attachmentArr = Zend_Json::decode($attachmentStr);
-			$productDoc->attachment = $attachmentArr;
-			
+		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {			
 			$productDoc->setFromArray($form->getValues());
+			$attaUrl = $this->getRequest()->getParam('attaUrl');
+			$attaName = $this->getRequest()->getParam('attaName');
+			$attaType = $this->getRequest()->getParam('attaType');
+			$productDoc->setAttachments($attaUrl, $attaName, $attaType);
 			$result = $productDoc->save();
 			
 			if($result) {
-				$this->_helper->flashMessenger->addMessage('产品已经成功保存');
+				$this->_helper->flashMessenger->addMessage('产品:'.$productDoc->label.' 已经成功保存');
 				$this->_helper->switchContent->gotoSimple('index');
 			}
 		}
 		
 		$this->view->form = $form;
-		$this->view->attachmentArr = $attachmentArr;
-		
+		$this->view->product = $productDoc;
 		if(empty($id)) {
-			$this->_helper->template->actionMenu(array(
-				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
-			));
+//			$this->_helper->template->actionMenu(array(
+//				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
+//			));
+			$this->_helper->template->actionMenu(array('save'));
 			$this->_helper->template->head('创建新产品');
 		} else {
-			$this->_helper->template->actionMenu(array(
-				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
-				'delete'
-			));
+//			$this->_helper->template->actionMenu(array(
+//				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
+//				'delete'
+//			));
+			$this->_helper->template->actionMenu(array('save', 'delete'));
 			$this->_helper->template->head('编辑产品');
 		}
 	}

@@ -1,52 +1,39 @@
-<div class='group-all'>
-	<div class='overlap'></div>
-	<div class='group-handle'>
-		<ul class='group'>
-			<li class='ground'>基本信息</li>
-			<li class='ground'>图片和附件</li>
-		</ul>
-	</div>
-</div>
-<div class='clear'></div>
-<div class='grouplist'>
-	<ul class='group-list'>
-		<li><?php echo $this->form;?></li>
+<form action='' method='post' enctype='application/x-www-form-urlencoded'>
+	<ul class='tab-handle'>
+		<li class='handle'>基本信息</li>
+		<li class='handle'>选填信息</li>
+		<li class='handle'>图片和附件</li>
 	</ul>
-	<ul class='group-list'>
-		<li>
-			<fieldset class='attachment-form'>
-				<ul id='attachment-list'>
-					<?php 
-					if(!is_null($this->attachmentArr)) {
-						foreach($this->attachmentArr as $a) {
-					?>
-					<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
-					<?php
-						} 
-					}
-					?>
-				</ul>
-				<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
-			</fieldset>
+	<ul class='tab-content'>
+		<?php echo $this->form;?>
+		<li class='content-item'>
+			<div class=''>
+				您可以为产品添加多张图片，并选择您最满意的一张作为其缩略图。
+			</div>
+			<ul id='graphic-list'>
+						
+			</ul>
+			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="graphic">添加图片</button>
 		</li>
-		<li class='clear'> </li>
-		<li>
-			<fieldset class='product-form'>
-				<ul id='product-list'>
-					
-				</ul>
-				<button callback='insertImage' class="icon-selector" type="button" name="">添加图片</button>
-			</fieldset>
-		</li>
+		<li class='handle-overlap'></li>
 	</ul>
-</div>
-<div class='clear'></div>
-<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/product-image" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
-<script type='text/template' id='product-add-template'>
-	<div class='product-image'><img src='http://storage.aliyun.com/public-misc/{{ filepath }}'></div>
-	<div class='product-name'>{{ filename }}</div>
+</form>
+
+<script>
+	var tmp = jQuery.parseJSON('{"obj" : <?php echo Zend_Json::encode($this->product->attachment)?>}');
+	var attachmentBackboneSourceObj = tmp.obj;
 </script>
-<script type="text/javascript">
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attachment" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+
+
+<script type='text/template' id='graphic-template'>
+	<div class='product-image'><img src='http://storage.aliyun.com/public-misc/{{ window.SITE_FOLDER }}/_thumb/{{ urlname }}'></div>
+	<div class='product-name'>{{ filename }}</div>
+	<input type='hidden' name='attaUrl[]' value='{{ urlname }}' />
+	<input type='hidden' name='attaName[]' value='{{ filename }}' />
+	<input type='hidden' name='attaType[]' value='graphic' />
+</script>
+<!-- script type="text/javascript">
 $(document).on({
 	'click': function(e) {
 		LI = $(e.currentTarget);
@@ -88,4 +75,4 @@ var saveWithAttachment = function() {
 	return false;
 };
 
-</script>
+</script -->
