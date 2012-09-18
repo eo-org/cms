@@ -1,5 +1,5 @@
 <?php
-class Front_AdSwitchover extends Class_Brick_Solid_Abstract
+class Front_Ad_Switchover extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
     		'ad/switchover.plugin.js'
@@ -51,7 +51,7 @@ class Front_AdSwitchover extends Class_Brick_Solid_Abstract
 				'5000' => '5秒',
         		'6000' => '6秒',
         		'8000' => '8秒',
-				'10000' = '10秒'
+				'10000' => '10秒'
         	),
             'required' => true
         ));
