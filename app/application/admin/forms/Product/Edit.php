@@ -58,6 +58,10 @@ class Form_Product_Edit extends App_Form_Tab
             'filters' => array('StringTrim'),
         	'style' => 'width: 280px; height: 80px;'
         ));
+        $this->addElement('hidden', 'introicon', array(
+            'required' => false,
+            'filters' => array('StringTrim')
+        ));
         $this->addElement('text', 'weight', array(
             'label' => '权重',
             'filters' => array('StringTrim'),
@@ -70,11 +74,9 @@ class Form_Product_Edit extends App_Form_Tab
         	'required' => false
         ));
         
-//        $this->_main = array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price');
-//        $this->_optional = array('introtext', 'weight');
 		$this->setTabs(array(
 			'main' => array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price'),
-			'optional' => array('introtext', 'weight')
+			'optional' => array('introtext', 'weight', 'introicon')
 		));
     }
 }

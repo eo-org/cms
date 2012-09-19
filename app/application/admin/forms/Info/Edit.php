@@ -1,5 +1,5 @@
 <?php
-class Form_Info_Edit extends Class_Form_Edit
+class Form_Info_Edit extends App_Form_Tab
 {
     public function init()
     {
@@ -27,7 +27,27 @@ class Form_Info_Edit extends Class_Form_Edit
             'label' => 'Description：',
             'required' => false
         ));
-        $this->_main = array('language', 'pageTitle');
-        $this->_optional = array('metakey', 'metadesc');
+        $this->addElement('text', 'thumbWidth', array(
+            'filters' => array('StringTrim'),
+            'label' => '缩略图宽度(px)：',
+        	'validators' => array(
+        		array('int'),
+        		array('between', false, array('min' => 10, 'max' => 1000))
+        	),
+            'required' => false
+        ));
+        $this->addElement('text', 'thumbHeight', array(
+            'filters' => array('StringTrim'),
+            'label' => '缩略图高度(px)：',
+        	'validators' => array(
+        		array('int'),
+        		array('between', false, array('min' => 10, 'max' => 1000))
+        	),
+            'required' => false
+        ));
+        $this->setTabs(array(
+			'main' => array('language', 'pageTitle', 'metakey', 'metadesc'),
+			'optional' => array('thumbWidth', 'thumbHeight')
+		));
     }
 }

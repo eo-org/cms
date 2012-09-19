@@ -1,6 +1,11 @@
 <?php
 class Admin_ProductController extends Zend_Controller_Action
 {
+	public function init()
+	{
+		$this->view->headLink()->appendStylesheet(Class_Server::libUrl().'/admin/style/product.css');
+	}
+	
     public function indexAction()
     {    	
         $labels = array(
@@ -78,7 +83,7 @@ class Admin_ProductController extends Zend_Controller_Action
 		$form->addElements($attrElements);
 		$form->populate($productDoc->toArray());
 		
-		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {			
+		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
 			$productDoc->setFromArray($form->getValues());
 			$attaUrl = $this->getRequest()->getParam('attaUrl');
 			$attaName = $this->getRequest()->getParam('attaName');
@@ -94,17 +99,24 @@ class Admin_ProductController extends Zend_Controller_Action
 		
 		$this->view->form = $form;
 		$this->view->product = $productDoc;
+		
+		$co = App_Factory::_m('Info');
+		$infoDoc = $co->fetchOne();
+		
+		$this->view->thumbWidth = empty($infoDoc->thumbWidth) ? 200 : $infoDoc->thumbWidth;
+		$this->view->thumbHeight = empty($infoDoc->thumbHeight) ? 200 : $infoDoc->thumbHeight;
+		
+		$siteId = Class_Server::getSiteFolder();
+		$time = time();
+		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
+		$sig = md5($siteId.$time.$fileServerKey);
+		$this->view->time = $time;
+		$this->view->sig = $sig;
+		
 		if(empty($id)) {
-//			$this->_helper->template->actionMenu(array(
-//				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
-//			));
 			$this->_helper->template->actionMenu(array('save'));
 			$this->_helper->template->head('创建新产品');
 		} else {
-//			$this->_helper->template->actionMenu(array(
-//				array('label' => '保存产品', 'callback' => '', 'method' => 'saveWithAttachment'),
-//				'delete'
-//			));
 			$this->_helper->template->actionMenu(array('save', 'delete'));
 			$this->_helper->template->head('编辑产品');
 		}

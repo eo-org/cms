@@ -10,10 +10,17 @@
 			<div class=''>
 				您可以为产品添加多张图片，并选择您最满意的一张作为其缩略图。
 			</div>
+			<div class=''>
+				<div class=''>当前缩略图</div>
+				<div class='introicon'>
+					<img class='introicon-img' src='<?php echo Class_HTML::outputImage($this->product->introicon)?>' />
+				</div>
+			</div>
 			<ul id='graphic-list'>
 						
 			</ul>
 			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="graphic">添加图片</button>
+			
 		</li>
 		<li class='handle-overlap'></li>
 	</ul>
@@ -22,6 +29,10 @@
 <script>
 	var tmp = jQuery.parseJSON('{"obj" : <?php echo Zend_Json::encode($this->product->attachment)?>}');
 	var attachmentBackboneSourceObj = tmp.obj;
+	var xTime = "<?php echo $this->time?>";
+	var xSig = "<?php echo $this->sig?>";
+	var thumbWidth = "<?php echo $this->thumbWidth?>";
+	var thumbHeight = "<?php echo $this->thumbHeight?>";
 </script>
 <script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attachment" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
@@ -29,10 +40,14 @@
 <script type='text/template' id='graphic-template'>
 	<div class='product-image'><img src='http://storage.aliyun.com/public-misc/{{ window.SITE_FOLDER }}/_thumb/{{ urlname }}'></div>
 	<div class='product-name'>{{ filename }}</div>
+	<div class='set-introicon' urlname='{{ urlname }}'>设置为缩略图</div>
 	<input type='hidden' name='attaUrl[]' value='{{ urlname }}' />
 	<input type='hidden' name='attaName[]' value='{{ filename }}' />
 	<input type='hidden' name='attaType[]' value='graphic' />
 </script>
+
+
+
 <!-- script type="text/javascript">
 $(document).on({
 	'click': function(e) {
