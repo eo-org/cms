@@ -62,7 +62,6 @@ class Admin_ProductController extends Zend_Controller_Action
 		$attributesetId = $this->getRequest()->getParam('attributeset-id');
 		
 		$productCo = App_Factory::_m('Product');
-		
 		if(empty($id)) {
 			$productDoc = $productCo->create();
 			$productDoc->attributesetId = $attributesetId;
