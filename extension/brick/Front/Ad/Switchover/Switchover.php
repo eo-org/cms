@@ -38,7 +38,7 @@ class Front_Ad_Switchover extends Class_Brick_Solid_Abstract
         	'multiOptions' => array('n' => '不显示', 'y' => '显示')
         ));
 		$form->addElement('select', 'param_showAuto', array(
-            'label' => '显示广告介绍：',
+            'label' => '小图是否自动滚动：',
             'required' => true,
         	'multiOptions' => array('n' => '不自动', 'y' => '自动')
         ));

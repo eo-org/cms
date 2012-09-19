@@ -1,12 +1,12 @@
 {% block header %}{% endblock %}
 <div class='image-group-slide' data='{
-	"showauto"："{{ showAuto }}"，
-	"delay": "{{ delay }}"
+	"showauto":"{{ showAuto }}",
+	"delay":"{{ delay }}"
 }'>
     <div class='imageroll'>
 		<div class='bigimage'>
 			{% for row in rowset %}
-			<div style='width: {{ width }}px; height: {{ height }}px; position: absolute'>
+			<div style='position: absolute'>
 				<a href='/welcome.shtml'>
 						<img src='{{ row.filename|outputImage }}'/>
 				</a>
