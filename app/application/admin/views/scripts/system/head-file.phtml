@@ -17,13 +17,27 @@
 </script>
 
 <script type='text/template' id='headfile-edititem-template'>
-	<div class='editor-title'>新建/修改文件</div>
-	<div class='editor-contenr'>
-		<div class='filename-el'>文件名：</div>
-		<div><input class='edit-value' name='filename' type='text' value='{{ filename }}'></div>
-		<a class='edit-save button' href='javascript:void(0)'>保存</a>
-		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
-	</div>
+	<div class='editor-title'>新建/修改头文件</div>
+	<dl>
+		<dt>文件名</dt>
+		<dd><input class='edit-value' type='text' name='filename' value='{{filename}}'></dd>
+		<dt>文件类型</dt>
+		<dd>
+			<select class='edit-value' name='folder'>
+				<option value='normal'>normal</option>
+				<option value='helper' <%if(folder == 'helper') {%>selected<%}%>>helper</option>
+			</select>
+		</dd>
+
+		<dd class='action-dd button edit-save'>SAVE</dd>
+<%if(id != null){%>
+		<dd class='action-dd button edit-delete'>DELETE</dd>
+<%}%>
+	<dl>
+
+
+
+
 </script>
 
 <script>

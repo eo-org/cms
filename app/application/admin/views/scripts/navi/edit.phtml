@@ -51,16 +51,20 @@ var tree = {type: 'navi', id: '<?php echo $this->naviDoc->getId()?>'};
 </script>
 <script type='text/template' id='treeleaf-editor'>
 	<div class='editor-title'>新建/修改链接</div>
-	<div class='editor-contenr'>
-		<div class='label-el'>链接名：</div>
-		<div><input class='edit-value' name='label' type='text' value='{{ label }}'></div>
-		<div class='link-el'>链接地址：</div>
-		<div><input class='edit-value' name='link' type='text' value='{{ link }}'></div>
-		<div class='css-el'>CSS Name：</div>
-		<div><input class='edit-value' name='className' type='text' value='{{ className }}'></div>
-		<a class='edit-save button' href='javascript:void(0)'>保存</a>
-		<a class='edit-delete button' href='javascript:void(0)'>删除</a>
-	</div>
+	<dl>
+		<dt>链接名</dt>
+		<dd><input class='edit-value' type='text' name='label' value='{{label}}'></dd>
+		<dt>链接地址</dt>
+		<dd><input class='edit-value' type='text' name='link' value='{{link}}' /></dd>
+		<dt>CSS Name</dt>
+		<dd><input class='edit-value' type='text' name='className' value='{{className}}' /></dd>
+		<dt>描述</dt>
+		<dd><input class='edit-value' type='text' name='description' value='{{description}}' /></dd>
+		<dd class='action-dd button edit-save'>SAVE</dd>
+<%if(id != null){%>
+		<dd class='action-dd button edit-delete'>DELETE</dd>
+<%}%>
+	<dl>
 </script>
 
 <script>
@@ -71,4 +75,17 @@ var showEditor = function(){
 	});
 	tlEditor.render();
 }
+//
+//var createAd = function() {
+//	ad = new Ad();
+//	var aeView = new AdEditorView({
+//		model: ad
+//	});
+//
+//	var prompt = Prompt.getInstance().appendEditorContent(
+//		aeView.render().el
+//	).showMask();
+//}
+
+
 </script>

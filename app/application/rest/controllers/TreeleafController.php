@@ -15,7 +15,7 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 			case 'navi':
 				$co = App_Factory::_m('Navi_Link')
 					->addFilter('naviId', $treeId)
-					->setFields(array('label', 'link', 'parentId', 'className', 'sort'));
+					->setFields(array('label', 'link', 'parentId', 'className', 'sort', 'description'));
 				break;
 			case 'book':
 				$co = App_Factory::_m('Book_Page')

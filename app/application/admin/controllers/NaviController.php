@@ -153,7 +153,7 @@ class Admin_NaviController extends Zend_Controller_Action
     	
     	$descStr = "";
     	$co = App_Factory::_m('Navi_Link');
-    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link', 'className'))
+    	$docs = $co->setFields(array('label', 'parentId', 'sort', 'link', 'className', 'description'))
     		->addFilter('naviId', $treeId)
 			->sort('sort', 1)
 			->fetchDoc();

@@ -105,12 +105,6 @@ class Front_ArticleList extends Class_Brick_Solid_Abstract
         	'multiOptions' => array('n' => '否', 'y' => '是'),
             'required' => false
         ));
-        $form->addElement('select', 'param_paginatorLanguage', array(
-            'filters' => array('StringTrim'),
-            'label' => '页码语言：',
-        	'multiOptions' => array('default' => '中文', 'en' => '英文'),
-            'required' => false
-        ));
     	$paramArr = array(
     		'param_pageSize',
     		'param_showSubgroupContent',
