@@ -132,7 +132,18 @@ class Admin_BookController extends Zend_Controller_Action
     
     public function deleteAction()
     {
+    	$id = $this->getRequest()->getParam('id');
+    	$doc = App_Factory::_m('Book')->find($id);
+    	if(is_null($doc)) {
+    		throw new Exception('book not found with given id: '.$id);
+    	}
     	
+    	$bookPageCo = App_Factory::_m('Book_Page');
+    	$bookPageCo->delete(array('bookId' => $doc->getId()));
+    	$doc->delete();
+    	
+    	$this->_helper->flashMessenger->addMessage('手册已经删除');
+		$this->_helper->switchContent->gotoSimple('index');
     }
     
     public function treeSortAction()

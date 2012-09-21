@@ -116,7 +116,18 @@ class Admin_NaviController extends Zend_Controller_Action
     
     public function deleteAction()
     {
+    	$id = $this->getRequest()->getParam('id');
+    	$naviDoc = App_Factory::_m('Navi')->find($id);
+    	if(is_null($naviDoc)) {
+    		throw new Exception('navi not found with given id: '.$id);
+    	}
     	
+    	$naviLinkCo = App_Factory::_m('Navi_Link');
+    	$naviLinkCo->delete(array('naviId' => $naviDoc->getId()));
+    	$naviDoc->delete();
+    	
+    	$this->_helper->flashMessenger->addMessage('导航栏已经删除');
+		$this->_helper->switchContent->gotoSimple('index');
     }
     
     public function deleteLinkAction()

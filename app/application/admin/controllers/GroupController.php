@@ -31,8 +31,7 @@ class Admin_GroupController extends Zend_Controller_Action
 	 	$this->_helper->template->head('编辑')
         	->actionMenu(array(
         		'create-item' => array('label' => '添加新分类', 'callback' => '', 'method' => 'createLinks'),
-        		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort'),
-        		'delete'
+        		'save-sort' => array('label' => '保存结构', 'callback' => '', 'method' => 'saveSort')
         	));	
     }
     
@@ -74,11 +73,6 @@ class Admin_GroupController extends Zend_Controller_Action
     	$this->view->form = $form;
     	$this->_helper->template->head('编辑 <em>'.$groupDoc->label.'</em> 章节')
         	->actionMenu(array('save', 'delete'));
-    }
-    
-    public function deleteAction()
-    {
-		
     }
     
 	public function treeSortAction()

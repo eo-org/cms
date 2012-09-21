@@ -131,6 +131,5 @@ class Rest_TreeleafController extends Zend_Rest_Controller
 			$this->getResponse()->setHeader('result', 'fail');
 			echo "不能删除非空的节点！";
 		}
-		
 	}
 }
