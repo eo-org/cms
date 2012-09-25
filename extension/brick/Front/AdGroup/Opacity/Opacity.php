@@ -2,7 +2,6 @@
 class Front_AdGroup_Opacity extends Class_Brick_Solid_Abstract
 {
 	protected $_effectFiles = array(
-			'plugin.animateToSelector.js',
     		'ad/opacity.plugin.js'
     );
 	
