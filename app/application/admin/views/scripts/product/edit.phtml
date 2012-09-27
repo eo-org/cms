@@ -6,9 +6,9 @@
 	</ul>
 	<ul class='tab-content'>
 		<?php echo $this->form;?>
-		<li class='content-item'>
+		<li id='attachment' class='content-item'>
 			<div class=''>
-				您可以为产品添加多张图片，并选择您最满意的一张作为其缩略图。
+				您可以为产品添加多张图片，并选择您最满意的一张作为其缩略图
 			</div>
 			<div class=''>
 				<div class=''>当前缩略图</div>
@@ -20,7 +20,14 @@
 						
 			</ul>
 			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="graphic">添加图片</button>
-			
+			<hr />
+			<div class=''>
+				您可以为产品添加附件提供下载
+			</div>
+			<ul id='download-list'>
+						
+			</ul>
+			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="download">添加附件下载</button>
 		</li>
 		<li class='handle-overlap'></li>
 	</ul>
@@ -46,48 +53,9 @@
 	<input type='hidden' name='attaType[]' value='graphic' />
 </script>
 
-
-
-<!-- script type="text/javascript">
-$(document).on({
-	'click': function(e) {
-		LI = $(e.currentTarget);
-		if(confirm('移除附件:' + LI.html() + '？')) {			
-			LI.remove();
-		}
-	}
-}, '#attachment-list li');
-
-$(document).on({
-	'click': function(e) {
-		LIcurrent = $(e.currentTarget);
-		LI = $(e.currentTarget).find('.product-name');
-		if(confirm('移除附件:' + LI.html() + '？')) {			
-			LIcurrent.remove();
-		}
-	}
-}, '#product-list li');
-
-var saveWithAttachment = function() {
-	var attachmentListLi = $('#attachment-list').find('li');
-	
-	var attachmentStr = '{';
-	attachmentListLi.each(function(i, li) {
-		attachmentStr += '"' + i +'":{"filename":"'+$(li).html()+'", "filepath":"' + $(li).attr('filepath') + '"},';
-	});
-	if(attachmentStr.length > 1) {
-		attachmentStr = attachmentStr.substring(0, attachmentStr.length - 1);
-	}
-	attachmentStr += '}';
-	
-	var f = $("#lightbox-whitebox .content").find('form:first');
-	var input = $("<input>").attr("type", "hidden").attr("name", "attachmentJson").val(
-		attachmentStr
-	);
-	f.append(input);
-	f.submit();
-	
-	return false;
-};
-
-</script -->
+<script type='text/template' id='download-template'>
+	<div class='product-name'>{{ filename }}</div>
+	<input type='hidden' name='attaUrl[]' value='{{ urlname }}' />
+	<input type='hidden' name='attaName[]' value='{{ filename }}' />
+	<input type='hidden' name='attaType[]' value='download' />
+</script>
