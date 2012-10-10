@@ -1,6 +1,6 @@
 {% block header %}{% endblock %}
 {% if displayBrickName %}
-<div class='title'>{{ title }}</div>
+<div class='title'>{{ brickName }}</div>
 {% endif %}
 
 <ul class='download'>
