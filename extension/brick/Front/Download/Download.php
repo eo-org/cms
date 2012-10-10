@@ -10,16 +10,21 @@ class Front_Download extends Class_Brick_Solid_Abstract
     	} else {
     		$attachment = $res->attachment;
     	}
+    	
+    	$download = array();
     	if(is_null($attachment) || count($attachment) == 0) {
     		$this->_disableRender = true;
     	} else {
-    		$download = array();
-    		foreach($attachment as $atta) {
-    			if($atta['filetype'] == 'download') {
-    				$download[] = $atta;
-    			}
-    		}
+	    	foreach($attachment as $atta) {
+	    		if($atta['filetype'] == 'download') {
+	    			$download[] = $atta;
+	    		}
+	    	}
     	}
+    	if(count($download) == 0) {
+    		$this->_disableRender = true;
+    	}
+    	
     	$this->view->download = $download;
     }
 }
