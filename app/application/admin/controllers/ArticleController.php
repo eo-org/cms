@@ -86,7 +86,9 @@ class Admin_ArticleController extends Zend_Controller_Action
 	            $doc->createdByAlias = $csa->getUserData('loginName');
             }
             $doc->save();
+            $this->_helper->flashMessenger->addMessage('内容:'.$doc->label.' 已经成功保存');
 			$this->_helper->switchContent->gotoSimple('index', null, null, array(), true);
+			//$this->_helper->switchContent->gotoSimple('index');
         }
     	
         if(!is_null($id)) {
