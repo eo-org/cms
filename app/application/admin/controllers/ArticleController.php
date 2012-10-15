@@ -51,14 +51,6 @@ class Admin_ArticleController extends Zend_Controller_Action
     
     public function editAction()
     {
-        require APP_PATH.'/admin/forms/Article/Edit.php';
-        $form = new Form_Article_Edit();
-	
-        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
-    		->fetchOne();
-    	$items = $groupDoc->toMultioptions('label');
-        $form->groupId->setMultioptions($items);
-        
         $id = $this->getRequest()->getParam('id');
         
         $co = App_Factory::_m('Article');
@@ -72,21 +64,21 @@ class Admin_ArticleController extends Zend_Controller_Action
             throw new Class_Exception_AccessDeny('没有权限访问此内容，或者内容id不存在');
         }
         
+        require APP_PATH.'/admin/forms/Article/Edit.php';
+        $form = new Form_Article_Edit();
+        $groupDoc = App_Factory::_m('Group')->addFilter('type', 'article')
+    		->fetchOne();
+    	$items = $groupDoc->toMultioptions('label');
+        $form->groupId->setMultioptions($items);
         $form->populate($doc->toArray());
-        $attachmentArr = $doc->attachment;
-        //preset groupId from url //why preset groupId ??
-//    	$groupId = $this->getRequest()->getParam('groupId');
-//        if(!empty($groupId)) {
-//        	$form->groupId->setAttrib('disabled', 'disabled');
-//        	$form->groupId->setValue($groupId);
-//        }
-        //end preset
+        
         if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-        	$attachmentStr = $this->getRequest()->getParam('attachmentJson');
-			$attachmentArr = Zend_Json::decode($attachmentStr);
-			$doc->attachment = $attachmentArr;
             $doc->setFromArray($form->getValues());
-    		
+    		$attaUrl = $this->getRequest()->getParam('attaUrl');
+			$attaName = $this->getRequest()->getParam('attaName');
+			$attaType = $this->getRequest()->getParam('attaType');
+			$doc->setAttachments($attaUrl, $attaName, $attaType);
+			
             if(is_null($id)) {
             	$csa = Class_Session_Admin::getInstance();
 	            $doc->created = date('Y-m-d H:i:s');
@@ -105,17 +97,37 @@ class Admin_ArticleController extends Zend_Controller_Action
         	$rowset = array();
         }
         
-        $this->view->doc = $doc;
+        $this->view->form = $form;
+        $this->view->article = $doc;
         $this->view->id = $id;
         
-        $this->view->form = $form;
-        $this->view->attachmentArr = $attachmentArr;
+        $co = App_Factory::_m('Info');
+		$infoDoc = $co->fetchOne();
+		
+		$this->view->thumbWidth = empty($infoDoc->thumbWidth) ? 200 : $infoDoc->thumbWidth;
+		$this->view->thumbHeight = empty($infoDoc->thumbHeight) ? 200 : $infoDoc->thumbHeight;
+		
+		$siteId = Class_Server::getSiteFolder();
+		$time = time();
+		$fileServerKey = 'gioqnfieowhczt7vt87qhitonqfn8eaw9y8s90a6fnvuzioguifeb';
+		$sig = md5($siteId.$time.$fileServerKey);
+		$this->view->time = $time;
+		$this->view->sig = $sig;
         
+		/*
         $this->_helper->template->head('编辑内容:<em>'.$doc->title.'</em>')
         	->actionMenu(array(
         		array('label' => '保存文章', 'callback' => '', 'method' => 'saveWithAttachment'),
         		'delete'
         	));
+        */
+    	if(empty($id)) {
+			$this->_helper->template->actionMenu(array('save'));
+			$this->_helper->template->head('创建新内容');
+		} else {
+			$this->_helper->template->actionMenu(array('save', 'delete'));
+			$this->_helper->template->head('编辑内容');
+		}
     }
     
     public function deleteAction()

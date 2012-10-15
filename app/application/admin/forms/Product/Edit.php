@@ -58,6 +58,12 @@ class Form_Product_Edit extends App_Form_Tab
             'filters' => array('StringTrim'),
         	'style' => 'width: 280px; height: 80px;'
         ));
+        $this->addElement('textarea', 'metakey', array(
+            'label' => '产品关键词',
+            'required' => false,
+            'filters' => array('StringTrim'),
+        	'style' => 'width: 280px; height: 80px;'
+        ));
         $this->addElement('hidden', 'introicon', array(
             'required' => false,
             'filters' => array('StringTrim')
@@ -76,7 +82,7 @@ class Form_Product_Edit extends App_Form_Tab
         
 		$this->setTabs(array(
 			'main' => array('label', 'name', 'groupId', 'sku', 'fulltext', 'appendImage', 'price'),
-			'optional' => array('introtext', 'weight', 'introicon')
+			'optional' => array('introtext', 'metakey', 'weight', 'introicon')
 		));
     }
 }

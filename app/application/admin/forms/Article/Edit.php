@@ -1,64 +1,47 @@
 <?php
-class Form_Article_Edit extends Class_Form_Edit
+class Form_Article_Edit extends App_Form_Tab
 {
     public function init()
     {
         $this->addElement('text', 'label', array(
             'filters' => array('StringTrim'),
-            'label' => '文章名：',
+            'label' => '内容名：',
             'required' => true
         ));
         $this->addElement('textarea', 'fulltext', array(
             'filters' => array('StringTrim'),
-            'label' => '文章内容：',
+            'label' => '内容详细：',
             'required' => true,
             'id' => 'ck_text_editor'
         ));
-        $this->addElement('button', 'appendImage', array(
-            'filters' => array('StringTrim'),
-            'label' => '插入图片',
-            'required' => false,
-        	'class' => 'icon-selector',
-        	'callback' => 'appendToEditor'
-        ));
-        
         $this->addElement('select', 'groupId', array(
-            'label' => '文章分类：'
-        ));
-        
-        $this->addElement('text', 'introicon', array(
-        	'filters' => array('StringTrim'),
-        	'label' => '摘要图片：',
-        	'required' => false,
-        	'class' => 'icon-selector',
-        	'callback' => 'appendToInput'
+            'label' => '内容分类：'
         ));
         $this->addElement('textarea', 'introtext', array(
             'filters' => array('StringTrim'),
-            'label' => '文章摘要：',
+            'label' => '内容摘要：',
         	'style' => 'width: 280px; height: 80px;',
             'required' => false
+        ));
+        $this->addElement('textarea', 'metakey', array(
+            'label' => '内容关键词',
+            'required' => false,
+            'filters' => array('StringTrim'),
+        	'style' => 'width: 280px; height: 80px;'
         ));
         $this->addElement('checkbox', 'featured', array(
         	'label' => '加入精选：',
         	'required' => false
         ));
-        
-        $this->addElement('text', 'link', array(
-            'filters' => array('StringTrim'),
-            'label' => '文章静态链接：',
-        	'validators' => array(
-        		array('Regex', true, array('/^[a-z-\.\/]+$/', 'messages' => array(
-        			Zend_Validate_Regex::NOT_MATCH => '静态链接只能包含小写字母,"."和"－"',
-        			Zend_Validate_Regex::INVALID => '静态链接只能包含小写字母,"."和"－"'
-        		)))
-        	),
-            'required' => false
+        $this->addElement('hidden', 'introicon', array(
+            'required' => false,
+            'filters' => array('StringTrim')
         ));
         
-        $this->_main = array('label', 'fulltext', 'appendImage');
-        $this->_required = array('groupId');
-        $this->_optional = array('layoutId', 'introicon', 'introtext', 'featured');
-		$this->_param = array('link');
+        $this->setTabs(array(
+			'main' => array('label', 'groupId', 'fulltext'),
+			'optional' => array('introtext', 'metakey', 'featured', 'introicon')
+		));
+        
     }
 }

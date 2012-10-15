@@ -1,66 +1,60 @@
-<?php if(!empty($this->row->id)) { ?>
-<fieldset class='above-form'>
-	<legend>内容基本信息</legend>
-	创建人：<?php echo $this->row->createdByAlias?><br />
-	创建日期：<?php echo $this->row->created?><br />
-	<?php if(empty($this->row->alias)) {?>
-	URL地址：/article-<?php echo $this->id?>.shtml
-	<?php } else {?>
-	URL地址：<?php echo $this->row->alias?>
-	<?php }?>
-</fieldset>
-<div class='clear'></div>
-<?php } ?>
-
-<?=$this->form?>
-<div class='clear'></div>
-
-<fieldset class='attachment-form'>
-	<legend>附件</legend>
-	<ul id='attachment-list'>
-		<?php 
-		if(!is_null($this->attachmentArr)) {
-			foreach($this->attachmentArr as $a) {
-		?>
-		<li filepath='<?php echo $a['filepath']?>'><?php echo $a['filename']?></li>
-		<?php
-			} 
-		}
-		?>
+<form action='' method='post' enctype='application/x-www-form-urlencoded'>
+	<ul class='tab-handle'>
+		<li class='handle'>基本信息</li>
+		<li class='handle'>选填信息</li>
+		<li class='handle'>图片和附件</li>
 	</ul>
-	<button callback='insertAttachment' class="icon-selector" type="button" name="">添加附件</button>
-</fieldset>
-<div class='clear'></div>
+	<ul class='tab-content'>
+		<?php echo $this->form;?>
+		<li id='attachment' class='content-item'>
+			<div class=''>
+				您可以为文章添加多张图片，并选择您最满意的一张作为其缩略图
+			</div>
+			<div class=''>
+				<div class=''>当前缩略图</div>
+				<div class='introicon'>
+					<img class='introicon-img' src='<?php echo Class_HTML::outputImage($this->article->introicon)?>' />
+				</div>
+			</div>
+			<ul id='graphic-list'>
+						
+			</ul>
+			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="graphic">添加图片</button>
+			<hr />
+			<div class=''>
+				您可以为添加附件提供下载
+			</div>
+			<ul id='download-list'>
+						
+			</ul>
+			<button callback='appendAttachmentListener' class="icon-selector" type="button" name="download">添加附件下载</button>
+		</li>
+		<li class='handle-overlap'></li>
+	</ul>
+</form>
+<script>
+	var tmp = jQuery.parseJSON('{"obj" : <?php echo Zend_Json::encode($this->article->attachment)?>}');
+	var attachmentBackboneSourceObj = tmp.obj;
+	var xTime = "<?php echo $this->time?>";
+	var xSig = "<?php echo $this->sig?>";
+	var thumbWidth = "<?php echo $this->thumbWidth?>";
+	var thumbHeight = "<?php echo $this->thumbHeight?>";
+</script>
+<script data-main="<?=Class_Server::libUrl()?>/admin/script/app/attachment" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
 
-<script type="text/javascript">
-$(document).on({
-	'click': function(e) {
-		LI = $(e.currentTarget);
-		if(confirm('移除附件:' + LI.html() + '？')) {			
-			LI.remove();
-		}
-	}
-}, '#attachment-list li');
 
-var saveWithAttachment = function() {
-	var attachmentListLi = $('#attachment-list').find('li');
-	
-	var attachmentStr = '{';
-	attachmentListLi.each(function(i, li) {
-		attachmentStr += '"' + i +'":{"filename":"'+$(li).html()+'", "filepath":"' + $(li).attr('filepath') + '"},';
-	});
-	if(attachmentStr.length > 1) {
-		attachmentStr = attachmentStr.substring(0, attachmentStr.length - 1);
-	}
-	attachmentStr += '}';
-	
-	var f = $("#lightbox-whitebox .content").find('form:first');
-	var input = $("<input>").attr("type", "hidden").attr("name", "attachmentJson").val(
-		attachmentStr
-	);
-	f.append(input);
-	f.submit();
-	
-	return false;
-};
+<script type='text/template' id='graphic-template'>
+	<div class='article-image'><img src='http://storage.aliyun.com/public-misc/{{ window.SITE_FOLDER }}/_thumb/{{ urlname }}'></div>
+	<div class='article-name'>{{ filename }}</div>
+	<div class='set-introicon' urlname='{{ urlname }}'>设置为缩略图</div>
+	<input type='hidden' name='attaUrl[]' value='{{ urlname }}' />
+	<input type='hidden' name='attaName[]' value='{{ filename }}' />
+	<input type='hidden' name='attaType[]' value='graphic' />
+</script>
+
+<script type='text/template' id='download-template'>
+	<div class='article-name'>{{ filename }}</div>
+	<input type='hidden' name='attaUrl[]' value='{{ urlname }}' />
+	<input type='hidden' name='attaName[]' value='{{ filename }}' />
+	<input type='hidden' name='attaType[]' value='download' />
 </script>
