@@ -5,7 +5,7 @@ class Front_Download extends Class_Brick_Solid_Abstract
     {
     	$clf = Class_Layout_Front::getInstance();
     	$res = $clf->getResource();
-    	if(is_null($res)) {
+    	if(is_null($res) || !is_object($res)) {
     		$attachment = null;
     	} else {
     		$attachment = $res->attachment;
