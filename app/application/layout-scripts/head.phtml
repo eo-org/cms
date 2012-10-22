@@ -66,5 +66,9 @@ var FILE_SERVER = "<?=Class_Server::miscUrl()?>";
 window.ORG_CODE = "<?php echo Class_Server::getOrgCode()?>";
 window.SITE_FOLDER = "<?php echo Class_Server::getSiteFolder()?>";
 </script>
+<?php } else { ?>
+<script type='text/javascript'>
+window.SITE_FOLDER = "<?php echo Class_Server::getSiteFolder()?>";
+</script>
 <?php } ?>
 </head>
