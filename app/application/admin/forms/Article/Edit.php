@@ -14,13 +14,6 @@ class Form_Article_Edit extends App_Form_Tab
             'required' => true,
             'id' => 'ck_text_editor'
         ));
-        $this->addElement('button', 'appendImage', array(
-            'filters' => array('StringTrim'),
-            'label' => '插入图片',
-            'required' => false,
-        	'class' => 'icon-selector',
-        	'callback' => 'appendToEditor'
-        ));
         $this->addElement('select', 'groupId', array(
             'label' => '内容分类：'
         ));
@@ -46,7 +39,7 @@ class Form_Article_Edit extends App_Form_Tab
         ));
         
         $this->setTabs(array(
-			'main' => array('label', 'groupId', 'fulltext', 'appendImage'),
+			'main' => array('label', 'groupId', 'fulltext'),
 			'optional' => array('introtext', 'metakey', 'featured', 'introicon')
 		));
         
