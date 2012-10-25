@@ -154,6 +154,9 @@ class Admin_ProductController extends Zend_Controller_Action
                 	case 'label':
                 		$productCo->addFilter('label', new MongoRegex("/^".$value."/"));
                 		break;
+                	case 'groupId':
+                		$productCo->addFilter('groupId', $value);
+                		break;
                     case 'page':
             			if(intval($value) != 0) {
             				$currentPage = $value;
