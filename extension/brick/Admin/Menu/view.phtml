@@ -2,6 +2,10 @@
 <div class='toolbar'>
 	<div class='main'>
 		<ul class='left'>
+			<?php if(SITE_TYPE == 'simple') {?>
+			<li><a href='/admin/artical/index' >内容管理</a></li>
+			<li><a href='http://file.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>文件管理</a></li>
+			<?php } else {?>
 			<?php echo $this->aclLink('category-section', 'index', '目录组')?>
 			<li><a href='/admin/artical/index' >内容管理</a></li>
 			<?php echo $this->aclLink('product', 'index', '产品管理')?>
@@ -12,6 +16,7 @@
 			<li><a href='http://file.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>文件管理</a></li>
 			<li><a href='http://forum.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>用户留言</a></li>
 			<li><a href='http://form.enorange.cn/<?php echo $csa->getOrgCode()?>/admin/' target='_blank'>问卷系统</a></li>
+			<?php } ?>
 		</ul>
 		<ul class='right'>
 			<li><a target='_blank' href='http://account.enorange.cn/<?php echo $csa->getUserId()?>/user/'>我的账户</a></li>
