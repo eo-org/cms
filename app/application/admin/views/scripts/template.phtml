@@ -2,7 +2,14 @@
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $csa = Class_Session_Admin::getInstance();
 $controllerName = $request->getControllerName();
-
+?>
+<?php
+if(SITE_TYPE == 'simple') {
+$naviArr = array(
+	array('title' => '内容管理', 'url' => '/admin/article/',		'tooltip' => '编辑新闻类动态增加的文章。例如：行业新闻，新闻资讯等等。'),
+	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.Class_Server::getSiteFolder().'/admin/',	'tooltip' => '管理网站内所有图片和文档，例如：logo，广告里面的图片，文章中的附件等等。'),
+);	
+} else {
 $naviArr = array(
 	array('title' => '目录导航', 'url' => '/admin/navi/',			'tooltip' => '增加，减少，修改导航栏目，也可进行修改导航栏目链接。例如：主导航，页脚导航等等。'),
 	array('title' => '内容管理', 'url' => '/admin/article/',		'tooltip' => '编辑新闻类动态增加的文章。例如：行业新闻，新闻资讯等等。'),
@@ -15,9 +22,10 @@ $naviArr = array(
 	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.Class_Server::getSiteFolder().'/admin/',	'tooltip' => '管理网站内所有图片和文档，例如：logo，广告里面的图片，文章中的附件等等。'),
 	array('title' => '问卷管理', 'url' => 'http://forum.enorange.cn/'.$csa->getOrgCode().'/admin/',	'tooltip' => '编辑查看网站用户的一些留言，例如：在线订购等。'),
 	array('title' => '留言管理', 'url' => 'http://form.enorange.cn/'.$csa->getOrgCode().'/admin/',	'tooltip' => '编辑查看网站用户的对网站问卷调查的答复，留言，例如：在线调查等等。')
-);	
-
+);
+}
 ?>
+
 
 <?=$this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
