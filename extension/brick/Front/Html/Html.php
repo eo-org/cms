@@ -3,6 +3,9 @@ class Front_Html extends Class_Brick_Solid_Abstract
 {
 	public function prepare()
     {
+    	$clf = Class_Layout_Front::getInstance();
+    	
+    	$this->view->resource = $clf->getResource();
 //    	$this->view->content = $this->_params->content;
     }
     
