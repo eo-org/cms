@@ -25,7 +25,7 @@ class Front_ProductNews extends Class_Brick_Solid_Abstract
 		$productCo->addFilter('groupId', $groupId)
 			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'));
 		
-		$rowset = $productCo->fetchAll(true);
+		$rowset = $productCo->fetchDoc();
 			
     	$numPerSlide = $this->getParam('numPerSlide');
     	$numPerSlide = empty($numPerSlide) ? 1 : $numPerSlide;
