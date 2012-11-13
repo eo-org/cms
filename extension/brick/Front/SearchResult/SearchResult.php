@@ -19,8 +19,10 @@ class Front_SearchResult extends Class_Brick_Solid_Abstract
     			$co = App_Factory::_m('Product');
     			
     			$rowset = $co->setFields(array('label', 'introtext', 'introicon', 'attributeDetail', 'created'))
-    				->addFilter('label', new MongoRegex("/^".$keywords."/"))
-    				->setPage($page)
+    				->addFilter('$or', array(
+    					array('label' => new MongoRegex("/".$keywords."/")),
+    					array('name' => new MongoRegex("/^".$keywords."/"))
+    				))->setPage($page)
     				->setPageSize($pageSize);
     		} else {
     			$co = App_Factory::_m('Article');
