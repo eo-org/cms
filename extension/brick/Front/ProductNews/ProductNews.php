@@ -23,7 +23,8 @@ class Front_ProductNews extends Class_Brick_Solid_Abstract
 		
 		$productCo = App_Factory::_m('Product');
 		$productCo->addFilter('groupId', $groupId)
-			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'));
+			->setFields(array('id', 'name', 'sku', 'label', 'introicon', 'introtext', 'price', 'attributeDetail'))
+			->sort('_id', -1);
 		
 		$rowset = $productCo->fetchDoc();
 			

@@ -13,7 +13,13 @@ $layoutRow = $layoutFront->getLayoutRow();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?=$this->partial('head.phtml', $this) ?>
 
+<?php
+$ra = $layoutFront->getResourceAlias();
+if($ra == null) {?>
 <body>
+<?php } else {?>
+<body id='<?php echo $ra?>'>
+<?php }?>
 <?php
 if($csa->hasPrivilege()) {
 	echo $this->partial('admin-toolbar.phtml', array('csa' => $csa, 'layoutRow' => $layoutRow));
