@@ -5,7 +5,7 @@
 
 <ul class='attachment'>
 	{% for a in attachment %}
-	<li><a href='http://storage.aliyun.com/public-misc/{{ a.filepath }}' target='_blank'>{{ a.filename }}</a></li>
+	<li><a href='http://misc.fucms.com/public-misc/{{ a.filepath }}' target='_blank'>{{ a.filename }}</a></li>
 	{% endfor %}
 </ul>
 
