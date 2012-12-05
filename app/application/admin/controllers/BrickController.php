@@ -206,7 +206,7 @@ class Admin_BrickController extends Zend_Controller_Action
     		fclose($fh);
     		$this->_helper->switchContent->gotoSimple('edit', null, null, array('brick-id' => $brickId), true);
     	}
-    	
+    	$extName = str_replace('_', '/', $extName);
     	$tplFile = CONTAINER_PATH.'/extension/brick/Front/'.$extName.'/view.tpl';
 		$fh = fopen($tplFile, 'r');
 		$viewFileData = fread($fh, filesize($tplFile));
