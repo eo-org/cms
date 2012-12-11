@@ -7,6 +7,7 @@ $controllerName = $request->getControllerName();
 if(SITE_TYPE == 'simple') {
 $naviArr = array(
 	array('title' => '内容管理', 'url' => '/admin/article/',		'tooltip' => '编辑新闻类动态增加的文章。例如：行业新闻，新闻资讯等等。'),
+	array('title' => '广告管理', 'url' => '/admin/ad-section/',	'tooltip' => '编辑网站内的各种静态或动画效果的广告图片，广告组，例如：首页顶部广告组，内页广告图等等。'),
 	array('title' => '文件管理', 'url' => 'http://file.enorange.cn/'.Class_Server::getSiteFolder().'/admin/',	'tooltip' => '管理网站内所有图片和文档，例如：logo，广告里面的图片，文章中的附件等等。'),
 );	
 } else {
